@@ -67,21 +67,23 @@ public class Rocket_Leagure_Jank : MonoBehaviour
         #endregion
 
         AnimationCurve curve = new AnimationCurve();
-
+        bool boostTrail = false;
 
         // note to self fix boost trail issues
         if(boostActive == true)
         {
             Boost();
-            curve.AddKey(0.0f, 0.0f);
-            curve.AddKey(1.0f, 1.0f * Time.deltaTime);
+            curve.AddKey(0.0f * Time.deltaTime, 0.0f);
+            curve.AddKey(1.0f, 1.0f );
+            boostTrail = true;
         }
         else if(boostActive == false)
         {
-            curve.AddKey(0.0f, 0.0f);
+            boostTrail = false;
+            curve.AddKey(0.0f, 0.1f);
             curve.AddKey(0.0f, 0.0f);
         }
-
+        trailing.emitting = boostTrail;
         trailing.widthCurve = curve;
         trailing.widthMultiplier = trailWidth; 
 

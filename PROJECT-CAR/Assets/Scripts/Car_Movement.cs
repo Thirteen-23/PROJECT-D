@@ -10,17 +10,18 @@ public class Car_Movement : MonoBehaviour
 {
     float horizontalInput;
     float verticalInput;
-    float currentSteerAngle, currentBreakForce, handbreaking;
+    float currentSteerAngle, currentBreakForce, handbraking;
     bool quittingApplication = false;
     bool resetPosition = false;
 
-    bool boostUp = false; 
     [SerializeField]
     private float speedFactor;
-    //public float lowSpeed;
-    //public float middleSpeed;
-    //public float HighSpeed;
 
+    [SerializeField] GameObject brakeTrailLeft, brakeTrailRight;
+    TrailRenderer brakeTrailRenLeft, brakeTrailRenRight;
+    [SerializeField] private float changeTrailsizeBeginning;
+    [SerializeField] private float changeTrailsizeEnd;
+    [SerializeField] private float trailTime;
     private Vector3 originalPos;
     private Quaternion rotations;    
     [SerializeField] private bool isBreaking;
@@ -53,7 +54,9 @@ public class Car_Movement : MonoBehaviour
     void Start()
     {
         originalPos = gameObject.transform.position;
-        rotations = gameObject.transform.rotation; 
+        rotations = gameObject.transform.rotation;
+        brakeTrailRenLeft = brakeTrailLeft.GetComponent<TrailRenderer>();
+        brakeTrailRenRight = brakeTrailRight.GetComponent<TrailRenderer>();
     }
 
     // Update is called once per frame
@@ -65,7 +68,7 @@ public class Car_Movement : MonoBehaviour
         WheelsUpdating();
         quitApplication();
         ResettingCar();
-
+        BrakesUsed();
 
 
     }
@@ -108,7 +111,7 @@ public class Car_Movement : MonoBehaviour
         rearLeftWheelCollider.motorTorque = verticalInput * (motorForce + rearMotorForce) * speedFactor * Time.deltaTime;
         rearRightWheelCollider.motorTorque = verticalInput * (motorForce + rearMotorForce) * speedFactor * Time.deltaTime;
         currentBreakForce = isBreaking ? breakForce : 0f;
-        handbreaking = ifHandBraking ? rearBreakForce : 0f;
+        handbraking = ifHandBraking ? rearBreakForce : 0f;
             ApplyBreaking();
             ApplyHandBraking();
     }
@@ -126,8 +129,9 @@ public class Car_Movement : MonoBehaviour
 
     private void ApplyHandBraking()
     {
-        rearLeftWheelCollider.brakeTorque = handbreaking;
-        rearRightWheelCollider.brakeTorque = handbreaking;
+        rearLeftWheelCollider.brakeTorque = handbraking;
+        rearRightWheelCollider.brakeTorque = handbraking;
+        //brakeTrailRen.emitting = Handbraking;
     }
     private void HandlingSteering()
     {
@@ -156,6 +160,40 @@ public class Car_Movement : MonoBehaviour
         
     }
 
+    void BrakesUsed()
+    {
+        AnimationCurve curve1 = new AnimationCurve();
+        AnimationCurve curve2 = new AnimationCurve();
+        float trailWidth = 1.0f;
+        if( ifHandBraking == true)
+        {
+            curve1.AddKey(0.0f, changeTrailsizeBeginning);
+            curve1.AddKey(1.0f, changeTrailsizeEnd);
+            curve2.AddKey(0.0f, changeTrailsizeBeginning);
+            curve2.AddKey(1.0f, changeTrailsizeEnd);
+
+
+
+        }
+        else if(ifHandBraking == false)
+        {
+            
+            
+            curve1.AddKey(1.0f, changeTrailsizeEnd);
+            curve1.AddKey(0.0f, changeTrailsizeBeginning);
+            curve2.AddKey(1.0f, changeTrailsizeEnd);
+            curve2.AddKey(0.0f, changeTrailsizeBeginning);
+
+        }
+        brakeTrailRenLeft.time = trailTime;
+        brakeTrailRenRight.time = trailTime;
+        brakeTrailRenLeft.emitting = ifHandBraking;
+        brakeTrailRenLeft.widthCurve = curve1;
+        brakeTrailRenLeft.widthMultiplier = trailWidth;
+        brakeTrailRenRight.emitting = ifHandBraking;
+        brakeTrailRenRight.widthCurve = curve1;
+        brakeTrailRenRight.widthMultiplier = trailWidth;
+    }
     
 
 }
