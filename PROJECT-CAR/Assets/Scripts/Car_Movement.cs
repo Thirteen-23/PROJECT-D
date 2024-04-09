@@ -16,6 +16,10 @@ public class Car_Movement : MonoBehaviour
 
     [SerializeField]
     private float speedFactor;
+    [Header("Speed of the Car")]
+    [SerializeField] private float currentSpeed;
+    [SerializeField] private float maxSpeed;
+    [SerializeField] private Rigidbody rb; 
 
     [SerializeField] GameObject brakeTrailLeft, brakeTrailRight;
     TrailRenderer brakeTrailRenLeft, brakeTrailRenRight;
@@ -57,6 +61,7 @@ public class Car_Movement : MonoBehaviour
         rotations = gameObject.transform.rotation;
         brakeTrailRenLeft = brakeTrailLeft.GetComponent<TrailRenderer>();
         brakeTrailRenRight = brakeTrailRight.GetComponent<TrailRenderer>();
+
     }
 
     // Update is called once per frame
@@ -105,11 +110,23 @@ public class Car_Movement : MonoBehaviour
     }
     private void HandlingMotor()
     {
+        currentSpeed = rb.velocity.magnitude * 3.36f; ;
+        if (currentSpeed < maxSpeed)
+        {
+            frontLeftWheelCollider.motorTorque = verticalInput * (motorForce + frontMotorForce) * speedFactor * Time.deltaTime;
+            frontRightWheelCollider.motorTorque = verticalInput * (motorForce + frontMotorForce) * speedFactor * Time.deltaTime;
+            rearLeftWheelCollider.motorTorque = verticalInput * (motorForce + rearMotorForce) * speedFactor * Time.deltaTime;
+            rearRightWheelCollider.motorTorque = verticalInput * (motorForce + rearMotorForce) * speedFactor * Time.deltaTime;
+        }
 
-        frontLeftWheelCollider.motorTorque = verticalInput * (motorForce + frontMotorForce) * speedFactor * Time.deltaTime;
-        frontRightWheelCollider.motorTorque = verticalInput * (motorForce + frontMotorForce) * speedFactor * Time.deltaTime;
-        rearLeftWheelCollider.motorTorque = verticalInput * (motorForce + rearMotorForce) * speedFactor * Time.deltaTime;
-        rearRightWheelCollider.motorTorque = verticalInput * (motorForce + rearMotorForce) * speedFactor * Time.deltaTime;
+        else 
+        {
+            frontLeftWheelCollider.motorTorque = verticalInput * 0 * Time.deltaTime;
+            frontRightWheelCollider.motorTorque = verticalInput * 0 * Time.deltaTime;
+            rearLeftWheelCollider.motorTorque = verticalInput * 0 * Time.deltaTime;
+            rearRightWheelCollider.motorTorque = verticalInput * 0 * Time.deltaTime;
+        }
+
         currentBreakForce = isBreaking ? breakForce : 0f;
         handbraking = ifHandBraking ? rearBreakForce : 0f;
             ApplyBreaking();
