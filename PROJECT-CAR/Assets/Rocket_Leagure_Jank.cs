@@ -6,32 +6,42 @@ using UnityEngine;
 public class Rocket_Leagure_Jank : MonoBehaviour
 {
     Rigidbody rb;
-    public bool booostActi = false;
+    [SerializeField] private GameObject trail;
+    TrailRenderer trailing;
+    public bool jumpActive = false;
+    public bool boostActive = false;
+    [SerializeField] private float boostPower;   
     [SerializeField] private float PushPower;
     [SerializeField] private float coolDown;
     [SerializeField] private float coolDownTimer; 
     [SerializeField] private float nextBoostTime; 
+
+    public float trailWidth = 1.0f;
+    
     
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        trailing = trail.GetComponent<TrailRenderer>();
        
-       
-
+        
     }
 
     void UpdateInputs()
     {
-        booostActi = Input.GetKey(KeyCode.Q);
+        jumpActive = Input.GetKey(KeyCode.Q);
+        boostActive = Input.GetKey(KeyCode.E);
     }
     // Update is called once per frame
     void Update()
     {
+
+
         UpdateInputs();
+        #region Jump
 
-
-        if(coolDownTimer > 0 )
+        if (coolDownTimer > 0 )
         {
             coolDownTimer -= Time.deltaTime;
         }
@@ -46,19 +56,46 @@ public class Rocket_Leagure_Jank : MonoBehaviour
         
         if (Time.time > nextBoostTime && coolDownTimer == 0)
         {
-            if (booostActi == true)
+            if (jumpActive == true)
             {
-                Boost();
+                Jump();
                 rb.constraints = RigidbodyConstraints.FreezeRotationZ;
                 nextBoostTime = Time.time + coolDown;
                 coolDownTimer = coolDown; 
             }
         }
+        #endregion
+
+        AnimationCurve curve = new AnimationCurve();
+
+
+        // note to self fix boost trail issues
+        if(boostActive == true)
+        {
+            Boost();
+            curve.AddKey(0.0f, 0.0f);
+            curve.AddKey(1.0f, 1.0f * Time.deltaTime);
+        }
+        else if(boostActive == false)
+        {
+            curve.AddKey(0.0f, 0.0f);
+            curve.AddKey(0.0f, 0.0f);
+        }
+
+        trailing.widthCurve = curve;
+        trailing.widthMultiplier = trailWidth; 
+
     }
 
-    void Boost()
+    void Jump()
     {
         rb.AddForce(rb.transform.up * PushPower);
        
     }
+
+    void Boost()
+    {
+        rb.AddForce(rb.transform.forward * boostPower);
+    }
+
 }
