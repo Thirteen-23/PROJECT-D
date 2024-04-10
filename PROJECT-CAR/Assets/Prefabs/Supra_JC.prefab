@@ -918,7 +918,7 @@ MonoBehaviour:
   trail: {fileID: 1176413396}
   jumpActive: 0
   boostActive: 0
-  boostPower: 5000
+  boostPower: 400
   PushPower: 600000
   coolDown: 2
   coolDownTimer: 0
@@ -937,6 +937,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedFactor: 100
+  currentSpeed: 0
+  maxSpeed: 180
+  rb: {fileID: 6556957528371629979}
   brakeTrailLeft: {fileID: 2106403137}
   brakeTrailRight: {fileID: 507736041}
   changeTrailsizeBeginning: 0.5
@@ -945,8 +948,8 @@ MonoBehaviour:
   isBreaking: 0
   ifHandBraking: 0
   motorForce: 0
-  frontMotorForce: 1000
-  rearMotorForce: 1000
+  frontMotorForce: 0
+  rearMotorForce: 2000
   breakForce: 60000
   frontBreakForce: 0
   rearBreakForce: 100000
@@ -999,7 +1002,7 @@ MeshCollider:
   m_Enabled: 0
   serializedVersion: 4
   m_Convex: 1
-  m_CookingOptions: 30
+  m_CookingOptions: -1
   m_Mesh: {fileID: -6316863888685890786, guid: f1ee126ffbc805347a744d117351c571, type: 3}
 --- !u!4 &8566218120345490572 stripped
 Transform:
