@@ -19,8 +19,8 @@ public class Car_Movement : MonoBehaviour
     [SerializeField] private DifferentialTypes drive; 
    [SerializeField] WheelCollider[] wheels4 = new WheelCollider[4];
     [SerializeField] GameObject[] wheelmeshes = new GameObject[4];
-
-    [SerializeField] private WheelFrictionCurve sRFriction;
+    [SerializeField] AnimationCurve enginePower;
+   // [SerializeField] private WheelFrictionCurve sRFriction;
 
 
 
@@ -35,7 +35,7 @@ public class Car_Movement : MonoBehaviour
     [Header("Speed of the Car")]
     [SerializeField] private float currentSpeed;
     [SerializeField] private float maxSpeed;
-    [SerializeField] private Rigidbody rb;
+    [SerializeField] private Rigidbody bodyOfCar;
 
     [Header("GearBox System")]
     [SerializeField] private float minEngineRPM;
@@ -60,29 +60,28 @@ public class Car_Movement : MonoBehaviour
     [SerializeField] private bool isBreaking;
     // [SerializeField] private bool isMotorOn;
     [SerializeField] private bool ifHandBraking;
-    
+
 
     [Header("Wheel Modifiers")]
-    [SerializeField]
-    public float engineTorque;
-    public float frontEngineTorque;
-    public float rearEngineTorque;
-    public float breakForce;
-    public float frontBreakForce;
-    public float rearBreakForce;
-    public float maxSteerAngle;
+    [SerializeField] private float engineTorque;
+    //[SerializeField] private float frontEngineTorque;
+  // [SerializeField] private float rearEngineTorque;
+   [SerializeField] private float breakForce;
+   [SerializeField] private float frontBreakForce;
+   [SerializeField] private float rearBreakForce;
+    [SerializeField] private float maxSteerAngle;
     #region old wheel collder and transform code
     [Header("Wheel Collider and Transform")]
 
-    [SerializeField] private WheelCollider frontRightWheelCollider;
-    [SerializeField] private WheelCollider frontLeftWheelCollider;
-    [SerializeField] private WheelCollider rearRightWheelCollider;
-    [SerializeField] private WheelCollider rearLeftWheelCollider;
+   /* [SerializeField]*/ private WheelCollider frontRightWheelCollider;
+   /* [SerializeField]*/ private WheelCollider frontLeftWheelCollider;
+   /* [SerializeField]*/ private WheelCollider rearRightWheelCollider;
+   /* [SerializeField]*/ private WheelCollider rearLeftWheelCollider;
 
-    [SerializeField] private Transform frontRightWheelTransform;
-    [SerializeField] private Transform frontLeftWheelTransform;
-    [SerializeField] private Transform rearRightWheelTransform;
-    [SerializeField] private Transform rearLeftWheelTransform;
+   /* [SerializeField]*/ private Transform frontRightWheelTransform;
+   /* [SerializeField]*/ private Transform frontLeftWheelTransform;
+   /* [SerializeField]*/ private Transform rearRightWheelTransform;
+   /* [SerializeField]*/ private Transform rearLeftWheelTransform;
     #endregion
 
     // Start is called before the first frame update
@@ -101,7 +100,6 @@ public class Car_Movement : MonoBehaviour
         GettingInput();
         HandlingMotor();
         HandlingSteering();
-
         AnimatedWheels();
 
         quitApplication();
@@ -150,7 +148,7 @@ public class Car_Movement : MonoBehaviour
     private void HandlingMotor()
     {
         // calculation of kilometers / hour
-        currentSpeed = rb.velocity.magnitude * 3.36f;
+        currentSpeed = bodyOfCar.velocity.magnitude * 3.36f;
         EngineRPMSystem();
         // code for restricting the car to max speed set. 
         if (currentSpeed < maxSpeed)
@@ -365,7 +363,7 @@ public class Car_Movement : MonoBehaviour
         {
             for(int i = 0; i< wheels4.Length; i++)
             {
-                engineRPM = wheels4[i].rpm / 4; 
+                engineRPM = wheels4[i].rpm / 4 * gearRatio[currentGear]; 
             }
         }
         else if (drive == DifferentialTypes.FrontWheelDrive)
@@ -383,7 +381,7 @@ public class Car_Movement : MonoBehaviour
                 engineRPM = wheels4[i].rpm / 2;
             }
         }
-        engineRPM = (rearLeftWheelCollider.rpm + rearRightWheelCollider.rpm) / 2 * gearRatio[currentGear];
+        //engineRPM = (rearLeftWheelCollider.rpm + rearRightWheelCollider.rpm) / 2 * gearRatio[currentGear];
         //ShiftGears();
     }
 
