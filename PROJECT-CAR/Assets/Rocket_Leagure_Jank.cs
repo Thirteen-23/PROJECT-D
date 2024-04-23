@@ -14,7 +14,8 @@ public class Rocket_Leagure_Jank : MonoBehaviour
     [SerializeField] private float PushPower;
     [SerializeField] private float coolDown;
     [SerializeField] private float coolDownTimer; 
-    [SerializeField] private float nextBoostTime; 
+    [SerializeField] private float nextBoostTime;
+    [SerializeField] Shader[] shades; 
 
     public float trailWidth = 1.0f;
     

@@ -1,10 +1,4 @@
-using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Xml;
-using System.Xml.Serialization;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -168,7 +162,7 @@ public class Car_Movement : MonoBehaviour
     private void HandlingMotor()
     {
         // calculation of kilometers / hour
-        currentSpeed = bodyOfCar.velocity.magnitude * 3.36f;
+        currentSpeed = bodyOfCar.velocity.magnitude * 3.6f;
         EngineRPMSystem();
         // code for restricting the car to max speed set. 
         if (currentSpeed < maxSpeed)
@@ -283,7 +277,7 @@ public class Car_Movement : MonoBehaviour
     {
         for (int i = 0; i < wheels4.Length - 2; i++)
         {
-            wheels4[i].steerAngle = horizontalInput + m_PlayerMovement.x  * maxSteerAngle;
+            wheels4[i].steerAngle = horizontalInput /*+ m_PlayerMovement.x*/ * maxSteerAngle;
         }
 
         #region old Steering system
