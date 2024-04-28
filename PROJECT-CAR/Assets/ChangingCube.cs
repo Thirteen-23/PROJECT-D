@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 public class ChangingCube : MonoBehaviour
 {
@@ -29,24 +30,16 @@ public class ChangingCube : MonoBehaviour
         {
             RaycastHit raycastHit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out raycastHit, 100f))
+            if (Physics.Raycast(ray, out raycastHit))
             {
-                if (raycastHit.transform != null)
-                {
-                    CurrentClickedGameObject(raycastHit.transform.gameObject);
-                }
+                Rigidbody body = raycastHit.collider.GetComponent<Rigidbody>();
+                if (body)
+                    body.AddForce(ray.direction *500f);
             }
-            Debug.Log("have been pressed");
-            rb.AddForce(rb.transform.up * 200.0f);
+           
         }
 
     }
-    public void CurrentClickedGameObject(GameObject gameObject)
-    {
-        if (gameObject.tag == "something")
-        {
-
-        }
-    }
+   
 }
     

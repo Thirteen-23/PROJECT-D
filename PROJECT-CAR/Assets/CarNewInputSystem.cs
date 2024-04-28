@@ -35,84 +35,9 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Steering"",
-                    ""type"": ""Value"",
-                    ""id"": ""326e12bf-2ae0-40cd-89bd-dde5c419098e"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""61fb4fe0-790f-4453-ba32-79d211cb38c6"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Steering"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""e969466a-cc61-4dcb-aa8f-a996b2643254"",
-                    ""path"": ""<Keyboard>/j"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Steering"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""5e1c1605-fe01-432b-8b06-f73cf3453c63"",
-                    ""path"": ""<Keyboard>/l"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Steering"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""keyboard"",
-                    ""id"": ""491127f4-952e-42ea-90be-7cbcef798975"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""091167d4-eacc-4e24-ba05-80c12bf9ba20"",
-                    ""path"": ""<Keyboard>/k"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""024c9977-6ca1-4389-be76-8bd15d86aad5"",
-                    ""path"": ""<Keyboard>/i"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
                 {
                     ""name"": ""2D Vector"",
                     ""id"": ""7dc26d0b-86b9-43ad-a984-1785167a0242"",
@@ -176,7 +101,6 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
         // Movement
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
         m_Movement_Move = m_Movement.FindAction("Move", throwIfNotFound: true);
-        m_Movement_Steering = m_Movement.FindAction("Steering", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -239,13 +163,11 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Movement;
     private List<IMovementActions> m_MovementActionsCallbackInterfaces = new List<IMovementActions>();
     private readonly InputAction m_Movement_Move;
-    private readonly InputAction m_Movement_Steering;
     public struct MovementActions
     {
         private @CarNewInputSystem m_Wrapper;
         public MovementActions(@CarNewInputSystem wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Movement_Move;
-        public InputAction @Steering => m_Wrapper.m_Movement_Steering;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -258,9 +180,6 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @Steering.started += instance.OnSteering;
-            @Steering.performed += instance.OnSteering;
-            @Steering.canceled += instance.OnSteering;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -268,9 +187,6 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @Steering.started -= instance.OnSteering;
-            @Steering.performed -= instance.OnSteering;
-            @Steering.canceled -= instance.OnSteering;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -291,6 +207,5 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
     public interface IMovementActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnSteering(InputAction.CallbackContext context);
     }
 }

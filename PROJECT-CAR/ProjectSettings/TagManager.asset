@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ragdoll
   - Platform
+  - Touch
   layers:
   - Default
   - TransparentFX
