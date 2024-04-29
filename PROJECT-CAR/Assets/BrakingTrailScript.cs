@@ -8,7 +8,7 @@ public class BrakingTrailScript : MonoBehaviour
 
     [Header("Brake Trail gameObjects")]
     [SerializeField] GameObject brakeTrailLeft;
-    [SerializeField] GameObject brakeTrailRight;
+    [SerializeField]GameObject brakeTrailRight;
     [SerializeField] GameObject vehicleTarget;
     [SerializeField] TrailRenderer brakeTrailRenLeft, brakeTrailRenRight;
 
@@ -16,13 +16,14 @@ public class BrakingTrailScript : MonoBehaviour
     [SerializeField] private float changeTrailsizeBeginning;
     [SerializeField] private float changeTrailsizeEnd;
     [SerializeField] private float trailTime;
-   
+    [SerializeField] private bool checkingBrakeWork = false;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-       
+        carMovement = GetComponent<Car_Movement>(); 
         brakeTrailRenLeft = brakeTrailLeft.GetComponent<TrailRenderer>();
         brakeTrailRenRight = brakeTrailRight.GetComponent<TrailRenderer>();
     }
@@ -43,6 +44,7 @@ public class BrakingTrailScript : MonoBehaviour
         float trailWidth = 1.0f;
         if (carMovement.ifHandBraking == true)
         {
+            checkingBrakeWork = carMovement.ifHandBraking;
             curve1.AddKey(0.0f, changeTrailsizeBeginning);
             curve1.AddKey(1.0f, changeTrailsizeEnd);
             curve2.AddKey(0.0f, changeTrailsizeBeginning);
@@ -53,7 +55,7 @@ public class BrakingTrailScript : MonoBehaviour
         }
         else if (carMovement.ifHandBraking == false)
         {
-
+            checkingBrakeWork = carMovement.ifHandBraking;
 
             curve1.AddKey(1.0f, changeTrailsizeEnd);
             curve1.AddKey(0.0f, changeTrailsizeBeginning);
@@ -64,10 +66,10 @@ public class BrakingTrailScript : MonoBehaviour
         //rearRightWheelCollider.sidewaysFriction = sRFriction;
         brakeTrailRenLeft.time = trailTime;
         brakeTrailRenRight.time = trailTime;
-        brakeTrailRenLeft.emitting = carMovement.ifHandBraking;
+        brakeTrailRenLeft.emitting = checkingBrakeWork;
         brakeTrailRenLeft.widthCurve = curve1;
         brakeTrailRenLeft.widthMultiplier = trailWidth;
-        brakeTrailRenRight.emitting = carMovement.ifHandBraking;
+        brakeTrailRenRight.emitting = checkingBrakeWork;
         brakeTrailRenRight.widthCurve = curve1;
         brakeTrailRenRight.widthMultiplier = trailWidth;
     }

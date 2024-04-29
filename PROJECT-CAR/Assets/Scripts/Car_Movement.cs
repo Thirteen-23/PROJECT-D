@@ -38,7 +38,6 @@ public class Car_Movement : MonoBehaviour
     //[SerializeField] private float minEngineRPM;
     //[SerializeField] private float maxEngineRPM;
     [SerializeField] private float engineRPM;
-    [SerializeField] private int currentGear;
     [SerializeField] private float finalDriveRatio;
     [SerializeField] private float[] gearSpeedBox = new float[0];
     [SerializeField] private int gearNum;
@@ -59,7 +58,7 @@ public class Car_Movement : MonoBehaviour
     [Header("Handbraking")]
     [SerializeField] private bool isBreaking;
     // [SerializeField] private bool isMotorOn;
-    [SerializeField] public bool ifHandBraking;
+    public bool ifHandBraking;
 
 
     [Header("Wheel Modifiers")]
@@ -99,7 +98,7 @@ public class Car_Movement : MonoBehaviour
         quitApplication();
         ResettingCar();
         BrakesUsed();
-
+        Shifting();
 
 
     }
@@ -207,12 +206,7 @@ public class Car_Movement : MonoBehaviour
             wheels4[i].brakeTorque = currentBreakForce;
         }
 
-        #region old brakng system code
-        /*frontLeftWheelCollider.brakeTorque = currentBreakForce;
-        frontRightWheelCollider.brakeTorque = currentBreakForce;
-        rearLeftWheelCollider.brakeTorque = currentBreakForce;
-        rearRightWheelCollider.brakeTorque = currentBreakForce; */
-        #endregion
+     
 
 
     }
@@ -294,7 +288,7 @@ public class Car_Movement : MonoBehaviour
 
         totalPowerInCar = enginePower.Evaluate(engineRPM) * gearSpeedBox[gearNum] * m_PlayerMovement.y;
         float velocity = 0.0f;
-        engineRPM = Mathf.SmoothDamp(engineRPM, 1000 + (Mathf.Abs(m_RPMOfWheels) * (gearSpeedBox[gearNum])), ref velocity, smoothTime);
+        engineRPM = Mathf.SmoothDamp(engineRPM, 800 + (Mathf.Abs(m_RPMOfWheels)* finalDriveRatio * (gearSpeedBox[gearNum])), ref velocity, smoothTime);
 
     }
 
@@ -333,7 +327,33 @@ public class Car_Movement : MonoBehaviour
 
     }
 
+    private void Shifting()
+    {
+        if(Input.GetKeyDown(KeyCode.W))
+        {
+            if (gearNum < 4)
+            {
+                gearNum++;
+            }
+            else if (gearNum == 4)
+            {
+                gearNum = 4;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            if (gearNum > 0)
+            {
+                gearNum--;
+            }
+            else if(gearNum == 0)
+            {
+                gearNum = 0;
+            }
+        }
 
+
+    }
 
 
 }

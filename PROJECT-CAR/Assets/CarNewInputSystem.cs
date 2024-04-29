@@ -39,7 +39,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": ""2D Vector"",
+                    ""name"": ""Keyboard"",
                     ""id"": ""7dc26d0b-86b9-43ad-a984-1785167a0242"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
@@ -92,6 +92,17 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ab8b512a-4e54-4ed0-a1a5-a2a16539f127"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
