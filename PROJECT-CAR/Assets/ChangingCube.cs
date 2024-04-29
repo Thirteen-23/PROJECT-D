@@ -35,6 +35,8 @@ public class ChangingCube : MonoBehaviour
                 Rigidbody body = raycastHit.collider.GetComponent<Rigidbody>();
                 if (body)
                     body.AddForce(ray.direction *500f);
+
+                mats.material.SetColor("_RimColor", Color.blue);
             }
            
         }

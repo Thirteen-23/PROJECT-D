@@ -5,9 +5,9 @@ using UnityEngine.InputSystem;
 public class Car_Movement : MonoBehaviour
 {
     private Vector2 m_PlayerMovement = Vector2.zero;
-    private InputAction m_Movement; 
+    private InputAction m_Movement;
     private PlayerInput carNewInputSystem;
-    
+
 
     enum DifferentialTypes
     {
@@ -20,12 +20,8 @@ public class Car_Movement : MonoBehaviour
     [SerializeField] WheelCollider[] wheels4 = new WheelCollider[4];
     [SerializeField] GameObject[] wheelmeshes = new GameObject[4];
     [SerializeField] AnimationCurve enginePower;
-    // [SerializeField] private WheelFrictionCurve sRFriction;
+    [SerializeField] AnimationCurve gearRatio;
 
-    float m_steering; 
-  
-    float horizontalInput;
-    float verticalInput;
     float currentSteerAngle, currentBreakForce, handbraking;
     bool quittingApplication = false;
     bool resetPosition = false;
@@ -36,14 +32,18 @@ public class Car_Movement : MonoBehaviour
     [SerializeField] private float currentSpeed;
     [SerializeField] private float maxSpeed;
     [SerializeField] private Rigidbody bodyOfCar;
+    [SerializeField] private float totalPowerInCar;
 
     [Header("GearBox System")]
-    [SerializeField] private float minEngineRPM;
-    [SerializeField] private float maxEngineRPM;
+    //[SerializeField] private float minEngineRPM;
+    //[SerializeField] private float maxEngineRPM;
     [SerializeField] private float engineRPM;
     [SerializeField] private int currentGear;
-    private int[] gearRatio = new int[6];
-    private int theCorrectGear;
+    [SerializeField] private float finalDriveRatio;
+    [SerializeField] private float[] gearSpeedBox = new float[0];
+    [SerializeField] private int gearNum;
+    [SerializeField] private float m_RPMOfWheels;
+    [SerializeField] private float smoothTime;
 
     [Header("Brake Trail Settings")]
     [SerializeField] GameObject brakeTrailLeft;
@@ -59,7 +59,7 @@ public class Car_Movement : MonoBehaviour
     [Header("Handbraking")]
     [SerializeField] private bool isBreaking;
     // [SerializeField] private bool isMotorOn;
-    [SerializeField] private bool ifHandBraking;
+    [SerializeField] public bool ifHandBraking;
 
 
     [Header("Wheel Modifiers")]
@@ -70,32 +70,11 @@ public class Car_Movement : MonoBehaviour
     [SerializeField] private float frontBreakForce;
     [SerializeField] private float rearBreakForce;
     [SerializeField] private float maxSteerAngle;
-    #region old wheel collder and transform code
-    [Header("Wheel Collider and Transform")]
-
-    /* [SerializeField]*/
-    private WheelCollider frontRightWheelCollider;
-    /* [SerializeField]*/
-    private WheelCollider frontLeftWheelCollider;
-    /* [SerializeField]*/
-    private WheelCollider rearRightWheelCollider;
-    /* [SerializeField]*/
-    private WheelCollider rearLeftWheelCollider;
-
-    /* [SerializeField]*/
-    private Transform frontRightWheelTransform;
-    /* [SerializeField]*/
-    private Transform frontLeftWheelTransform;
-    /* [SerializeField]*/
-    private Transform rearRightWheelTransform;
-    /* [SerializeField]*/
-    private Transform rearLeftWheelTransform;
-    #endregion
 
     // Start is called before the first frame update
     private void Awake()
     {
-        
+
     }
     void Start()
     {
@@ -110,11 +89,12 @@ public class Car_Movement : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
-        
+
         GettingInput();
         HandlingMotor();
         HandlingSteering();
         AnimatedWheels();
+        calculatingEnginePower();
         Charactermove();
         quitApplication();
         ResettingCar();
@@ -122,19 +102,10 @@ public class Car_Movement : MonoBehaviour
 
 
 
-        #region old code
-
-        //WheelsUpdating();
-        #endregion
     }
 
     private void GettingInput()
     {
-
-        horizontalInput = Input.GetAxis("Horizontal");
-
-        verticalInput = Input.GetAxis("Vertical");
-
         isBreaking = Input.GetKey(KeyCode.B);
         ifHandBraking = Input.GetKey(KeyCode.Space);
         quittingApplication = Input.GetKeyDown(KeyCode.Escape);
@@ -172,14 +143,14 @@ public class Car_Movement : MonoBehaviour
             {
                 for (int i = 0; i < wheels4.Length; i++)
                 {
-                    wheels4[i].motorTorque = verticalInput + m_PlayerMovement.y * (engineTorque / 4);
+                    wheels4[i].motorTorque =  /*m_PlayerMovement.y*/ totalPowerInCar / 4;
                 }
             }
             else if (drive == DifferentialTypes.RearWheelDrive)
             {
                 for (int i = 2; i < wheels4.Length; i++)
                 {
-                    wheels4[i].motorTorque = verticalInput + m_PlayerMovement.y * (engineTorque / 2);
+                    wheels4[i].motorTorque =  m_PlayerMovement.y * (totalPowerInCar / 2);
                 }
             }
             else if (drive == DifferentialTypes.FrontWheelDrive)
@@ -187,19 +158,13 @@ public class Car_Movement : MonoBehaviour
             {
                 for (int i = 0; i < wheels4.Length - 2; i++)
                 {
-                    wheels4[i].motorTorque = verticalInput + m_PlayerMovement.y * (engineTorque / 2);
+                    wheels4[i].motorTorque = m_PlayerMovement.y * (totalPowerInCar / 2);
                 }
             }
 
             #endregion
 
-            #region old Driving Force code
-            /*frontLeftWheelCollider.motorTorque = verticalInput * (engineTorque + frontEngineTorque) * speedFactor * Time.deltaTime;
-              frontRightWheelCollider.motorTorque = verticalInput * (engineTorque + frontEngineTorque) * speedFactor * Time.deltaTime;
-              rearLeftWheelCollider.motorTorque = verticalInput * (engineTorque + rearEngineTorque) * speedFactor * Time.deltaTime;
-              rearRightWheelCollider.motorTorque = verticalInput * (engineTorque + rearEngineTorque) * speedFactor * Time.deltaTime;*/
 
-            #endregion
         }
 
         else
@@ -208,14 +173,14 @@ public class Car_Movement : MonoBehaviour
             {
                 for (int i = 0; i < wheels4.Length; i++)
                 {
-                    wheels4[i].motorTorque = horizontalInput + m_PlayerMovement.y * 0;
+                    wheels4[i].motorTorque = m_PlayerMovement.y * 0;
                 }
             }
             else if (drive == DifferentialTypes.RearWheelDrive)
             {
                 for (int i = 2; i < wheels4.Length; i++)
                 {
-                    wheels4[i].motorTorque = horizontalInput + m_PlayerMovement.y * 0;
+                    wheels4[i].motorTorque = m_PlayerMovement.y * 0;
                 }
             }
             else if (drive == DifferentialTypes.FrontWheelDrive)
@@ -223,17 +188,10 @@ public class Car_Movement : MonoBehaviour
             {
                 for (int i = 0; i < wheels4.Length - 2; i++)
                 {
-                    wheels4[i].motorTorque = horizontalInput + m_PlayerMovement.y * 0;
+                    wheels4[i].motorTorque = m_PlayerMovement.y * 0;
                 }
             }
 
-            #region old Driving Force code
-            /*engineRPM = maxEngineRPM;
-            frontLeftWheelCollider.motorTorque = verticalInput * 0 * Time.deltaTime;
-            frontRightWheelCollider.motorTorque = verticalInput * 0 * Time.deltaTime;
-            rearLeftWheelCollider.motorTorque = verticalInput * 0 * Time.deltaTime;
-            rearRightWheelCollider.motorTorque = verticalInput * 0 * Time.deltaTime;*/
-            #endregion
         }
 
         currentBreakForce = isBreaking ? breakForce : 0f;
@@ -265,49 +223,16 @@ public class Car_Movement : MonoBehaviour
         {
             wheels4[i].brakeTorque = handbraking;
         }
-
-        #region old rear brake code
-        /*
-        rearLeftWheelCollider.brakeTorque = handbraking;
-        rearRightWheelCollider.brakeTorque = handbraking;
-       */
-        #endregion
     }
+
     private void HandlingSteering()
     {
         for (int i = 0; i < wheels4.Length - 2; i++)
         {
-            wheels4[i].steerAngle = horizontalInput /*+ m_PlayerMovement.x*/ * maxSteerAngle;
+            wheels4[i].steerAngle = m_PlayerMovement.x * maxSteerAngle;
         }
 
-        #region old Steering system
-        /*  currentSteerAngle = maxSteerAngle * horizontalInput;
-          frontLeftWheelCollider.steerAngle = currentSteerAngle;
-          frontRightWheelCollider.steerAngle = currentSteerAngle; */
-        #endregion
     }
-
-    #region Old Updating code for updating animation on wheels 
-    /* private void WheelsUpdating()
-     {
-         UpdateOneWheel(frontLeftWheelCollider, frontLeftWheelTransform);
-         UpdateOneWheel(frontRightWheelCollider, frontRightWheelTransform);
-         UpdateOneWheel(rearLeftWheelCollider, rearLeftWheelTransform);
-         UpdateOneWheel(rearRightWheelCollider, rearRightWheelTransform);
-     }
-
-     private void UpdateOneWheel(WheelCollider collider, Transform wheelTransform)
-     {
-         Vector3 pos;
-         Quaternion rot;
-         collider.GetWorldPose(out pos, out rot);
-         wheelTransform.rotation = rot;
-         wheelTransform.position = pos;
-
-
-     }
-    */
-    #endregion
 
     void AnimatedWheels()
     {
@@ -362,88 +287,53 @@ public class Car_Movement : MonoBehaviour
         brakeTrailRenRight.widthMultiplier = trailWidth;
     }
 
-   
+    private void calculatingEnginePower()
+    {
+        EngineRPMSystem();
+        // WheelsRPM();
+
+        totalPowerInCar = enginePower.Evaluate(engineRPM) * gearSpeedBox[gearNum] * m_PlayerMovement.y;
+        float velocity = 0.0f;
+        engineRPM = Mathf.SmoothDamp(engineRPM, 1000 + (Mathf.Abs(m_RPMOfWheels) * (gearSpeedBox[gearNum])), ref velocity, smoothTime);
+
+    }
+
 
     private void EngineRPMSystem()
     {
-        if (drive == DifferentialTypes.AllWheelDrive)
+        float sum = 0;
+        int rR = 0;
+        for (int i = 0; i < 4; i++)
         {
-            for (int i = 0; i < wheels4.Length; i++)
-            {
-                engineRPM = wheels4[i].rpm / 4 * gearRatio[currentGear];
-            }
+            sum += wheels4[i].rpm;
+            rR++;
         }
-        else if (drive == DifferentialTypes.FrontWheelDrive)
-        {
-            for (int i = 0; i < wheels4.Length - 2; i++)
-            {
-                engineRPM = wheels4[i].rpm / 2;
-            }
-        }
+        m_RPMOfWheels = (rR != 0) ? sum / rR : 0;
 
-        else if (drive == DifferentialTypes.RearWheelDrive)
-        {
-            for (int i = 2; i < wheels4.Length; i++)
-            {
-                engineRPM = wheels4[i].rpm / 2;
-            }
-        }
-        //engineRPM = (rearLeftWheelCollider.rpm + rearRightWheelCollider.rpm) / 2 * gearRatio[currentGear];
-        //ShiftGears();
     }
 
-    //private void ShiftGears()
-    //{
+    // another way to calculate RPM. 
+    private void WheelsRPM()
+    {
+        float sum = 0;
+        int R = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            sum += wheels4[i].rpm;
+            R++;
 
-    //    if (engineRPM >= maxEngineRPM)
-    //    {
-    //        for(int i = 0; i<gearRatio.Length; i++)
-    //        {
-    //            if(rearLeftWheelCollider.rpm * gearRatio[i] < maxEngineRPM)
-    //            {
-    //                theCorrectGear = i;
-    //            }
-    //            break;
-    //        }
-    //        currentGear = theCorrectGear; 
-    //    }
-
-    //    if(engineRPM <= minEngineRPM)
-    //    {
-    //        for(int j = gearRatio.Length; j >=0; j--) 
-    //        {
-    //            if(rearLeftWheelCollider.rpm * gearRatio[j] > minEngineRPM)
-    //            {
-    //                theCorrectGear = j;
-    //                break;
-    //            }
-    //        }
-
-    //    }
-    //    currentGear = theCorrectGear;
-    //}
+        }
+        m_RPMOfWheels = (R != 0) ? sum / R : 0;
+    }
 
     public void Charactermove()
     {
-        // context.ReadValue<Vector2>();
-        // print(context);
         m_PlayerMovement = m_Movement.ReadValue<Vector2>();
-        print(m_PlayerMovement); 
-
-    }
-    private void OnEnable()
-    {
+        print(m_PlayerMovement);
 
     }
 
-    private void OnDisable()
-    {
-        
-    }
 
-    public void Steering(InputAction.CallbackContext context)
-    {
-        m_steering = context.ReadValue<float>();
-    }
-    
+
+
 }
