@@ -496,7 +496,7 @@ WheelCollider:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_Enabled: 1
 --- !u!1 &6556957528534704041
@@ -558,7 +558,7 @@ WheelCollider:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_Enabled: 1
 --- !u!1 &6556957529087473833
@@ -620,7 +620,7 @@ WheelCollider:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_Enabled: 1
 --- !u!1 &6556957529090631106
@@ -713,7 +713,7 @@ WheelCollider:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_Enabled: 1
 --- !u!1001 &1946905938618775501
@@ -903,95 +903,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 3
---- !u!114 &1929093013
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1712957147537820316}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be9d59362c1e4e04883d17a857bc1ec1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trail: {fileID: 1176413396}
-  jumpActive: 0
-  boostActive: 0
-  boostPower: 400
-  PushPower: 600000
-  coolDown: 2
-  coolDownTimer: 0
-  nextBoostTime: 0
-  shades: []
-  trailWidth: 1
---- !u!114 &6556957528371629980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1712957147537820316}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc7b51cac9389ca498a429f0d063888a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  drive: 2
-  wheels4:
-  - {fileID: 6556957529087473835}
-  - {fileID: 6556957529126503008}
-  - {fileID: 6556957528534704043}
-  - {fileID: 6556957527803421909}
-  wheelmeshes:
-  - {fileID: 822547276463514165}
-  - {fileID: 1040947760749431445}
-  - {fileID: 3501898249373850119}
-  - {fileID: 4102294568689697077}
-  enginePower:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  speedFactor: 100
-  currentSpeed: 0
-  maxSpeed: 150
-  bodyOfCar: {fileID: 6556957528371629979}
-  minEngineRPM: 0
-  maxEngineRPM: 6000
-  engineRPM: 0
-  currentGear: 1
-  brakeTrailLeft: {fileID: 2106403137}
-  brakeTrailRight: {fileID: 507736041}
-  changeTrailsizeBeginning: 0.5
-  changeTrailsizeEnd: 1
-  trailTime: 2
-  isBreaking: 0
-  ifHandBraking: 0
-  engineTorque: 5000
-  breakForce: 60000
-  frontBreakForce: 0
-  rearBreakForce: 100000
-  maxSteerAngle: 30
 --- !u!114 &1723290015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1018,31 +929,7 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6556957528371629980}
-        m_TargetAssemblyTypeName: Car_Movement, Assembly-CSharp
-        m_MethodName: Steering
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Car_Movement, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 713dfb4c-41d8-4c39-acb3-0b3faa295f0e
     m_ActionName: Movement/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   m_NeverAutoSwitchControlSchemes: 0
@@ -1050,6 +937,120 @@ MonoBehaviour:
   m_DefaultActionMap: Movement
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1723290016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712957147537820316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e31a45f6206a077459dde4b85612d201, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  brakeTrailLeft: {fileID: 2106403137}
+  brakeTrailRight: {fileID: 507736041}
+  vehicleTarget: {fileID: 1712957147537820316}
+  brakeTrailRenLeft: {fileID: 2106403139}
+  brakeTrailRenRight: {fileID: 507736043}
+  changeTrailsizeBeginning: 0.5
+  changeTrailsizeEnd: 1
+  trailTime: 2
+  checkingBrakeWork: 0
+--- !u!114 &1929093013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712957147537820316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be9d59362c1e4e04883d17a857bc1ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trail: {fileID: 1176413396}
+  jumpActive: 0
+  boostActive: 0
+  boostPower: 40000
+  PushPower: 600000
+  coolDown: 2
+  coolDownTimer: 0
+  nextBoostTime: 0
+  shades: []
+  trailWidth: 1
+--- !u!114 &6556957528371629980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712957147537820316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc7b51cac9389ca498a429f0d063888a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transmission: 0
+  drive: 2
+  wheels4:
+  - {fileID: 6556957529087473835}
+  - {fileID: 6556957529126503008}
+  - {fileID: 6556957528534704043}
+  - {fileID: 6556957527803421909}
+  wheelmeshes:
+  - {fileID: 822547276463514165}
+  - {fileID: 1040947760749431445}
+  - {fileID: 3501898249373850119}
+  - {fileID: 4102294568689697077}
+  enginePower:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 100
+      inSlope: 0.40376085
+      outSlope: 0.40376085
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.01998282
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  currentSpeed: 0
+  maxSpeed: 300
+  bodyOfCar: {fileID: 6556957528371629979}
+  totalPowerInCar: 0
+  gearChangingNum: 6
+  idleRPM: 800
+  maxRPM: 7000
+  minRPM: 2500
+  maxRPMForCar: 10000
+  engineRPM: 0
+  finalDriveRatio: 3.6
+  gearSpeedBox:
+  - 2
+  - 1.7
+  - 1.5
+  - 1
+  - 0.7
+  - 0.5
+  gearNum: 0
+  m_RPMOfWheels: 0
+  smoothTime: 0.01
+  keyRPMSet:
+  - {x: 1700, y: 700}
+  - {x: 6500, y: 1400}
+  - {x: 7000, y: 700}
+  - {x: 8000, y: 0}
+  isBreaking: 0
+  ifHandBraking: 0
+  breakForce: 60000
+  frontBreakForce: 0
+  rearBreakForce: 100000
+  maxSteerAngle: 30
 --- !u!4 &2057711683291648038 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}

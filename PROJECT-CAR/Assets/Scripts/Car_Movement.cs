@@ -1,4 +1,6 @@
 
+using System.Linq;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,55 +18,52 @@ public class Car_Movement : MonoBehaviour
         AllWheelDrive
 
     }
+    enum TransmissionTypes
+    {
+        Automatic,
+        Manual
+    }
+    [SerializeField] private TransmissionTypes transmission;
     [SerializeField] private DifferentialTypes drive;
     [SerializeField] WheelCollider[] wheels4 = new WheelCollider[4];
     [SerializeField] GameObject[] wheelmeshes = new GameObject[4];
-    [SerializeField] AnimationCurve enginePower;
-    [SerializeField] AnimationCurve gearRatio;
+    
+    //[SerializeField] AnimationCurve gearRatio;
 
-    float currentSteerAngle, currentBreakForce, handbraking;
+    float currentBreakForce, handbraking;
     bool quittingApplication = false;
     bool resetPosition = false;
 
-    [SerializeField]
-    private float speedFactor;
     [Header("Speed of the Car")]
+    [SerializeField] public AnimationCurve enginePower;
     [SerializeField] private float currentSpeed;
     [SerializeField] private float maxSpeed;
     [SerializeField] private Rigidbody bodyOfCar;
     [SerializeField] private float totalPowerInCar;
 
     [Header("GearBox System")]
-    //[SerializeField] private float minEngineRPM;
-    //[SerializeField] private float maxEngineRPM;
-    [SerializeField] private float engineRPM;
+    [SerializeField] int gearChangingNum;
+    [SerializeField] public int idleRPM;
+    [SerializeField] private float maxRPM;
+    [SerializeField] private float minRPM;
+    [SerializeField] private int maxRPMForCar;
+    [SerializeField] public float engineRPM;
     [SerializeField] private float finalDriveRatio;
     [SerializeField] private float[] gearSpeedBox = new float[0];
-    [SerializeField] private int gearNum;
-    [SerializeField] private float m_RPMOfWheels;
+    [SerializeField] public int gearNum;
+    private float m_RPMOfWheels;
     [SerializeField] private float smoothTime;
-
-    [Header("Brake Trail Settings")]
-    [SerializeField] GameObject brakeTrailLeft;
-    [SerializeField] GameObject brakeTrailRight;
-    TrailRenderer brakeTrailRenLeft, brakeTrailRenRight;
-    [SerializeField] private float changeTrailsizeBeginning;
-    [SerializeField] private float changeTrailsizeEnd;
-    [SerializeField] private float trailTime;
+    [SerializeField] private Vector2[] keyRPMSet = new Vector2[0]; 
 
     private Vector3 originalPos;
     private Quaternion rotations;
 
     [Header("Handbraking")]
     [SerializeField] private bool isBreaking;
-    // [SerializeField] private bool isMotorOn;
     public bool ifHandBraking;
 
 
     [Header("Wheel Modifiers")]
-    [SerializeField] private float engineTorque;
-    //[SerializeField] private float frontEngineTorque;
-    // [SerializeField] private float rearEngineTorque;
     [SerializeField] private float breakForce;
     [SerializeField] private float frontBreakForce;
     [SerializeField] private float rearBreakForce;
@@ -79,8 +78,6 @@ public class Car_Movement : MonoBehaviour
     {
         originalPos = gameObject.transform.position;
         rotations = gameObject.transform.rotation;
-        brakeTrailRenLeft = brakeTrailLeft.GetComponent<TrailRenderer>();
-        brakeTrailRenRight = brakeTrailRight.GetComponent<TrailRenderer>();
         carNewInputSystem = GetComponent<PlayerInput>();
         m_Movement = carNewInputSystem.actions.FindAction("Move");
     }
@@ -97,9 +94,8 @@ public class Car_Movement : MonoBehaviour
         Charactermove();
         quitApplication();
         ResettingCar();
-        BrakesUsed();
         Shifting();
-
+        SetEngineRPMAndTorque();
 
     }
 
@@ -107,17 +103,19 @@ public class Car_Movement : MonoBehaviour
     {
         isBreaking = Input.GetKey(KeyCode.B);
         ifHandBraking = Input.GetKey(KeyCode.Space);
-        quittingApplication = Input.GetKeyDown(KeyCode.Escape);
+        //quittingApplication = Input.GetKeyDown(KeyCode.Escape);
         resetPosition = Input.GetKey(KeyCode.R);
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            quitApplication();
+        }
 
     }
 
     private void quitApplication()
     {
-        if (quittingApplication == true)
-        {
-            Application.Quit();
-        }
+        Application.Quit();
     }
 
     private void ResettingCar()
@@ -137,19 +135,20 @@ public class Car_Movement : MonoBehaviour
         // code for restricting the car to max speed set. 
         if (currentSpeed < maxSpeed)
         {
-            #region New Driving system
+            #region New Driving system 
             if (drive == DifferentialTypes.AllWheelDrive)
             {
                 for (int i = 0; i < wheels4.Length; i++)
                 {
-                    wheels4[i].motorTorque =  /*m_PlayerMovement.y*/ totalPowerInCar / 4;
+                    // wheels torque equal to engine Rpm * gearbox * final drive ratio and input from player
+                    wheels4[i].motorTorque = totalPowerInCar / 4;
                 }
             }
             else if (drive == DifferentialTypes.RearWheelDrive)
             {
                 for (int i = 2; i < wheels4.Length; i++)
                 {
-                    wheels4[i].motorTorque =  m_PlayerMovement.y * (totalPowerInCar / 2);
+                    wheels4[i].motorTorque = totalPowerInCar / 2;
                 }
             }
             else if (drive == DifferentialTypes.FrontWheelDrive)
@@ -157,7 +156,7 @@ public class Car_Movement : MonoBehaviour
             {
                 for (int i = 0; i < wheels4.Length - 2; i++)
                 {
-                    wheels4[i].motorTorque = m_PlayerMovement.y * (totalPowerInCar / 2);
+                    wheels4[i].motorTorque = totalPowerInCar / 2;
                 }
             }
 
@@ -206,7 +205,7 @@ public class Car_Movement : MonoBehaviour
             wheels4[i].brakeTorque = currentBreakForce;
         }
 
-     
+
 
 
     }
@@ -242,53 +241,13 @@ public class Car_Movement : MonoBehaviour
 
     }
 
-
-    private void BrakesUsed()
-    {
-        AnimationCurve curve1 = new AnimationCurve();
-        AnimationCurve curve2 = new AnimationCurve();
-        //sRFriction = new WheelFrictionCurve();
-
-        float trailWidth = 1.0f;
-        if (ifHandBraking == true)
-        {
-            curve1.AddKey(0.0f, changeTrailsizeBeginning);
-            curve1.AddKey(1.0f, changeTrailsizeEnd);
-            curve2.AddKey(0.0f, changeTrailsizeBeginning);
-            curve2.AddKey(1.0f, changeTrailsizeEnd);
-            //sRFriction.asymptoteValue = 0.50f;
-
-
-        }
-        else if (ifHandBraking == false)
-        {
-
-
-            curve1.AddKey(1.0f, changeTrailsizeEnd);
-            curve1.AddKey(0.0f, changeTrailsizeBeginning);
-            curve2.AddKey(1.0f, changeTrailsizeEnd);
-            curve2.AddKey(0.0f, changeTrailsizeBeginning);
-            // sRFriction.asymptoteValue = 0.75f;
-        }
-        //rearRightWheelCollider.sidewaysFriction = sRFriction;
-        brakeTrailRenLeft.time = trailTime;
-        brakeTrailRenRight.time = trailTime;
-        brakeTrailRenLeft.emitting = ifHandBraking;
-        brakeTrailRenLeft.widthCurve = curve1;
-        brakeTrailRenLeft.widthMultiplier = trailWidth;
-        brakeTrailRenRight.emitting = ifHandBraking;
-        brakeTrailRenRight.widthCurve = curve1;
-        brakeTrailRenRight.widthMultiplier = trailWidth;
-    }
-
     private void calculatingEnginePower()
     {
         EngineRPMSystem();
-        // WheelsRPM();
 
         totalPowerInCar = enginePower.Evaluate(engineRPM) * gearSpeedBox[gearNum] * m_PlayerMovement.y;
         float velocity = 0.0f;
-        engineRPM = Mathf.SmoothDamp(engineRPM, 800 + (Mathf.Abs(m_RPMOfWheels)* finalDriveRatio * (gearSpeedBox[gearNum])), ref velocity, smoothTime);
+        engineRPM = Mathf.SmoothDamp(engineRPM, idleRPM + (Mathf.Abs(m_RPMOfWheels) * finalDriveRatio * (gearSpeedBox[gearNum])), ref velocity, smoothTime);
 
     }
 
@@ -306,54 +265,70 @@ public class Car_Movement : MonoBehaviour
 
     }
 
-    // another way to calculate RPM. 
-    private void WheelsRPM()
-    {
-        float sum = 0;
-        int R = 0;
-        for (int i = 0; i < 4; i++)
-        {
-            sum += wheels4[i].rpm;
-            R++;
-
-        }
-        m_RPMOfWheels = (R != 0) ? sum / R : 0;
-    }
-
     public void Charactermove()
     {
         m_PlayerMovement = m_Movement.ReadValue<Vector2>();
-        print(m_PlayerMovement);
+        //print(m_PlayerMovement);
 
     }
 
     private void Shifting()
     {
-        if(Input.GetKeyDown(KeyCode.W))
+        if (transmission == TransmissionTypes.Manual)
         {
-            if (gearNum < 4)
+            if (Input.GetKeyDown(KeyCode.W))
             {
-                gearNum++;
+                Debug.Log(gearNum);
+                Debug.Log(gearSpeedBox[gearNum]);
+                if (gearNum < gearSpeedBox.Length-1)
+                {
+                    
+                    gearNum++;
+                }
+               
             }
-            else if (gearNum == 4)
+            if (Input.GetKeyDown(KeyCode.S))
             {
-                gearNum = 4;
+                if (gearNum > 0)
+                {
+                    gearNum--;
+                }
+              
             }
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        if (transmission == TransmissionTypes.Automatic)
         {
-            if (gearNum > 0)
+            if (engineRPM > maxRPM)
             {
-                gearNum--;
+                if (gearNum < gearSpeedBox.Length - 1)
+                {
+                    gearNum++;
+                }
             }
-            else if(gearNum == 0)
+            if (engineRPM < minRPM)
             {
-                gearNum = 0;
+                if (gearNum > 0)
+                {
+                    gearNum--;
+                }
+                else
+                {
+                    gearNum = 0;
+                }
             }
         }
-
-
     }
 
-
+    private void SetEngineRPMAndTorque()
+    {
+        for(int i  = 0; i<keyRPMSet.Length; i++)
+        {
+            enginePower.AddKey(keyRPMSet[i].x, keyRPMSet[i].y);
+            
+        }
+       
+    }
 }
+
+
+

@@ -8,7 +8,9 @@ public class ChangingCube : MonoBehaviour
 {
 
     Rigidbody rb;
+   [SerializeField] GameObject clone;
     Renderer mats;
+   [SerializeField] GameObject woo;
 
     // Start is called before the first frame update
     void Start()
@@ -34,14 +36,34 @@ public class ChangingCube : MonoBehaviour
             {
                 Rigidbody body = raycastHit.collider.GetComponent<Rigidbody>();
                 if (body)
-                    body.AddForce(ray.direction *500f);
+                {
+                    body.AddForce(ray.direction * 500f);
 
-                mats.material.SetColor("_RimColor", Color.blue);
+                    mats.material.SetColor("_RimColor", Color.blue);
+                   
+                   Instantiate(clone, woo.transform.position, woo.transform.rotation); 
+                    
+                }
             }
-           
-        }
 
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            RaycastHit raycastHit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out raycastHit))
+            {
+                Rigidbody body = raycastHit.collider.GetComponent<Rigidbody>();
+                if (body)
+                {
+                    body.AddForce(ray.direction * -500f);
+
+                    mats.material.SetColor("_RimColor", Color.red);
+
+                }
+
+            }
+        }
     }
-   
 }
     
