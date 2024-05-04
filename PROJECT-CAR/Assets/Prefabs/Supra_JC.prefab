@@ -729,31 +729,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.6600003
+      value: 110.69
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.37
+      value: 0.66
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 51.34
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.68422914
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.7292671
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -761,7 +761,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 93.65
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -929,9 +929,61 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 713dfb4c-41d8-4c39-acb3-0b3faa295f0e
-    m_ActionName: Movement/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+      m_Calls:
+      - m_Target: {fileID: 6556957528371629980}
+        m_TargetAssemblyTypeName: Car_Movement, Assembly-CSharp
+        m_MethodName: ApplyingThrottleInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6556957528371629980}
+        m_TargetAssemblyTypeName: Car_Movement, Assembly-CSharp
+        m_MethodName: ReleaseThrottleInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1076a2c9-1f6a-4953-9358-676dde72db6c
+    m_ActionName: Movement/Acceration[/Keyboard/s,/Keyboard/w]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6556957528371629980}
+        m_TargetAssemblyTypeName: Car_Movement, Assembly-CSharp
+        m_MethodName: ApplySteeringInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6556957528371629980}
+        m_TargetAssemblyTypeName: Car_Movement, Assembly-CSharp
+        m_MethodName: ReleaseSteeringInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7f7af0e4-e3b6-4be7-9cf1-431a74dd75f3
+    m_ActionName: Movement/Steering[/Keyboard/leftArrow,/Keyboard/rightArrow]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Movement
@@ -973,7 +1025,7 @@ MonoBehaviour:
   trail: {fileID: 1176413396}
   jumpActive: 0
   boostActive: 0
-  boostPower: 40000
+  boostPower: 4000
   PushPower: 600000
   coolDown: 2
   coolDownTimer: 0
@@ -994,6 +1046,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transmission: 0
   drive: 2
+  bodyOfCar: {fileID: 6556957528371629979}
   wheels4:
   - {fileID: 6556957529087473835}
   - {fileID: 6556957529126503008}
@@ -1004,6 +1057,7 @@ MonoBehaviour:
   - {fileID: 1040947760749431445}
   - {fileID: 3501898249373850119}
   - {fileID: 4102294568689697077}
+  horsePower: 0
   enginePower:
     serializedVersion: 2
     m_Curve:
@@ -1019,38 +1073,61 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  currentSpeed: 0
   maxSpeed: 300
-  bodyOfCar: {fileID: 6556957528371629979}
   totalPowerInCar: 0
+  currentSpeed: 0
+  acceration_Value: 0
+  AccerationDamping: 0
   gearChangingNum: 6
   idleRPM: 800
-  maxRPM: 7000
+  maxRPM: 5000
   minRPM: 2500
   maxRPMForCar: 10000
   engineRPM: 0
-  finalDriveRatio: 3.6
+  finalDriveRatio: 3.73
   gearSpeedBox:
-  - 2
-  - 1.7
-  - 1.5
+  - 3.25
+  - 1.96
+  - 1.31
   - 1
-  - 0.7
-  - 0.5
+  - 0.75
   gearNum: 0
-  m_RPMOfWheels: 0
   smoothTime: 0.01
   keyRPMSet:
-  - {x: 1700, y: 700}
-  - {x: 6500, y: 1400}
-  - {x: 7000, y: 700}
-  - {x: 8000, y: 0}
+  - {x: 5500, y: 880}
+  - {x: 6500, y: 0}
   isBreaking: 0
   ifHandBraking: 0
-  breakForce: 60000
-  frontBreakForce: 0
-  rearBreakForce: 100000
-  maxSteerAngle: 30
+  allBrakeForce: 0
+  frontBrakeForce: 0
+  rearBrakeForce: 0
+  steering_Value: 0
+  steeringDamping: 0
+  smoothTransitionSpeed: 5
+  steeringCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 35
+      inSlope: -0.31404397
+      outSlope: -0.31404397
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.023748226
+    - serializedVersion: 3
+      time: 200
+      value: 0
+      inSlope: -0.61605304
+      outSlope: -0.61605304
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.029526455
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &2057711683291648038 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
@@ -1080,7 +1157,7 @@ BoxCollider:
   m_GameObject: {fileID: 4953439929436792563}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1.952312, y: 0.6796551, z: 4.635161}
   m_Center: {x: 0, y: -0.11279726, z: 0}
@@ -1093,7 +1170,7 @@ MeshCollider:
   m_GameObject: {fileID: 4953439929436792563}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: -1
