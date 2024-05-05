@@ -25,12 +25,21 @@
                 },
                 {
                     "name": "braking",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "b9f0fff6-a1ec-4f26-9476-c665d7522c43",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Shifting",
+                    "type": "Value",
+                    "id": "6c7de881-f1a8-481e-8e4f-f088578a3dc9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -171,11 +180,55 @@
                     "id": "f31bc3ed-f115-46eb-b59a-8ad1017bdc3c",
                     "path": "<Keyboard>/alt",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "Clamp(max=1)",
                     "groups": "",
                     "action": "braking",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "62b350dd-82b1-4046-af8b-41574e561d0d",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "Clamp(max=1)",
+                    "groups": "",
+                    "action": "braking",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "49f7563b-9f30-4289-8691-376c3c036070",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shifting",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "8f356b43-9fd4-4c25-9397-a9f8643ea4ed",
+                    "path": "<Keyboard>/capsLock",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shifting",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "5ac2df2c-cd64-4236-9497-647a8572fa5e",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shifting",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

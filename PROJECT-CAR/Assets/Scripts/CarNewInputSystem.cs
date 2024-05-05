@@ -47,12 +47,21 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""braking"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""b9f0fff6-a1ec-4f26-9476-c665d7522c43"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Shifting"",
+                    ""type"": ""Value"",
+                    ""id"": ""6c7de881-f1a8-481e-8e4f-f088578a3dc9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -193,11 +202,55 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                     ""id"": ""f31bc3ed-f115-46eb-b59a-8ad1017bdc3c"",
                     ""path"": ""<Keyboard>/alt"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""Clamp(max=1)"",
                     ""groups"": """",
                     ""action"": ""braking"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""62b350dd-82b1-4046-af8b-41574e561d0d"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": ""Clamp(max=1)"",
+                    ""groups"": """",
+                    ""action"": ""braking"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""49f7563b-9f30-4289-8691-376c3c036070"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shifting"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""8f356b43-9fd4-4c25-9397-a9f8643ea4ed"",
+                    ""path"": ""<Keyboard>/capsLock"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shifting"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""5ac2df2c-cd64-4236-9497-647a8572fa5e"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shifting"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -209,6 +262,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
         m_Movement_Acceration = m_Movement.FindAction("Acceration", throwIfNotFound: true);
         m_Movement_Steering = m_Movement.FindAction("Steering", throwIfNotFound: true);
         m_Movement_braking = m_Movement.FindAction("braking", throwIfNotFound: true);
+        m_Movement_Shifting = m_Movement.FindAction("Shifting", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -273,6 +327,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
     private readonly InputAction m_Movement_Acceration;
     private readonly InputAction m_Movement_Steering;
     private readonly InputAction m_Movement_braking;
+    private readonly InputAction m_Movement_Shifting;
     public struct MovementActions
     {
         private @CarNewInputSystem m_Wrapper;
@@ -280,6 +335,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
         public InputAction @Acceration => m_Wrapper.m_Movement_Acceration;
         public InputAction @Steering => m_Wrapper.m_Movement_Steering;
         public InputAction @braking => m_Wrapper.m_Movement_braking;
+        public InputAction @Shifting => m_Wrapper.m_Movement_Shifting;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -298,6 +354,9 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
             @braking.started += instance.OnBraking;
             @braking.performed += instance.OnBraking;
             @braking.canceled += instance.OnBraking;
+            @Shifting.started += instance.OnShifting;
+            @Shifting.performed += instance.OnShifting;
+            @Shifting.canceled += instance.OnShifting;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -311,6 +370,9 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
             @braking.started -= instance.OnBraking;
             @braking.performed -= instance.OnBraking;
             @braking.canceled -= instance.OnBraking;
+            @Shifting.started -= instance.OnShifting;
+            @Shifting.performed -= instance.OnShifting;
+            @Shifting.canceled -= instance.OnShifting;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -333,5 +395,6 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
         void OnAcceration(InputAction.CallbackContext context);
         void OnSteering(InputAction.CallbackContext context);
         void OnBraking(InputAction.CallbackContext context);
+        void OnShifting(InputAction.CallbackContext context);
     }
 }

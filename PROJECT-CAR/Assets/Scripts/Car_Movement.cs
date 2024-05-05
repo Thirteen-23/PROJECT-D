@@ -68,7 +68,7 @@ public class Car_Movement : MonoBehaviour
     [Header("Handbraking")]
     [SerializeField] bool isBreaking;
     public bool ifHandBraking;
-    public bool ifHandBra;
+    [SerializeField] float shift_Value; 
 
 
     [Header("Handling & Brakes")]
@@ -79,7 +79,9 @@ public class Car_Movement : MonoBehaviour
     // make the steering smoother when useing a  keyboard 
     [SerializeField] float steeringDamping;
     [SerializeField]  float smoothTransitionSpeed;
-    
+    [SerializeField] float brakes_value;
+    [SerializeField] float brakeDampening;
+
     private float turnSpeed;
     [SerializeField] AnimationCurve steeringCurve;
     // Start is called before the first frame update 
@@ -95,8 +97,10 @@ public class Car_Movement : MonoBehaviour
         input.Movement.Acceration.canceled += ReleaseThrottleInput;
         input.Movement.Steering.performed += ApplySteeringInput;
         input.Movement.Steering.canceled += ReleaseSteeringInput;
-       
+        input.Movement.braking.performed += BrakingInput;
+        input.Movement.braking.canceled += ReleaseBrakingInput;
         
+
     }
     private void OnDisable()
     {
@@ -148,8 +152,8 @@ public class Car_Movement : MonoBehaviour
     private void DampeningSystem()
     {
         AccerationDamping = SmoothTransition(acceration_Value, AccerationDamping);
-        steeringDamping = SmoothTransition(steering_Value, steeringDamping); 
-
+        steeringDamping = SmoothTransition(steering_Value, steeringDamping);
+        brakeDampening = SmoothTransition(brakes_value, brakeDampening);
     }
 
     private void quitApplication()
@@ -230,7 +234,10 @@ public class Car_Movement : MonoBehaviour
             }
 
         }
-
+        if(brakes_value == 1)
+        {
+            isBreaking = true; 
+        }
         currentBreakForce = isBreaking ? allBrakeForce : 0f;
         handbraking = ifHandBraking ? rearBrakeForce : 0f;
         ApplyBreaking();
@@ -336,14 +343,18 @@ public class Car_Movement : MonoBehaviour
 
     public void BrakingInput(InputAction.CallbackContext context)
     {
-        ifHandBra = context.ReadValueAsButton();
-        print(ifHandBra); 
+        brakes_value = context.ReadValue<float>();
     }
+    public void ReleaseBrakingInput(InputAction.CallbackContext context)
+    {
+        brakes_value = 0;
+    }
+
     private void Shifting()
     {
         if (transmission == TransmissionTypes.Manual)
         {
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.W) )
             {
                 Debug.Log(gearNum);
                 Debug.Log(gearSpeedBox[gearNum]);

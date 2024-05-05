@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &26481116 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6556957529090631109, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
+  m_PrefabInstance: {fileID: 1946905937784784824}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &26763599
 GameObject:
   m_ObjectHideFlags: 0
@@ -1400,9 +1405,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593fa7f37af712242aa8e826bcf6be28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 603681160}
+  rb: {fileID: 1799709797}
   maxSpeed: 250
-  car: {fileID: 1270683508}
+  car: {fileID: 1799709790}
   curve: {fileID: 0}
   speedLabel: {fileID: 1310960868}
   currentGearLabel: {fileID: 1721254670}
@@ -2463,19 +2468,21 @@ MonoBehaviour:
   keyRPMSet:
   - {x: 0, y: 100}
   - {x: 2000, y: 700}
-  - {x: 4000, y: 500}
+  - {x: 4000, y: 650}
   - {x: 4300, y: 800}
   - {x: 7000, y: 1400}
   - {x: 8000, y: 0}
   isBreaking: 0
   ifHandBraking: 0
-  ifHandBra: 0
-  allBrakeForce: 0
+  shift_Value: 0
+  allBrakeForce: 50000
   frontBrakeForce: 0
   rearBrakeForce: 0
   steering_Value: 0
   steeringDamping: 0
   smoothTransitionSpeed: 5
+  brakes_value: 0
+  brakeDampening: 0
   steeringCurve:
     serializedVersion: 2
     m_Curve:
@@ -2582,7 +2589,31 @@ MonoBehaviour:
     m_ActionId: 7f7af0e4-e3b6-4be7-9cf1-431a74dd75f3
     m_ActionName: Movement/Steering[/Keyboard/leftArrow,/Keyboard/rightArrow,/DualSenseGamepadHID/leftStick/left,/DualSenseGamepadHID/leftStick/right]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1270683508}
+        m_TargetAssemblyTypeName: Car_Movement, Assembly-CSharp
+        m_MethodName: BrakingInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1270683508}
+        m_TargetAssemblyTypeName: Car_Movement, Assembly-CSharp
+        m_MethodName: ReleaseBrakingInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: b9f0fff6-a1ec-4f26-9476-c665d7522c43
     m_ActionName: Movement/braking[/Keyboard/alt]
   m_NeverAutoSwitchControlSchemes: 0
@@ -3475,6 +3506,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1721254668}
   m_CullTransparentMesh: 1
+--- !u!114 &1799709790 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6556957528371629980, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
+  m_PrefabInstance: {fileID: 1946905937784784824}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc7b51cac9389ca498a429f0d063888a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &1799709797 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 6556957528371629979, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
+  m_PrefabInstance: {fileID: 1946905937784784824}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1811318715
 GameObject:
   m_ObjectHideFlags: 0
@@ -3842,6 +3889,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6556957528371629980, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
+      propertyPath: drive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6556957528371629980, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
+      propertyPath: transmission
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6556957528371629980, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
+      propertyPath: allBrakeForce
+      value: 50000
+      objectReference: {fileID: 0}
+    - target: {fileID: 6556957529087473835, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
+      propertyPath: m_ForwardFriction.m_Stiffness
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6556957529126503008, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
+      propertyPath: m_ForwardFriction.m_Stiffness
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
 --- !u!1001 &7180479621630725287
@@ -3886,11 +3953,11 @@ PrefabInstance:
     - target: {fileID: 7180479622320103889, guid: d38f5059b91c1b943a74b63148b4a5d3, type: 3}
       propertyPath: m_Follow
       value: 
-      objectReference: {fileID: 905638418}
+      objectReference: {fileID: 26481116}
     - target: {fileID: 7180479622320103889, guid: d38f5059b91c1b943a74b63148b4a5d3, type: 3}
       propertyPath: m_LookAt
       value: 
-      objectReference: {fileID: 905638418}
+      objectReference: {fileID: 26481116}
     - target: {fileID: 7180479622320103890, guid: d38f5059b91c1b943a74b63148b4a5d3, type: 3}
       propertyPath: target
       value: 
@@ -3901,31 +3968,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7180479622320103891, guid: d38f5059b91c1b943a74b63148b4a5d3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 99.26005
+      value: 105.70014
       objectReference: {fileID: 0}
     - target: {fileID: 7180479622320103891, guid: d38f5059b91c1b943a74b63148b4a5d3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.4085963
+      value: 2.43
       objectReference: {fileID: 0}
     - target: {fileID: 7180479622320103891, guid: d38f5059b91c1b943a74b63148b4a5d3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 48.02421
+      value: 51.658306
       objectReference: {fileID: 0}
     - target: {fileID: 7180479622320103891, guid: d38f5059b91c1b943a74b63148b4a5d3, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.6808992
+      value: 0.68089914
       objectReference: {fileID: 0}
     - target: {fileID: 7180479622320103891, guid: d38f5059b91c1b943a74b63148b4a5d3, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.06742227
+      value: 0.067422256
       objectReference: {fileID: 0}
     - target: {fileID: 7180479622320103891, guid: d38f5059b91c1b943a74b63148b4a5d3, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.725718
+      value: 0.7257181
       objectReference: {fileID: 0}
     - target: {fileID: 7180479622320103891, guid: d38f5059b91c1b943a74b63148b4a5d3, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0718602
+      value: -0.07186021
       objectReference: {fileID: 0}
     - target: {fileID: 7180479622320103891, guid: d38f5059b91c1b943a74b63148b4a5d3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
