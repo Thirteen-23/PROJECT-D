@@ -34,12 +34,12 @@
                 },
                 {
                     "name": "Shifting",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "6c7de881-f1a8-481e-8e4f-f088578a3dc9",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -178,7 +178,7 @@
                 {
                     "name": "",
                     "id": "f31bc3ed-f115-46eb-b59a-8ad1017bdc3c",
-                    "path": "<Keyboard>/alt",
+                    "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "Clamp(max=1)",
                     "groups": "",
@@ -198,37 +198,15 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "1D Axis",
-                    "id": "49f7563b-9f30-4289-8691-376c3c036070",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Shifting",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "8f356b43-9fd4-4c25-9397-a9f8643ea4ed",
-                    "path": "<Keyboard>/capsLock",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Shifting",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "5ac2df2c-cd64-4236-9497-647a8572fa5e",
+                    "name": "",
+                    "id": "9f06b613-a074-4a92-bdd5-caa454d1b94e",
                     "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Shifting",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 }
             ]
         }

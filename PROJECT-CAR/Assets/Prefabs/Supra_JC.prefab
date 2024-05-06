@@ -615,7 +615,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 2
     m_AsymptoteValue: 2
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
@@ -708,7 +708,7 @@ WheelCollider:
     m_ExtremumValue: 1
     m_AsymptoteSlip: 2
     m_AsymptoteValue: 2
-    m_Stiffness: 1
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
@@ -729,31 +729,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 110.69
+      value: 21.21
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.66
+      value: 0.221
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 51.34
+      value: 148.231
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.68422914
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7292671
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -761,7 +761,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 93.65
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -873,7 +873,7 @@ BoxCollider:
   m_GameObject: {fileID: 1712957147537820316}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1.8307476, y: 0.65626, z: 1.5806427}
   m_Center: {x: -0.0023736954, y: 0.5202553, z: 1.9114761}
@@ -886,7 +886,7 @@ BoxCollider:
   m_GameObject: {fileID: 1712957147537820316}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1.9209442, y: 0.4058199, z: 4.637142}
   m_Center: {x: 0, y: 0.40432596, z: 0.37857628}
@@ -984,6 +984,14 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 7f7af0e4-e3b6-4be7-9cf1-431a74dd75f3
     m_ActionName: Movement/Steering[/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b9f0fff6-a1ec-4f26-9476-c665d7522c43
+    m_ActionName: Movement/braking[/Keyboard/x]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6c7de881-f1a8-481e-8e4f-f088578a3dc9
+    m_ActionName: Movement/Shifting[/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Movement
@@ -1010,6 +1018,27 @@ MonoBehaviour:
   changeTrailsizeEnd: 1
   trailTime: 2
   checkingBrakeWork: 0
+--- !u!114 &1799709805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712957147537820316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d6e218e76b3ecd4baf9912eb3dcc002, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_LBWheel: {fileID: 6556957528534704043}
+  m_RBWheel: {fileID: 6556957527803421909}
+  wheels:
+  - {fileID: 6556957528534704043}
+  - {fileID: 6556957527803421909}
+  m_SlipValues: 0
+  m_SideFStiffness_Value: 0
+  l_SidewaysFrictionStiffness: 0
+  r_SidewaysFrictionStiffness: 0
 --- !u!114 &1929093013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1045,7 +1074,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transmission: 0
-  drive: 2
+  drive: 1
   bodyOfCar: {fileID: 6556957528371629979}
   wheels4:
   - {fileID: 6556957529087473835}
@@ -1078,7 +1107,6 @@ MonoBehaviour:
   currentSpeed: 0
   acceration_Value: 0
   AccerationDamping: 0
-  gearChangingNum: 6
   idleRPM: 800
   maxRPM: 5000
   minRPM: 2500
@@ -1094,36 +1122,42 @@ MonoBehaviour:
   gearNum: 0
   smoothTime: 0.01
   keyRPMSet:
-  - {x: 5500, y: 880}
-  - {x: 6500, y: 0}
+  - {x: 3500, y: 360}
+  - {x: 3600, y: 350}
+  - {x: 6000, y: 650}
+  - {x: 7000, y: 0}
+  amIShiftingNow: 0
+  shift_Value: 0
   isBreaking: 0
   ifHandBraking: 0
-  allBrakeForce: 0
+  allBrakeForce: 10
   frontBrakeForce: 0
   rearBrakeForce: 0
   steering_Value: 0
   steeringDamping: 0
   smoothTransitionSpeed: 5
+  brakes_value: 0
+  brakeDampening: 0
   steeringCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 35
-      inSlope: -0.31404397
-      outSlope: -0.31404397
+      inSlope: -0.07230462
+      outSlope: -0.07230462
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.023748226
+      outWeight: 0.079783805
     - serializedVersion: 3
       time: 200
-      value: 0
-      inSlope: -0.61605304
-      outSlope: -0.61605304
+      value: 15
+      inSlope: -0.3715891
+      outSlope: -0.3715891
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.029526455
+      inWeight: 0.02776947
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

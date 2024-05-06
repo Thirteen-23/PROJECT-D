@@ -1,9 +1,4 @@
 
-using System.Linq;
-using System.Threading;
-using Unity.VisualScripting;
-using UnityEditor.Rendering.LookDev;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -62,23 +57,27 @@ public class Car_Movement : MonoBehaviour
     [SerializeField] float smoothTime;
     [SerializeField] Vector2[] keyRPMSet = new Vector2[0];
 
+    [Header("Manual Shift")]
+    [SerializeField] bool amIShiftingNow = false;
+    [SerializeField] float shift_Value;
+
     private Vector3 originalPos;
     private Quaternion rotations;
 
     [Header("Handbraking")]
     [SerializeField] bool isBreaking;
     public bool ifHandBraking;
-    [SerializeField] float shift_Value; 
+
 
 
     [Header("Handling & Brakes")]
     [SerializeField] float allBrakeForce;
     [SerializeField] float frontBrakeForce;
     [SerializeField] float rearBrakeForce;
-    [SerializeField]  float steering_Value;
+    [SerializeField] float steering_Value;
     // make the steering smoother when useing a  keyboard 
     [SerializeField] float steeringDamping;
-    [SerializeField]  float smoothTransitionSpeed;
+    [SerializeField] float smoothTransitionSpeed;
     [SerializeField] float brakes_value;
     [SerializeField] float brakeDampening;
 
@@ -99,13 +98,14 @@ public class Car_Movement : MonoBehaviour
         input.Movement.Steering.canceled += ReleaseSteeringInput;
         input.Movement.braking.performed += BrakingInput;
         input.Movement.braking.canceled += ReleaseBrakingInput;
-        
+        input.Movement.Shifting.canceled += ReleaseManualShiftInput;
+
 
     }
     private void OnDisable()
     {
         input.Disable();
-       
+
     }
     void Start()
     {
@@ -234,11 +234,12 @@ public class Car_Movement : MonoBehaviour
             }
 
         }
-        if(brakes_value == 1)
+        if (brakes_value >0.7f)
         {
-            isBreaking = true; 
+            isBreaking = true;
         }
-        currentBreakForce = isBreaking ? allBrakeForce : 0f;
+        currentBreakForce = isBreaking ? (allBrakeForce * brakeDampening) : 0f;
+        //currentBreakForce =  allBrakeForce * brakeDampening;
         handbraking = ifHandBraking ? rearBrakeForce : 0f;
         ApplyBreaking();
         ApplyHandBraking();
@@ -248,7 +249,7 @@ public class Car_Movement : MonoBehaviour
     {
         for (int i = 0; i < wheels4.Length; i++)
         {
-            wheels4[i].brakeTorque = currentBreakForce;
+            wheels4[i].brakeTorque = currentBreakForce * Time.deltaTime;
         }
 
 
@@ -264,7 +265,7 @@ public class Car_Movement : MonoBehaviour
         }
     }
 
-    
+
     private void HandlingSteering()
     {
         for (int i = 0; i < wheels4.Length - 2; i++)
@@ -332,7 +333,7 @@ public class Car_Movement : MonoBehaviour
     {
         acceration_Value = context.ReadValue<float>();
 
-         print(acceration_Value + "accerating");
+        print(acceration_Value + "accerating");
     }
 
     public void ReleaseThrottleInput(InputAction.CallbackContext context)
@@ -349,12 +350,24 @@ public class Car_Movement : MonoBehaviour
     {
         brakes_value = 0;
     }
+    public void ApplyManualShiftInput(InputAction.CallbackContext context)
+    {
+        shift_Value = context.ReadValue<float>();
 
+       // amIShiftingNow = true;
+        //print(amIShiftingNow + " shifted");
+        //print(amIShiftingNow + "shifted");
+    }
+    public void ReleaseManualShiftInput(InputAction.CallbackContext context)
+    {
+        amIShiftingNow = false;
+        print(amIShiftingNow + "finished shifting");
+    }
     private void Shifting()
     {
         if (transmission == TransmissionTypes.Manual)
         {
-            if (Input.GetKeyDown(KeyCode.W) )
+            if (Input.GetKeyDown(KeyCode.W) || amIShiftingNow == true)
             {
                 Debug.Log(gearNum);
                 Debug.Log(gearSpeedBox[gearNum]);
