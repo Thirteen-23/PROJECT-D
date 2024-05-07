@@ -737,7 +737,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 148.231
+      value: 127.024
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1074,13 +1074,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transmission: 0
-  drive: 1
+  drive: 2
   bodyOfCar: {fileID: 6556957528371629979}
   wheels4:
   - {fileID: 6556957529087473835}
   - {fileID: 6556957529126503008}
-  - {fileID: 6556957528534704043}
   - {fileID: 6556957527803421909}
+  - {fileID: 6556957528534704043}
   wheelmeshes:
   - {fileID: 822547276463514165}
   - {fileID: 1040947760749431445}
@@ -1122,9 +1122,7 @@ MonoBehaviour:
   gearNum: 0
   smoothTime: 0.01
   keyRPMSet:
-  - {x: 3500, y: 360}
-  - {x: 3600, y: 350}
-  - {x: 6000, y: 650}
+  - {x: 6000, y: 800}
   - {x: 7000, y: 0}
   amIShiftingNow: 0
   shift_Value: 0

@@ -2,15 +2,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Car_Movement : MonoBehaviour
+public class AI_Controls : MonoBehaviour
 {
-    private Vector2 m_PlayerMovement = Vector2.zero;
-    private float m_PlayerAcceration = 0;
-    //private InputAction m_Movement;
-    //private InputAction m_Acceration;
-    private PlayerInput carNewInputSystem;
-    CarNewInputSystem input;
-
     enum DifferentialTypes
     {
         FrontWheelDrive,
@@ -32,16 +25,14 @@ public class Car_Movement : MonoBehaviour
     //[SerializeField] AnimationCurve gearRatio;
 
     float currentBreakForce, handbraking;
-    bool resetPosition = false;
 
     [Header("Speed and Power of the Car")]
-    [SerializeField] float horsePower;
     [SerializeField] public AnimationCurve enginePower;
     [SerializeField] float maxSpeed;
     [SerializeField] float totalPowerInCar;
     [SerializeField] float currentSpeed;
     // dampening for smoother acceration input for keyboard 
-    [SerializeField] float acceration_Value;
+    public float acceration_Value;
     [SerializeField] float AccerationDamping;
 
     [Header("GearBox System")]
@@ -57,10 +48,6 @@ public class Car_Movement : MonoBehaviour
     [SerializeField] float smoothTime;
     [SerializeField] Vector2[] keyRPMSet = new Vector2[0];
 
-    [Header("Manual Shift")]
-    [SerializeField] bool amIShiftingNow = false;
-    [SerializeField] float shift_Value;
-
     private Vector3 originalPos;
     private Quaternion rotations;
 
@@ -74,7 +61,7 @@ public class Car_Movement : MonoBehaviour
     [SerializeField] float allBrakeForce;
     [SerializeField] float frontBrakeForce;
     [SerializeField] float rearBrakeForce;
-    [SerializeField] float steering_Value;
+    public float steering_Value;
     // make the steering smoother when useing a  keyboard 
     [SerializeField] float steeringDamping;
     [SerializeField] float smoothTransitionSpeed;
@@ -86,29 +73,12 @@ public class Car_Movement : MonoBehaviour
     // Start is called before the first frame update 
     private void Awake()
     {
-        input = new CarNewInputSystem();
-    }
-
-    private void OnEnable()
-    {
-        input.Enable();
-        input.Movement.Acceration.performed += ApplyingThrottleInput;
-        input.Movement.Acceration.canceled += ReleaseThrottleInput;
-        input.Movement.Steering.performed += ApplySteeringInput;
-        input.Movement.Steering.canceled += ReleaseSteeringInput;
-        input.Movement.braking.performed += BrakingInput;
-        input.Movement.braking.canceled += ReleaseBrakingInput;
-        input.Movement.Shifting.canceled += ReleaseManualShiftInput;
-
 
     }
-    private void OnDisable()
-    {
-        input.Disable();
 
-    }
     void Start()
     {
+        
         originalPos = gameObject.transform.position;
         rotations = gameObject.transform.rotation;
         //carNewInputSystem = GetComponent<PlayerInput>();
@@ -118,29 +88,13 @@ public class Car_Movement : MonoBehaviour
     private void FixedUpdate()
     {
 
-        GettingInput();
         HandlingMotor();
         HandlingSteering();
         AnimatedWheels();
         DampeningSystem();
         calculatingEnginePower();
-        quitApplication();
-        ResettingCar();
         Shifting();
         SetEngineRPMAndTorque();
-
-    }
-
-    private void GettingInput()
-    {
-        isBreaking = Input.GetKey(KeyCode.B);
-        ifHandBraking = Input.GetKey(KeyCode.Space);
-        resetPosition = Input.GetKey(KeyCode.R);
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            quitApplication();
-        }
 
     }
 
@@ -156,20 +110,6 @@ public class Car_Movement : MonoBehaviour
         brakeDampening = SmoothTransition(brakes_value, brakeDampening);
     }
 
-    private void quitApplication()
-    {
-        Application.Quit();
-    }
-
-    private void ResettingCar()
-    {
-        if (resetPosition == true)
-        {
-            gameObject.transform.position = originalPos;
-            gameObject.transform.rotation = rotations;
-
-        }
-    }
     private void HandlingMotor()
     {
         // calculation of kilometers / hour
@@ -234,7 +174,7 @@ public class Car_Movement : MonoBehaviour
             }
 
         }
-        if (brakes_value >0.7f)
+        if (brakes_value > 0.7f)
         {
             isBreaking = true;
         }
@@ -298,7 +238,6 @@ public class Car_Movement : MonoBehaviour
         totalPowerInCar = enginePower.Evaluate(engineRPM) * gearSpeedBox[gearNum] * AccerationDamping;
         float velocity = 0.0f;
         engineRPM = Mathf.SmoothDamp(engineRPM, idleRPM + (Mathf.Abs(m_RPMOfWheels) * finalDriveRatio * (gearSpeedBox[gearNum])), ref velocity, smoothTime);
-        horsePower = (totalPowerInCar * engineRPM) / 5252;
     }
 
 
@@ -314,79 +253,9 @@ public class Car_Movement : MonoBehaviour
         m_RPMOfWheels = (rR != 0) ? sum / rR : 0;
 
     }
-
-    public void ApplySteeringInput(InputAction.CallbackContext context)
-    {
-
-        steering_Value = context.ReadValue<float>();
-        //print(steering_Value);
-    }
-
-    public void ReleaseSteeringInput(InputAction.CallbackContext context)
-    {
-
-        steering_Value = 0;
-        //print(steering_Value);
-    }
-
-    public void ApplyingThrottleInput(InputAction.CallbackContext context)
-    {
-        acceration_Value = context.ReadValue<float>();
-
-        //print(acceration_Value + "accerating");
-    }
-
-    public void ReleaseThrottleInput(InputAction.CallbackContext context)
-    {
-        acceration_Value = 0;
-        //print(acceration_Value + " not accerating");
-    }
-
-    public void BrakingInput(InputAction.CallbackContext context)
-    {
-        brakes_value = context.ReadValue<float>();
-    }
-    public void ReleaseBrakingInput(InputAction.CallbackContext context)
-    {
-        brakes_value = 0;
-    }
-    public void ApplyManualShiftInput(InputAction.CallbackContext context)
-    {
-        shift_Value = context.ReadValue<float>();
-
-       // amIShiftingNow = true;
-        //print(amIShiftingNow + " shifted");
-        //print(amIShiftingNow + "shifted");
-    }
-    public void ReleaseManualShiftInput(InputAction.CallbackContext context)
-    {
-        amIShiftingNow = false;
-        //print(amIShiftingNow + "finished shifting");
-    }
     private void Shifting()
     {
-        if (transmission == TransmissionTypes.Manual)
-        {
-            if (Input.GetKeyDown(KeyCode.W) || amIShiftingNow == true)
-            {
-                Debug.Log(gearNum);
-                Debug.Log(gearSpeedBox[gearNum]);
-                if (gearNum < gearSpeedBox.Length - 1)
-                {
-
-                    gearNum++;
-                }
-
-            }
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                if (gearNum > 0)
-                {
-                    gearNum--;
-                }
-
-            }
-        }
+       
         if (transmission == TransmissionTypes.Automatic)
         {
             if (engineRPM > maxRPM)
@@ -429,21 +298,4 @@ public class Car_Movement : MonoBehaviour
     }
 
 
-    #region Old Code not used
-    /*public void ReadingHandlingInput()
-    {
-        steering_Value = m_Movement.ReadValue<float>();
-        print(steering_Value);
-    }
-
-    private void ReadingAccerationInput()
-    {
-        acceration_Value += m_Acceration.ReadValue<float>() * 0.10f;
-        acceration_Value = Mathf.Clamp(acceration_Value, -1, 1);
-        print(acceration_Value);
-    }
-    */
-    #endregion
 }
-
-
