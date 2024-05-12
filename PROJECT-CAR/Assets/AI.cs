@@ -5,60 +5,67 @@ using UnityEngine;
 public class AI : MonoBehaviour
 {
     [SerializeField] Rigidbody rb;
-    [SerializeField] float editingRotation; 
+    [SerializeField] float editingRotation;
 
     Ray frontRay;
     Vector3 leftRotate;
-    Quaternion left_rotate; 
+    Quaternion left_rotate;
     Ray leftRay;
     Ray rightRay;
     Vector3 direction = Vector3.forward;
-    Vector3 direction_Left; 
+    Vector3 direction_Left;
     [SerializeField] float range;
-    LineRenderer line; 
+    LineRenderer line;
     AI_Controls carAI;
     [SerializeField] GameObject m_AICarBody;
     [SerializeField] bool leftLocked = false;
     [SerializeField] bool rightLocked = false;
-    [SerializeField] float steering_valueLeft , steering_valueRight; 
-    
-
+    [SerializeField] float steering_valueLeft, steering_valueRight;
+    [SerializeField] float returningToOriginalTurnValue = 0;
+    [SerializeField] float adjustRayLeft;
+    [SerializeField] float adjustRayRight;
+    [SerializeField] float acceration_Value; 
+ 
     // Start is called before the first frame update
     void Start()
     {
         carAI = m_AICarBody.GetComponentInParent<AI_Controls>();
         rb = m_AICarBody.GetComponent<Rigidbody>();
+        
     }
 
     void Awake()
     {
-        
+       
     }
     // Update is called once per frame
     void Update()
     {
+        acceration_Value = carAI.acceration_Value;
         Sensor();
-       
+
+
+
     }
 
     private void definingRays()
     {
         frontRay = new Ray(transform.position, transform.TransformDirection(direction * range));
-        leftRay = new Ray(transform.position, transform.TransformDirection(new Vector3(-1, 0, 1) * range));
-        rightRay = new Ray(transform.position, transform.TransformDirection(new Vector3(1, 0, 1) * range));
+        leftRay = new Ray(transform.position, transform.TransformDirection(new Vector3(adjustRayLeft, 0, 1) * range));
+        rightRay = new Ray(transform.position, transform.TransformDirection(new Vector3(adjustRayRight, 0, 1) * range));
 
     }
     private void Sensor()
     {
         definingRays();
         Debug.DrawRay(transform.position, transform.TransformDirection(direction * range));
-        Debug.DrawRay(transform.position, transform.TransformDirection(new Vector3(-1.5f, 0, 1) * range));
-        Debug.DrawRay(transform.position, transform.TransformDirection(new Vector3(1.5f, 0, 1) * range));
+        Debug.DrawRay(transform.position, transform.TransformDirection(new Vector3(adjustRayLeft, 0, 1) * range));
+        Debug.DrawRay(transform.position, transform.TransformDirection(new Vector3(adjustRayRight, 0, 1) * range));
 
         FrontRaySensor();
         LeftRaySensor();
         RightRaySensor();
-      
+
 
 
     }
@@ -81,7 +88,6 @@ public class AI : MonoBehaviour
         {
             carAI.steering_Value = 0;
         }
-        
     }
     private void RightRaySensor()
     {
@@ -95,9 +101,16 @@ public class AI : MonoBehaviour
                 carAI.steering_Value = steering_valueRight;
 
             }
-          
+
         }
-       
+        //else
+        //{
+
+        //    steering_valueRight = returningToOriginalTurnValue;
+        //    carAI.steering_Value = returningToOriginalTurnValue;
+        //    steering_valueRight = -1;
+
+        //}
     }
     private void FrontRaySensor()
     {
