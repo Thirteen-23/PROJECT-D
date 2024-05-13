@@ -277,6 +277,7 @@ MonoBehaviour:
   - {fileID: 5869274671679264859}
   - {fileID: 5868643245327583193}
   - {fileID: 5869158700980023477}
+  centerMass: {fileID: 7750939073334754643}
   horsePower: 0
   enginePower:
     serializedVersion: 2
@@ -290,8 +291,8 @@ MonoBehaviour:
   acceration_Value: 0
   AccerationDamping: 0
   idleRPM: 800
-  maxRPM: 8000
-  minRPM: 2000
+  maxRPM: 9000
+  minRPM: 1600
   maxRPMForCar: 0
   engineRPM: 0
   finalDriveRatio: 3.7
@@ -302,7 +303,7 @@ MonoBehaviour:
   - 1.2
   - 0.9
   - 0.75
-  - 0.8
+  - 0.7
   gearNum: 0
   smoothTime: 0.01
   keyRPMSet:
@@ -311,7 +312,7 @@ MonoBehaviour:
   - {x: 4000, y: 650}
   - {x: 4300, y: 800}
   - {x: 7000, y: 1400}
-  - {x: 8000, y: 2500}
+  - {x: 9000, y: 2000}
   - {x: 10000, y: 0}
   amIShiftingNow: 0
   shift_Value: 0
@@ -322,7 +323,7 @@ MonoBehaviour:
   rearBrakeForce: 0
   steering_Value: 0
   steeringDamping: 0
-  smoothTransitionSpeed: 5
+  smoothTransitionSpeed: 3
   brakes_value: 0
   brakeDampening: 0
   steeringCurve:
@@ -577,6 +578,37 @@ WheelCollider:
     m_AsymptoteValue: 2
     m_Stiffness: 2
   m_Enabled: 1
+--- !u!1 &6586626119011017622
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7750939073334754643}
+  m_Layer: 0
+  m_Name: Center Of Mass
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7750939073334754643
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6586626119011017622}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.17, z: 0.703}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5870655353673977643}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &5870030825854000745
 PrefabInstance:
   m_ObjectHideFlags: 0

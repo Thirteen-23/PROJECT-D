@@ -18,6 +18,7 @@ public class AI : MonoBehaviour
     LineRenderer line;
     AI_Controls carAI;
     [SerializeField] GameObject m_AICarBody;
+    [SerializeField] GameObject m_AICarBodyDetection;
     [SerializeField] bool leftLocked = false;
     [SerializeField] bool rightLocked = false;
     [SerializeField] float steering_valueLeft, steering_valueRight;
@@ -29,9 +30,9 @@ public class AI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        carAI = m_AICarBody.GetComponentInParent<AI_Controls>();
-        rb = m_AICarBody.GetComponent<Rigidbody>();
-        
+        carAI = m_AICarBody.GetComponent<AI_Controls>();
+        //rb = m_AICarBody.GetComponent<Rigidbody>();
+        rb = m_AICarBody.GetComponentInChildren<Rigidbody>();
     }
 
     void Awake()
@@ -41,7 +42,7 @@ public class AI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        acceration_Value = carAI.acceration_Value;
+        carAI.acceration_Value= acceration_Value;
         Sensor();
 
 
@@ -50,17 +51,17 @@ public class AI : MonoBehaviour
 
     private void definingRays()
     {
-        frontRay = new Ray(transform.position, transform.TransformDirection(direction * range));
-        leftRay = new Ray(transform.position, transform.TransformDirection(new Vector3(adjustRayLeft, 0, 1) * range));
-        rightRay = new Ray(transform.position, transform.TransformDirection(new Vector3(adjustRayRight, 0, 1) * range));
+        frontRay = new Ray(m_AICarBodyDetection.transform.position, m_AICarBodyDetection.transform.TransformDirection(direction * range));
+        leftRay = new Ray(m_AICarBodyDetection.transform.position, m_AICarBodyDetection.transform.TransformDirection(new Vector3(adjustRayLeft, 0, 1) * range));
+        rightRay = new Ray(m_AICarBodyDetection.transform.position, m_AICarBodyDetection.transform.TransformDirection(new Vector3(adjustRayRight, 0, 1) * range));
 
     }
     private void Sensor()
     {
         definingRays();
-        Debug.DrawRay(transform.position, transform.TransformDirection(direction * range));
-        Debug.DrawRay(transform.position, transform.TransformDirection(new Vector3(adjustRayLeft, 0, 1) * range));
-        Debug.DrawRay(transform.position, transform.TransformDirection(new Vector3(adjustRayRight, 0, 1) * range));
+        Debug.DrawRay(m_AICarBodyDetection.transform.position, m_AICarBodyDetection.transform.TransformDirection(direction * range));
+        Debug.DrawRay(m_AICarBodyDetection.transform.position, m_AICarBodyDetection.transform.TransformDirection(new Vector3(adjustRayLeft, 0, 1) * range));
+        Debug.DrawRay(m_AICarBodyDetection.transform.position, m_AICarBodyDetection.transform.TransformDirection(new Vector3(adjustRayRight, 0, 1) * range));
 
         FrontRaySensor();
         LeftRaySensor();

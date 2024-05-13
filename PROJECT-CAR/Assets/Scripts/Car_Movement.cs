@@ -28,6 +28,7 @@ public class Car_Movement : MonoBehaviour
     [SerializeField] Rigidbody bodyOfCar;
     [SerializeField] WheelCollider[] wheels4 = new WheelCollider[4];
     [SerializeField] GameObject[] wheelmeshes = new GameObject[4];
+    [SerializeField] Transform centerMass; 
 
     //[SerializeField] AnimationCurve gearRatio;
 
@@ -111,6 +112,7 @@ public class Car_Movement : MonoBehaviour
     {
         originalPos = gameObject.transform.position;
         rotations = gameObject.transform.rotation;
+        bodyOfCar.centerOfMass = centerMass.localPosition;
         //carNewInputSystem = GetComponent<PlayerInput>();
     }
 
