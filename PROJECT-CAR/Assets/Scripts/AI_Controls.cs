@@ -67,9 +67,8 @@ public class AI_Controls : MonoBehaviour
     [SerializeField] float smoothTransitionSpeed;
     [SerializeField] float brakes_value;
     [SerializeField] float brakeDampening;
-
     private float turnSpeed;
-    [SerializeField] AnimationCurve steeringCurve;
+    public AnimationCurve steeringCurve;
     // Start is called before the first frame update 
     private void Awake()
     {

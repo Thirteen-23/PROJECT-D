@@ -8,25 +8,32 @@ public class AI : MonoBehaviour
     [SerializeField] float editingRotation;
 
     Ray frontRay;
-    Vector3 leftRotate;
-    Quaternion left_rotate;
     Ray leftRay;
     Ray rightRay;
     Vector3 direction = Vector3.forward;
-    Vector3 direction_Left;
     [SerializeField] float range;
-    LineRenderer line;
     AI_Controls carAI;
     [SerializeField] GameObject m_AICarBody;
     [SerializeField] GameObject m_AICarBodyDetection;
     [SerializeField] bool leftLocked = false;
     [SerializeField] bool rightLocked = false;
+    [SerializeField] float steer_Value;
+    [SerializeField] float steering_Angle;
     [SerializeField] float steering_valueLeft, steering_valueRight;
     [SerializeField] float returningToOriginalTurnValue = 0;
     [SerializeField] float adjustRayLeft;
     [SerializeField] float adjustRayRight;
-    [SerializeField] float acceration_Value; 
- 
+    [SerializeField] float acceration_Value;
+    
+    //checking waypoints
+    public TrackWayPoints waypoints;
+    public List<Transform> nodes = new List<Transform>();
+    [Range(0, 10)] public int distanceOffset;
+    [Range(0, 1)] public float steeringForce;
+    public Transform currentWaypoint;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,18 +44,25 @@ public class AI : MonoBehaviour
 
     void Awake()
     {
-       
+        //waypoints 
+        waypoints = GameObject.FindGameObjectWithTag("Waypoints").GetComponent<TrackWayPoints>();
+        nodes = waypoints.trackNodes;
+
     }
     // Update is called once per frame
     void Update()
     {
-        carAI.acceration_Value= acceration_Value;
+        carAI.acceration_Value = acceration_Value;
         Sensor();
-
-
+        CalculateDistanceOfWaypoints();
+     
 
     }
 
+    private void FixedUpdate()
+    {
+        AISteer();
+    }
     private void definingRays()
     {
         frontRay = new Ray(m_AICarBodyDetection.transform.position, m_AICarBodyDetection.transform.TransformDirection(direction * range));
@@ -134,26 +148,39 @@ public class AI : MonoBehaviour
             }
         }
     }
-    private void OnCollisionEnter(UnityEngine.Collision collision)
+
+    private void CalculateDistanceOfWaypoints()
     {
-        if (collision.transform.CompareTag("Platform"))
+        Vector3 position = rb.transform.position;
+        float distance = Mathf.Infinity;
+
+        for (int i = 0; i < nodes.Count; i++)
         {
-            //Rigidbody _rb;
-            //_rb = gameObject.GetComponent<Rigidbody>();
+            Vector3 difference = nodes[i].transform.position - position;
+            float currentDistance = difference.magnitude;
+            if (currentDistance < distance)
+            {
+                currentWaypoint = nodes[i + distanceOffset];
+                distance = currentDistance;
 
-            //_rb.AddForce(0, 100, 0);
-
+            }
         }
     }
-
-    private void OnCollisionExit(UnityEngine.Collision collision)
+    private void OnDrawGizmos()
     {
-        if (collision.transform.CompareTag("Platform"))
-        {
-            //    Rigidbody _rb;
-            //    _rb = gameObject.GetComponent<Rigidbody>();
+        Gizmos.DrawWireSphere(currentWaypoint.position, 3);
+    }
 
-            //    _rb.AddForce(0, 0, 0);
-        }
+    //private void AIAccerate()
+    //{
+        
+       
+    //}
+    private void AISteer()
+    {
+        Vector3 relative = rb.transform.InverseTransformPoint(currentWaypoint.transform.position);
+        relative /= relative.magnitude;
+        carAI.steering_Value = steer_Value; 
+        steer_Value = (relative.x / relative.magnitude) * steeringForce; 
     }
 }

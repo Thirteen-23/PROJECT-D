@@ -82,8 +82,8 @@ public class Speedo : MonoBehaviour
         timeTime = lastkey.time;
         m_RPM.maxValue = timeTime;
         m_RPM.minValue = car.idleRPM;
-        m_RPM.value = m_rpmIndicator;
         final_RPMIndicator = Mathf.Lerp(final_RPMIndicator, m_rpmIndicator, speedoSnap * Time.deltaTime);
+        m_RPM.value = final_RPMIndicator;
         RPMNeedle.transform.localEulerAngles = new Vector3(0, 0, Mathf.Lerp(minRPMAngle, maxRPMAngle, final_RPMIndicator / timeTime));
     }
 

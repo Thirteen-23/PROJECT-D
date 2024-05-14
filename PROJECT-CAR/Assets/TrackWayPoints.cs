@@ -8,13 +8,17 @@ public class TrackWayPoints : MonoBehaviour
     [Range(0, 1)] public float sphereRadius; 
     public List<Transform> trackNodes = new List<Transform>();
 
+    private void Start()
+    {
+        
+    }
     private void Update()
     {
         
     }
     // Start is called before the first frame update
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = wayPointColour;
 

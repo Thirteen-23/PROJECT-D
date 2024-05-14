@@ -251,7 +251,7 @@ public class Car_Movement : MonoBehaviour
     {
         for (int i = 0; i < wheels4.Length; i++)
         {
-            wheels4[i].brakeTorque = currentBreakForce * Time.deltaTime;
+            wheels4[i].brakeTorque = currentBreakForce;
         }
 
 

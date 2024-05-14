@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &783197208
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 783197209}
+  m_Layer: 0
+  m_Name: FollowPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &783197209
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783197208}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.68382835, y: 0.3315133, z: -1.0455753}
+  m_LocalScale: {x: 0.07860008, y: 0.0786, z: 0.07860008}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5996759580280269290}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5992530822522105129
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +152,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5992530823284320449}
-  m_LocalRotation: {x: -0, y: 0.72786105, z: -0, w: 0.6857247}
+  m_LocalRotation: {x: 0, y: 0.7278626, z: 0, w: 0.68572307}
   m_LocalPosition: {x: -0.41622236, y: 1, z: -2.773}
   m_LocalScale: {x: 0.078600064, y: 0.07860009, z: 0.07860002}
   m_ConstrainProportionsScale: 0
@@ -155,7 +186,7 @@ MonoBehaviour:
   - {fileID: 5993382939099389606}
   - {fileID: 5993266303189021606}
   - {fileID: 5993435405450593996}
-  centerMass: {fileID: 0}
+  centerMass: {fileID: 2628944432540269832}
   horsePower: 0
   enginePower:
     serializedVersion: 2
@@ -163,36 +194,63 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  maxSpeed: 0
+  maxSpeed: 300
   totalPowerInCar: 0
   currentSpeed: 0
   acceration_Value: 0
   AccerationDamping: 0
-  idleRPM: 0
-  maxRPM: 0
-  minRPM: 0
-  maxRPMForCar: 0
+  idleRPM: 800
+  maxRPM: 5000
+  minRPM: 1600
+  maxRPMForCar: 8000
   engineRPM: 0
-  finalDriveRatio: 0
-  gearSpeedBox: []
+  finalDriveRatio: 3.6
+  gearSpeedBox:
+  - 3.3
+  - 2.6
+  - 1.3
+  - 1
+  - 0.75
   gearNum: 0
-  smoothTime: 0
-  keyRPMSet: []
+  smoothTime: 0.01
+  keyRPMSet:
+  - {x: 800, y: 0}
+  - {x: 2500, y: 400}
+  - {x: 4000, y: 800}
+  - {x: 6000, y: 300}
   amIShiftingNow: 0
   shift_Value: 0
   isBreaking: 0
   ifHandBraking: 0
-  allBrakeForce: 0
+  allBrakeForce: 5000
   frontBrakeForce: 0
   rearBrakeForce: 0
   steering_Value: 0
   steeringDamping: 0
-  smoothTransitionSpeed: 0
+  smoothTransitionSpeed: 3
   brakes_value: 0
   brakeDampening: 0
   steeringCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 30
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 250
+      value: 15
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -238,8 +296,8 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.27
   m_SuspensionSpring:
-    spring: 70000
-    damper: 9000
+    spring: 80000
+    damper: 9500
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
@@ -300,8 +358,8 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.27
   m_SuspensionSpring:
-    spring: 70000
-    damper: 9000
+    spring: 80000
+    damper: 9500
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0

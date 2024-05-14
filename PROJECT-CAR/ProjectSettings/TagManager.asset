@@ -7,6 +7,7 @@ TagManager:
   - Ragdoll
   - Platform
   - Touch
+  - Waypoints
   layers:
   - Default
   - TransparentFX
