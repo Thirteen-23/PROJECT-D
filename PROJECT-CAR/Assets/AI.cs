@@ -55,13 +55,13 @@ public class AI : MonoBehaviour
         carAI.acceration_Value = acceration_Value;
         Sensor();
         CalculateDistanceOfWaypoints();
-     
 
+        AISteer();
     }
 
     private void FixedUpdate()
     {
-        AISteer();
+        
     }
     private void definingRays()
     {
