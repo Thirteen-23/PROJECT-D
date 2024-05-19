@@ -29,7 +29,7 @@ public class AI : MonoBehaviour
     public TrackWayPoints waypoints;
     public List<Transform> nodes = new List<Transform>();
     [Range(0, 10)] public int distanceOffset;
-    [Range(0, 1)] public float steeringForce;
+    [Range(0, 5)] public float steeringForce;
     public Transform currentWaypoint;
 
 
@@ -136,14 +136,14 @@ public class AI : MonoBehaviour
             {
 
                 Debug.Log("Hit the enivroment in front");
-
+                carAI.acceration_Value = -2f; 
 
             }
             else
             {
 
                 Debug.Log("left the enivroment front");
-
+                carAI.acceration_Value = 1.2f;
 
             }
         }
@@ -162,8 +162,9 @@ public class AI : MonoBehaviour
             {
                 currentWaypoint = nodes[i + distanceOffset];
                 distance = currentDistance;
-
+               
             }
+
         }
     }
     private void OnDrawGizmos()
