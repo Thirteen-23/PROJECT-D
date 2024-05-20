@@ -8,6 +8,8 @@ TagManager:
   - Platform
   - Touch
   - Waypoints
+  - Trigger
+  - AI
   layers:
   - Default
   - TransparentFX

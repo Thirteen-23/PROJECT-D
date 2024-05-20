@@ -4,11 +4,6 @@ using UnityEngine.InputSystem;
 
 public class Car_Movement : MonoBehaviour
 {
-    private Vector2 m_PlayerMovement = Vector2.zero;
-    private float m_PlayerAcceration = 0;
-    //private InputAction m_Movement;
-    //private InputAction m_Acceration;
-    private PlayerInput carNewInputSystem;
     CarNewInputSystem input;
 
     enum DifferentialTypes

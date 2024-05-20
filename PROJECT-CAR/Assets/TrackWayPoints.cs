@@ -48,6 +48,16 @@ public class TrackWayPoints : MonoBehaviour
             Gizmos.DrawSphere(currentPoint, sphereRadius);
 
         }
+
+        int Wrap( int value, int arraySize)
+        {
+
+            return value % arraySize;
+
+            /*return ( value % arraySize)
+            return (value % arraySize + arraySize) % arraySize;
+            */
+        }
     }
    
 }

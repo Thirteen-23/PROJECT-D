@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -6,16 +7,16 @@ using UnityEngine.UI;
 public class Speedo : MonoBehaviour
 {
 
-     
+
     [SerializeField] Rigidbody rb;
     [SerializeField] Car_Movement car;
-
+   
     [Header("RPM UI")]
     [SerializeField] Image RPMNeedle;
     [SerializeField] float minRPMAngle;
     [SerializeField] float maxRPMAngle;
     public Slider m_RPM;
-   // public TextMeshProUGUI RpmNum;
+    // public TextMeshProUGUI RpmNum;
     private float m_rpmIndicator;
     private float final_RPMIndicator;
 
@@ -24,21 +25,20 @@ public class Speedo : MonoBehaviour
     public float maxSpeed = 0.0f;
     [SerializeField] float speed;
     private float finalSpeed;
-    const float speedoSnap = 2f; 
+    const float speedoSnap = 2f;
 
     [Header("Gear UI")]
     public TextMeshProUGUI currentGearLabel;
     private float currentGear = 0f;
     [SerializeField] int gear;
 
-    
-   
+
+
     // Start is called before the first frame update
     void Start()
     {
         rb = rb.GetComponent<Rigidbody>();
         car = car.GetComponent<Car_Movement>();
-
     }
 
     // Update is called once per frame
@@ -48,6 +48,8 @@ public class Speedo : MonoBehaviour
         GearChangeFunction();
         RPMBar();
         ExactNumOfRPM();
+
+        
     }
 
     private void speedo()
@@ -55,7 +57,7 @@ public class Speedo : MonoBehaviour
         // 3.6f conversion to KM/H
 
         speed = rb.velocity.magnitude * 3.6f;
-        finalSpeed = Mathf.Lerp(finalSpeed, speed, speedoSnap * Time.deltaTime); 
+        finalSpeed = Mathf.Lerp(finalSpeed, speed, speedoSnap * Time.deltaTime);
         if (speedLabel != null)
         {
             speedLabel.text = ((int)finalSpeed) + "km/h";
@@ -66,12 +68,12 @@ public class Speedo : MonoBehaviour
     private void GearChangeFunction()
     {
         currentGear = car.gearNum + 1;
-     if(currentGearLabel != null)
+        if (currentGearLabel != null)
         {
             currentGearLabel.text = ((int)currentGear + "");
         }
 
-        
+
     }
 
     private void RPMBar()
@@ -91,7 +93,7 @@ public class Speedo : MonoBehaviour
     {
         m_RPM.value = m_rpmIndicator;
         final_RPMIndicator = Mathf.Lerp(final_RPMIndicator, m_RPM.value, speedoSnap * Time.deltaTime);
-        
+
 
 
     }

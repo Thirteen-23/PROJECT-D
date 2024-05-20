@@ -15,15 +15,13 @@ public class AI : MonoBehaviour
     AI_Controls carAI;
     [SerializeField] GameObject m_AICarBody;
     [SerializeField] GameObject m_AICarBodyDetection;
-    [SerializeField] bool leftLocked = false;
-    [SerializeField] bool rightLocked = false;
     [SerializeField] float steer_Value;
     [SerializeField] float steering_Angle;
     [SerializeField] float steering_valueLeft, steering_valueRight;
     [SerializeField] float returningToOriginalTurnValue = 0;
     [SerializeField] float adjustRayLeft;
     [SerializeField] float adjustRayRight;
-    [SerializeField] float acceration_Value;
+    public float acceration_Value;
     
     //checking waypoints
     public TrackWayPoints waypoints;
@@ -92,7 +90,6 @@ public class AI : MonoBehaviour
         {
             if (hit.collider.CompareTag("Platform"))
             {
-                leftLocked = true;
                 Debug.Log("Hit the enivroment in left");
                 carAI.steering_Value = steering_valueLeft;
 
@@ -111,21 +108,12 @@ public class AI : MonoBehaviour
         {
             if (hit.collider.CompareTag("Platform"))
             {
-                rightLocked = true;
                 Debug.Log("Hit the enivroment in Right");
                 carAI.steering_Value = steering_valueRight;
 
             }
 
         }
-        //else
-        //{
-
-        //    steering_valueRight = returningToOriginalTurnValue;
-        //    carAI.steering_Value = returningToOriginalTurnValue;
-        //    steering_valueRight = -1;
-
-        //}
     }
     private void FrontRaySensor()
     {
