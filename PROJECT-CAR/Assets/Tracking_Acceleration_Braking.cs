@@ -6,17 +6,25 @@ using UnityEngine;
 public class Tracking_Acceleration_Braking : MonoBehaviour
 {
     AI m_AIControl; 
-    enum types
+    public enum types
     {
         braking,
         accerating
     }
-    [SerializeField] types postsForAI; 
+    public types postsForAI;
 
+    [Header("Exiting Corner values")]
+    public float m_AIAccerationValueChange;
+    public int distanceOffset_AccerationChange;
+
+    [Header("Entering Corner values")]
+    public float m_AISlowDownValueChange;
+    public int distanceOffset_BrakeChange;
+   
     // Start is called before the first frame update
     void Start()
     {
-      
+        
     }
 
     private void Awake()
@@ -40,10 +48,10 @@ public class Tracking_Acceleration_Braking : MonoBehaviour
                 Debug.Log("tag");
 
               
-                gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
-                m_AIControl.acceration_Value = 1.5f;
-                m_AIControl.distanceOffset = 4;
-                other.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+                //gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+                m_AIControl.acceration_Value = m_AISlowDownValueChange;
+                m_AIControl.distanceOffset = distanceOffset_BrakeChange;
+               // other.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
             }
         }
 
@@ -53,9 +61,10 @@ public class Tracking_Acceleration_Braking : MonoBehaviour
             {
                 Debug.Log("tag");
 
-                gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
-                m_AIControl.acceration_Value = 2.5f;
-                other.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+               // gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+                m_AIControl.acceration_Value = m_AIAccerationValueChange;
+                m_AIControl.distanceOffset = distanceOffset_AccerationChange;
+                // other.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
             }
         }
     }
@@ -66,8 +75,8 @@ public class Tracking_Acceleration_Braking : MonoBehaviour
         {
             Debug.Log(" not tagged");
 
-            gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
-            other.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+            //gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
+            //other.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
         }
     }
 

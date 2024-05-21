@@ -37,7 +37,7 @@ public class Car_Movement : MonoBehaviour
     [SerializeField] float totalPowerInCar;
     [SerializeField] float currentSpeed;
     // dampening for smoother acceration input for keyboard 
-    [SerializeField] float acceration_Value;
+    public float acceration_Value;
     [SerializeField] float AccerationDamping;
 
     [Header("GearBox System")]

@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 7415750274088753859}
   m_Layer: 0
   m_Name: RaceCar AI
-  m_TagString: Untagged
+  m_TagString: AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -182,7 +182,7 @@ MonoBehaviour:
   returningToOriginalTurnValue: 0
   adjustRayLeft: 0.5
   adjustRayRight: -0.5
-  acceration_Value: 1.5
+  acceration_Value: 0
   waypoints: {fileID: 0}
   nodes: []
   distanceOffset: 3
