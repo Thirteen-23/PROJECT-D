@@ -22,7 +22,8 @@ public class AI : MonoBehaviour
     [SerializeField] float adjustRayLeft;
     [SerializeField] float adjustRayRight;
     public float acceration_Value;
-    
+    public float speed_Reader;
+
     //checking waypoints
     public TrackWayPoints waypoints;
     public List<Transform> nodes = new List<Transform>();
@@ -51,6 +52,7 @@ public class AI : MonoBehaviour
     void Update()
     {
         carAI.acceration_Value = acceration_Value;
+        speed_Reader = carAI.currentSpeed; 
         Sensor();
         CalculateDistanceOfWaypoints();
 

@@ -30,7 +30,7 @@ public class AI_Controls : MonoBehaviour
     [SerializeField] public AnimationCurve enginePower;
     [SerializeField] float maxSpeed;
     [SerializeField] float totalPowerInCar;
-    [SerializeField] float currentSpeed;
+    public float currentSpeed;
     // dampening for smoother acceration input for keyboard 
     public float acceration_Value;
     [SerializeField] float AccerationDamping;

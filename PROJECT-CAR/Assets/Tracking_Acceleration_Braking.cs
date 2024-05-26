@@ -12,19 +12,20 @@ public class Tracking_Acceleration_Braking : MonoBehaviour
         accerating
     }
     public types postsForAI;
+    public float speed_Check;
 
     [Header("Exiting Corner values")]
     public float m_AIAccerationValueChange;
     public int distanceOffset_AccerationChange;
+   
 
     [Header("Entering Corner values")]
     public float m_AISlowDownValueChange;
     public int distanceOffset_BrakeChange;
-   
     // Start is called before the first frame update
     void Start()
     {
-        
+       
     }
 
     private void Awake()
@@ -41,30 +42,37 @@ public class Tracking_Acceleration_Braking : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         m_AIControl = other.gameObject.GetComponentInParent<AI>();
+        
         if (postsForAI == types.braking)
         {
             if (other.gameObject.CompareTag("AI"))
             {
                 Debug.Log("tag");
-
-              
-                //gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
-                m_AIControl.acceration_Value = m_AISlowDownValueChange;
-                m_AIControl.distanceOffset = distanceOffset_BrakeChange;
-               // other.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+                if (speed_Check < m_AIControl.speed_Reader)
+                { 
+                    m_AIControl.acceration_Value = m_AISlowDownValueChange;
+                    m_AIControl.distanceOffset = distanceOffset_BrakeChange;
+                }
+                else if(speed_Check > m_AIControl.speed_Reader) 
+                {
+                   
+                    m_AIControl.distanceOffset = distanceOffset_BrakeChange - 1;
+                }
             }
         }
 
         if (postsForAI == types.accerating)
         {
-            if (other.gameObject.CompareTag("AI"))
+            Debug.Log("tag");
+            if (speed_Check < m_AIControl.speed_Reader)
             {
-                Debug.Log("tag");
-
-               // gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
                 m_AIControl.acceration_Value = m_AIAccerationValueChange;
                 m_AIControl.distanceOffset = distanceOffset_AccerationChange;
-                // other.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+            }
+            else if (speed_Check > m_AIControl.speed_Reader)
+            {
+
+                m_AIControl.distanceOffset = distanceOffset_AccerationChange - 1;
             }
         }
     }
@@ -75,8 +83,7 @@ public class Tracking_Acceleration_Braking : MonoBehaviour
         {
             Debug.Log(" not tagged");
 
-            //gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.green);
-            //other.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+           
         }
     }
 
