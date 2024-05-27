@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1274650463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1274650464}
+  m_Layer: 0
+  m_Name: Follow Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1274650464
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274650463}
+  m_LocalRotation: {x: 0.000000037748947, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.011, y: 1.1307002, z: -0.004621469}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1745514464087544427}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2096479571380393293
 GameObject:
   m_ObjectHideFlags: 0
@@ -10,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2096479571380393292}
   - component: {fileID: 2096479571380393295}
+  - component: {fileID: 1330584002}
   m_Layer: 0
   m_Name: Tester
   m_TagString: Untagged
@@ -78,10 +110,11 @@ MonoBehaviour:
   engineRPM: 0
   finalDriveRatio: 3.76
   gearSpeedBox:
-  - 3
+  - 3.5
   - 2.5
   - 1.2
   - 0.9
+  - 0.75
   gearNum: 0
   smoothTime: 0.01
   keyRPMSet:
@@ -120,6 +153,68 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &1330584002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096479571380393293}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93d332f6a4ef0d54dbcd3285373c1544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transmission: 0
+  drive: 0
+  bodyOfCar: {fileID: 0}
+  wheels4:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  wheelmeshes:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  enginePower:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxSpeed: 0
+  totalPowerInCar: 0
+  currentSpeed: 0
+  acceration_Value: 0
+  AccerationDamping: 0
+  idleRPM: 0
+  maxRPM: 0
+  minRPM: 0
+  maxRPMForCar: 0
+  engineRPM: 0
+  finalDriveRatio: 0
+  gearSpeedBox: []
+  gearNum: 0
+  smoothTime: 0
+  keyRPMSet: []
+  isBreaking: 0
+  ifHandBraking: 0
+  allBrakeForce: 0
+  frontBrakeForce: 0
+  rearBrakeForce: 0
+  steering_Value: 0
+  steeringDamping: 0
+  smoothTransitionSpeed: 0
+  brakes_value: 0
+  brakeDampening: 0
+  steeringCurve:
+    serializedVersion: 2
+    m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -207,6 +302,11 @@ PrefabInstance:
 --- !u!4 &105296963300005143 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1567308587780384700, guid: 14c41fbffd7abf747948b43f9b93a883, type: 3}
+  m_PrefabInstance: {fileID: 1492421957394444971}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1745514464087544427 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 905071744702980288, guid: 14c41fbffd7abf747948b43f9b93a883, type: 3}
   m_PrefabInstance: {fileID: 1492421957394444971}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &2096479571600851627 stripped

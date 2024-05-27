@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+public enum types
+{
+    braking,
+    accerating
+}
 public class Tracking_Acceleration_Braking : MonoBehaviour
 {
-    AI m_AIControl; 
-    public enum types
-    {
-        braking,
-        accerating
-    }
+    public AI m_AIControl; 
+    
     public types postsForAI;
     public float speed_Check;
 

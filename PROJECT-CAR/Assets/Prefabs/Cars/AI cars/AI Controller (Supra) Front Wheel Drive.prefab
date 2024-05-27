@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transmission: 0
-  drive: 2
+  drive: 0
   bodyOfCar: {fileID: 1278929773074508417}
   wheels4:
   - {fileID: 1278929772352118193}
@@ -214,15 +214,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2057711683291648038, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.57
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2057711683291648038, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.146
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2057711683291648038, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.72
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2057711683291648038, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -375,7 +375,7 @@ PrefabInstance:
     - target: {fileID: 7247103623866740341, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: 9f7554198011c904fa0a29ae4aebbe13, type: 2}
+      objectReference: {fileID: 4888671311127077058, guid: f1ee126ffbc805347a744d117351c571, type: 3}
     m_RemovedComponents:
     - {fileID: 1723290015, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
     - {fileID: 1723290016, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}

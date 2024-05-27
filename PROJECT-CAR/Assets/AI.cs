@@ -122,7 +122,7 @@ public class AI : MonoBehaviour
         // raycast front if comes in contact
         if (Physics.Raycast(frontRay, out RaycastHit hit, range))
         {
-            if (hit.collider.CompareTag("Platform"))
+            if (hit.collider.CompareTag("AI"))
             {
 
                 Debug.Log("Hit the enivroment in front");

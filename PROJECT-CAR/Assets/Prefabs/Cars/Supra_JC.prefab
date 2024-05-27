@@ -510,24 +510,24 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.35
   m_SuspensionSpring:
-    spring: 80000
+    spring: 70000
     damper: 7000
     targetPosition: 0.5
-  m_SuspensionDistance: 0.5
+  m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 2
-    m_AsymptoteValue: 2
-    m_Stiffness: 1
+    m_ExtremumSlip: 0.8
+    m_ExtremumValue: 2
+    m_AsymptoteSlip: 1.6
+    m_AsymptoteValue: 1
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 1
+    m_AsymptoteValue: 0.75
     m_Stiffness: 1
   m_Enabled: 1
 --- !u!1 &6556957528534704041
@@ -572,24 +572,24 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.35
   m_SuspensionSpring:
-    spring: 80000
+    spring: 70000
     damper: 7000
     targetPosition: 0.5
-  m_SuspensionDistance: 0.5
+  m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 2
-    m_AsymptoteValue: 2
-    m_Stiffness: 1
+    m_ExtremumSlip: 0.8
+    m_ExtremumValue: 2
+    m_AsymptoteSlip: 1.6
+    m_AsymptoteValue: 1
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 1
+    m_AsymptoteValue: 0.75
     m_Stiffness: 1
   m_Enabled: 1
 --- !u!1 &6556957529087473833
@@ -634,24 +634,24 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.35
   m_SuspensionSpring:
-    spring: 80000
+    spring: 70000
     damper: 7000
     targetPosition: 0.5
-  m_SuspensionDistance: 0.5
+  m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 2
-    m_AsymptoteValue: 2
+    m_ExtremumSlip: 0.8
+    m_ExtremumValue: 2
+    m_AsymptoteSlip: 1.6
+    m_AsymptoteValue: 1
     m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 1
+    m_AsymptoteValue: 0.75
     m_Stiffness: 1
   m_Enabled: 1
 --- !u!1 &6556957529090631106
@@ -727,24 +727,24 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0}
   m_Radius: 0.35
   m_SuspensionSpring:
-    spring: 80000
+    spring: 70000
     damper: 7000
     targetPosition: 0.5
-  m_SuspensionDistance: 0.5
+  m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 2
-    m_AsymptoteValue: 2
+    m_ExtremumSlip: 0.8
+    m_ExtremumValue: 2
+    m_AsymptoteSlip: 1.6
+    m_AsymptoteValue: 1
     m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 1
+    m_AsymptoteValue: 0.75
     m_Stiffness: 1
   m_Enabled: 1
 --- !u!1001 &1946905938618775501
@@ -760,31 +760,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 21.21
+      value: 104.92
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.221
+      value: 15.15
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 35.45
+      value: -257.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.73373914
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.6794314
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -792,7 +792,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -85.598
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f1ee126ffbc805347a744d117351c571, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1060,7 +1060,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1712957147537820316}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc7b51cac9389ca498a429f0d063888a, type: 3}
   m_Name: 

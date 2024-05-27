@@ -10,6 +10,7 @@ TagManager:
   - Waypoints
   - Trigger
   - AI
+  - walls
   layers:
   - Default
   - TransparentFX
