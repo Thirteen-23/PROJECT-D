@@ -1,4 +1,5 @@
 
+using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -54,8 +55,10 @@ public class Car_Movement : MonoBehaviour
     [SerializeField] Vector2[] keyRPMSet = new Vector2[0];
 
     [Header("Manual Shift")]
-    [SerializeField] bool amIShiftingNow = false;
+    [SerializeField] bool shiftUp = false;
+    [SerializeField] bool shiftDown = false; 
     [SerializeField] float shift_Value;
+    [SerializeField] float currentShift_Value;
 
     private Vector3 originalPos;
     private Quaternion rotations;
@@ -94,8 +97,6 @@ public class Car_Movement : MonoBehaviour
         input.Movement.Steering.canceled += ReleaseSteeringInput;
         input.Movement.braking.performed += BrakingInput;
         input.Movement.braking.canceled += ReleaseBrakingInput;
-        input.Movement.Shifting.canceled += ReleaseManualShiftInput;
-
 
     }
     private void OnDisable()
@@ -347,40 +348,62 @@ public class Car_Movement : MonoBehaviour
     {
         brakes_value = 0;
     }
-    public void ApplyManualShiftInput(InputAction.CallbackContext context)
+    public void ShiftingUp(InputAction.CallbackContext context)
     {
-        shift_Value = context.ReadValue<float>();
+        if(context.started)
+        {
+            Debug.Log("started");
+            shiftUp = true;
+            shift_Value++;
+        }
+      else if(context.performed)
+        {
+            Debug.Log("performed");
+            shiftUp = false; 
+        }
+        else if( context.canceled)
+        {
+            Debug.Log("cancelled");
+        }
+    }
+  
+    public void ShiftingDown(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        {
+            shiftDown = true;
+            shift_Value--; 
+        }
+        else if (context.performed)
+        {
+            Debug.Log("performed");
+            shiftDown = false;
+        }
+        else if (context.canceled)
+        {
+            Debug.Log("cancelled");
+        }
+    }
 
-       // amIShiftingNow = true;
-        //print(amIShiftingNow + " shifted");
-        //print(amIShiftingNow + "shifted");
-    }
-    public void ReleaseManualShiftInput(InputAction.CallbackContext context)
-    {
-        amIShiftingNow = false;
-        //print(amIShiftingNow + "finished shifting");
-    }
+
     private void Shifting()
     {
         if (transmission == TransmissionTypes.Manual)
         {
-            if (Input.GetKeyDown(KeyCode.W) || amIShiftingNow == true)
+            if ((shiftUp == true && shift_Value > currentShift_Value) && (gearNum < gearSpeedBox.Length - 1))
             {
                 Debug.Log(gearNum);
                 Debug.Log(gearSpeedBox[gearNum]);
-                if (gearNum < gearSpeedBox.Length - 1)
-                {
-
+               
                     gearNum++;
-                }
+                    currentShift_Value = shift_Value; 
 
             }
-            if (Input.GetKeyDown(KeyCode.S))
+            else if ((shiftDown == true && shift_Value < currentShift_Value) && (gearNum > 0))
             {
-                if (gearNum > 0)
-                {
+               
                     gearNum--;
-                }
+                    shift_Value = currentShift_Value; 
 
             }
         }

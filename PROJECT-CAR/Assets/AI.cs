@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 
 public class AI : MonoBehaviour
@@ -32,6 +33,12 @@ public class AI : MonoBehaviour
     public Transform currentWaypoint;
 
 
+    [SerializeField] int currentWaypointIndex;
+    [SerializeField] float waypointApproachThreshold;
+    public bool loopIsTrue = true; 
+
+    // using nodes instead for the waypoints
+
 
     // Start is called before the first frame update
     void Start()
@@ -54,8 +61,9 @@ public class AI : MonoBehaviour
         carAI.acceration_Value = acceration_Value;
         speed_Reader = carAI.currentSpeed; 
         Sensor();
-        CalculateDistanceOfWaypoints();
-
+        //CalculateDistanceOfWaypoints();
+        changingDistanceOffset();
+        CheckForUpdatedWaypoints();
         AISteer();
     }
 
@@ -90,11 +98,10 @@ public class AI : MonoBehaviour
         // raycast Left if comes in contact
         if (Physics.Raycast(leftRay, out RaycastHit hit, range))
         {
-            if (hit.collider.CompareTag("Platform"))
+            if (hit.collider.CompareTag("AI"))
             {
-                Debug.Log("Hit the enivroment in left");
-                carAI.steering_Value = steering_valueLeft;
-
+                // Debug.Log("Hit the enivroment in left");
+                carAI.acceration_Value = -2f;
             }
 
         }
@@ -108,10 +115,10 @@ public class AI : MonoBehaviour
         // raycast Right if comes in contact
         if (Physics.Raycast(rightRay, out RaycastHit hit, range))
         {
-            if (hit.collider.CompareTag("Platform"))
+            if (hit.collider.CompareTag("AI"))
             {
-                Debug.Log("Hit the enivroment in Right");
-                carAI.steering_Value = steering_valueRight;
+                //   Debug.Log("Hit the enivroment in Right");
+                carAI.acceration_Value = -2f;
 
             }
 
@@ -125,14 +132,14 @@ public class AI : MonoBehaviour
             if (hit.collider.CompareTag("AI"))
             {
 
-                Debug.Log("Hit the enivroment in front");
+                //Debug.Log("Hit the enivroment in front");
                 carAI.acceration_Value = -2f; 
 
             }
             else
             {
 
-                Debug.Log("left the enivroment front");
+              //  Debug.Log("left the enivroment front");
                 carAI.acceration_Value = 1.2f;
 
             }
@@ -154,8 +161,28 @@ public class AI : MonoBehaviour
                 distance = currentDistance;
                
             }
+           
 
         }
+    }
+
+    private void CheckForUpdatedWaypoints() //call this every update
+    {
+        //These should be defined in the class not as local variables
+       // int currentWaypointIndex;
+        //float waypointApproachThreshold;
+
+        Vector3 difference = nodes[currentWaypointIndex].transform.position - rb.transform.position;
+        if (difference.magnitude < waypointApproachThreshold)
+        {
+            currentWaypointIndex++;
+            currentWaypointIndex %= nodes.Count;
+            //if(currentWaypointIndex >= nodes.Count)
+            //{
+            //
+            //}
+        }
+
     }
     private void OnDrawGizmos()
     {
@@ -169,9 +196,51 @@ public class AI : MonoBehaviour
     //}
     private void AISteer()
     {
-        Vector3 relative = rb.transform.InverseTransformPoint(currentWaypoint.transform.position);
+        Vector3 targetPosition = nodes[(currentWaypointIndex + distanceOffset) % nodes.Count].transform.position;
+        Vector3 relative = rb.transform.InverseTransformPoint(/*currentWaypoint.transform.position*/targetPosition);
         relative /= relative.magnitude;
         carAI.steering_Value = steer_Value; 
         steer_Value = (relative.x / relative.magnitude) * steeringForce; 
+    }
+
+    private void changingDistanceOffset()
+    {
+        if (speed_Reader > 170)
+        {
+            distanceOffset = 3;
+        }
+
+        if (speed_Reader < 160)
+        {
+            distanceOffset = 2;
+            acceration_Value = 1;
+        }
+
+
+        if (speed_Reader < 50)
+        {
+            distanceOffset = 1;
+            acceration_Value = 1.5f;
+            if (Physics.Raycast(frontRay, out RaycastHit hit, range))
+            {
+                waypointApproachThreshold = 50f;
+                if (hit.collider.CompareTag("walls"))
+                {
+                    steeringForce = 5;
+                    Debug.Log("Hitting wall");
+                    carAI.acceration_Value = -2f;
+                   // carAI.steering_Value = -carAI.steering_Value;
+                }
+                else
+                {
+
+                    //  Debug.Log("left the enivroment front");
+                    carAI.acceration_Value = 1.0f;
+                    waypointApproachThreshold = 20f;
+                    steeringForce = 0.9f;
+                }
+            }
+        }
+      
     }
 }

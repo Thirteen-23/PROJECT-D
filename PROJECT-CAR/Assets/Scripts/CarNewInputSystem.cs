@@ -55,13 +55,22 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Shifting"",
-                    ""type"": ""Button"",
+                    ""name"": ""Shifting up"",
+                    ""type"": ""Value"",
                     ""id"": ""6c7de881-f1a8-481e-8e4f-f088578a3dc9"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Shifting Down"",
+                    ""type"": ""Value"",
+                    ""id"": ""b4179924-ca8b-42ec-9c80-0a250be60dd8"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -222,11 +231,44 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""9f06b613-a074-4a92-bdd5-caa454d1b94e"",
-                    ""path"": ""<Keyboard>/tab"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Shifting"",
+                    ""action"": ""Shifting up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b8ac3996-a93c-4065-9f42-5d0d1496d24f"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shifting up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""795259f5-288a-4a35-8b23-229052c57748"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shifting Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f6eab3db-1d41-47a1-a094-651d12ea0994"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shifting Down"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -240,7 +282,8 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
         m_Movement_Acceration = m_Movement.FindAction("Acceration", throwIfNotFound: true);
         m_Movement_Steering = m_Movement.FindAction("Steering", throwIfNotFound: true);
         m_Movement_braking = m_Movement.FindAction("braking", throwIfNotFound: true);
-        m_Movement_Shifting = m_Movement.FindAction("Shifting", throwIfNotFound: true);
+        m_Movement_Shiftingup = m_Movement.FindAction("Shifting up", throwIfNotFound: true);
+        m_Movement_ShiftingDown = m_Movement.FindAction("Shifting Down", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -305,7 +348,8 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
     private readonly InputAction m_Movement_Acceration;
     private readonly InputAction m_Movement_Steering;
     private readonly InputAction m_Movement_braking;
-    private readonly InputAction m_Movement_Shifting;
+    private readonly InputAction m_Movement_Shiftingup;
+    private readonly InputAction m_Movement_ShiftingDown;
     public struct MovementActions
     {
         private @CarNewInputSystem m_Wrapper;
@@ -313,7 +357,8 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
         public InputAction @Acceration => m_Wrapper.m_Movement_Acceration;
         public InputAction @Steering => m_Wrapper.m_Movement_Steering;
         public InputAction @braking => m_Wrapper.m_Movement_braking;
-        public InputAction @Shifting => m_Wrapper.m_Movement_Shifting;
+        public InputAction @Shiftingup => m_Wrapper.m_Movement_Shiftingup;
+        public InputAction @ShiftingDown => m_Wrapper.m_Movement_ShiftingDown;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -332,9 +377,12 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
             @braking.started += instance.OnBraking;
             @braking.performed += instance.OnBraking;
             @braking.canceled += instance.OnBraking;
-            @Shifting.started += instance.OnShifting;
-            @Shifting.performed += instance.OnShifting;
-            @Shifting.canceled += instance.OnShifting;
+            @Shiftingup.started += instance.OnShiftingup;
+            @Shiftingup.performed += instance.OnShiftingup;
+            @Shiftingup.canceled += instance.OnShiftingup;
+            @ShiftingDown.started += instance.OnShiftingDown;
+            @ShiftingDown.performed += instance.OnShiftingDown;
+            @ShiftingDown.canceled += instance.OnShiftingDown;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -348,9 +396,12 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
             @braking.started -= instance.OnBraking;
             @braking.performed -= instance.OnBraking;
             @braking.canceled -= instance.OnBraking;
-            @Shifting.started -= instance.OnShifting;
-            @Shifting.performed -= instance.OnShifting;
-            @Shifting.canceled -= instance.OnShifting;
+            @Shiftingup.started -= instance.OnShiftingup;
+            @Shiftingup.performed -= instance.OnShiftingup;
+            @Shiftingup.canceled -= instance.OnShiftingup;
+            @ShiftingDown.started -= instance.OnShiftingDown;
+            @ShiftingDown.performed -= instance.OnShiftingDown;
+            @ShiftingDown.canceled -= instance.OnShiftingDown;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -373,6 +424,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
         void OnAcceration(InputAction.CallbackContext context);
         void OnSteering(InputAction.CallbackContext context);
         void OnBraking(InputAction.CallbackContext context);
-        void OnShifting(InputAction.CallbackContext context);
+        void OnShiftingup(InputAction.CallbackContext context);
+        void OnShiftingDown(InputAction.CallbackContext context);
     }
 }

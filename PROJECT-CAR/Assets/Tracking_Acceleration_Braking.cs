@@ -48,7 +48,7 @@ public class Tracking_Acceleration_Braking : MonoBehaviour
         {
             if (other.gameObject.CompareTag("AI"))
             {
-                Debug.Log("tag");
+               // Debug.Log("tag");
                 if (speed_Check < m_AIControl.speed_Reader)
                 { 
                     m_AIControl.acceration_Value = m_AISlowDownValueChange;
@@ -64,7 +64,7 @@ public class Tracking_Acceleration_Braking : MonoBehaviour
 
         if (postsForAI == types.accerating)
         {
-            Debug.Log("tag");
+           // Debug.Log("tag");
             if (speed_Check < m_AIControl.speed_Reader)
             {
                 m_AIControl.acceration_Value = m_AIAccerationValueChange;
@@ -82,7 +82,7 @@ public class Tracking_Acceleration_Braking : MonoBehaviour
     {
         if (other.gameObject.CompareTag("AI"))
         {
-            Debug.Log(" not tagged");
+           // Debug.Log(" not tagged");
 
            
         }
@@ -92,7 +92,7 @@ public class Tracking_Acceleration_Braking : MonoBehaviour
     {
         if (other.gameObject.CompareTag("AI"))
         {
-            Debug.Log(" tag stayed");
+           // Debug.Log(" tag stayed");
 
         }
     }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4007219030059186052}
   m_Layer: 0
   m_Name: 'RFWC '
-  m_TagString: Untagged
+  m_TagString: AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -40,27 +40,27 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4007219030059186054}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.33
+  m_Radius: 0.35
   m_SuspensionSpring:
     spring: 90000
-    damper: 10000
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.4
+    damper: 8000
+    targetPosition: 0.45
+  m_SuspensionDistance: 0.35
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 1
-    m_AsymptoteValue: 2
+    m_ExtremumSlip: 0.8
+    m_ExtremumValue: 2
+    m_AsymptoteSlip: 1.6
+    m_AsymptoteValue: 1
     m_Stiffness: 2
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 2
-    m_Stiffness: 2
+    m_ExtremumSlip: 0.4
+    m_ExtremumValue: 2
+    m_AsymptoteSlip: 1
+    m_AsymptoteValue: 1.5
+    m_Stiffness: 1.3
   m_Enabled: 1
 --- !u!1 &4007219030555232625
 GameObject:
@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 4007219030555232631}
   m_Layer: 0
   m_Name: 'LFWC '
-  m_TagString: Untagged
+  m_TagString: AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -102,27 +102,27 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4007219030555232625}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.33
+  m_Radius: 0.35
   m_SuspensionSpring:
     spring: 90000
-    damper: 10000
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.4
+    damper: 8000
+    targetPosition: 0.45
+  m_SuspensionDistance: 0.35
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 1
-    m_AsymptoteValue: 2
+    m_ExtremumSlip: 0.8
+    m_ExtremumValue: 2
+    m_AsymptoteSlip: 1.6
+    m_AsymptoteValue: 1
     m_Stiffness: 2
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 2
-    m_Stiffness: 2
+    m_ExtremumSlip: 0.4
+    m_ExtremumValue: 2
+    m_AsymptoteSlip: 1
+    m_AsymptoteValue: 1.5
+    m_Stiffness: 1.3
   m_Enabled: 1
 --- !u!1 &4007219030624891641
 GameObject:
@@ -177,16 +177,17 @@ MonoBehaviour:
   m_AICarBodyDetection: {fileID: 4006633614560253361}
   steer_Value: 0
   steering_Angle: 0
-  steering_valueLeft: -0.5
-  steering_valueRight: 0.5
+  steering_valueLeft: 0
+  steering_valueRight: 0
   returningToOriginalTurnValue: 0
   adjustRayLeft: 0.5
   adjustRayRight: -0.5
-  acceration_Value: 0
+  acceration_Value: 1
+  speed_Reader: 0
   waypoints: {fileID: 0}
   nodes: []
   distanceOffset: 3
-  steeringForce: 1
+  steeringForce: 1.4
   currentWaypoint: {fileID: 0}
 --- !u!114 &7415750274088753859
 MonoBehaviour:
@@ -225,8 +226,8 @@ MonoBehaviour:
   acceration_Value: 0
   AccerationDamping: 0
   idleRPM: 800
-  maxRPM: 9000
-  minRPM: 1600
+  maxRPM: 6000
+  minRPM: 2000
   maxRPMForCar: 0
   engineRPM: 0
   finalDriveRatio: 3.7
@@ -241,13 +242,9 @@ MonoBehaviour:
   gearNum: 0
   smoothTime: 0.01
   keyRPMSet:
-  - {x: 0, y: 100}
-  - {x: 2000, y: 700}
-  - {x: 4000, y: 650}
-  - {x: 4300, y: 800}
-  - {x: 7000, y: 1400}
-  - {x: 9000, y: 2000}
-  - {x: 10000, y: 0}
+  - {x: 0, y: 0}
+  - {x: 6000, y: 2000}
+  - {x: 8000, y: 0}
   isBreaking: 0
   ifHandBraking: 0
   allBrakeForce: 500
@@ -293,7 +290,7 @@ GameObject:
   - component: {fileID: 4007219030700694407}
   m_Layer: 0
   m_Name: WheelColliders
-  m_TagString: Untagged
+  m_TagString: AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -329,7 +326,7 @@ GameObject:
   - component: {fileID: 4007219031002321268}
   m_Layer: 0
   m_Name: RBWC
-  m_TagString: Untagged
+  m_TagString: AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -357,27 +354,27 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4007219031002321270}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.33
+  m_Radius: 0.35
   m_SuspensionSpring:
     spring: 90000
-    damper: 10000
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.4
+    damper: 8000
+    targetPosition: 0.45
+  m_SuspensionDistance: 0.35
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 1
-    m_AsymptoteValue: 2
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 1
-    m_AsymptoteValue: 2
+    m_ExtremumSlip: 0.8
+    m_ExtremumValue: 2
+    m_AsymptoteSlip: 1.6
+    m_AsymptoteValue: 1
     m_Stiffness: 2
+  m_SidewaysFriction:
+    m_ExtremumSlip: 0.4
+    m_ExtremumValue: 2
+    m_AsymptoteSlip: 1
+    m_AsymptoteValue: 1.5
+    m_Stiffness: 1.3
   m_Enabled: 1
 --- !u!1 &4007219031400716186
 GameObject:
@@ -390,7 +387,7 @@ GameObject:
   - component: {fileID: 4007219031400716185}
   m_Layer: 0
   m_Name: FollowPoint
-  m_TagString: Untagged
+  m_TagString: AI
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -422,7 +419,7 @@ GameObject:
   - component: {fileID: 4007219031599842522}
   m_Layer: 0
   m_Name: LBWC
-  m_TagString: Untagged
+  m_TagString: AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -450,27 +447,27 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4007219031599842500}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.33
+  m_Radius: 0.35
   m_SuspensionSpring:
     spring: 90000
-    damper: 10000
-    targetPosition: 0.5
-  m_SuspensionDistance: 0.4
+    damper: 8000
+    targetPosition: 0.45
+  m_SuspensionDistance: 0.35
   m_ForceAppPointDistance: 0
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
-    m_ExtremumSlip: 0.4
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 1
-    m_AsymptoteValue: 2
-    m_Stiffness: 1
-  m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
-    m_ExtremumValue: 1
-    m_AsymptoteSlip: 1
-    m_AsymptoteValue: 2
+    m_ExtremumSlip: 0.8
+    m_ExtremumValue: 2
+    m_AsymptoteSlip: 1.6
+    m_AsymptoteValue: 1
     m_Stiffness: 2
+  m_SidewaysFriction:
+    m_ExtremumSlip: 0.4
+    m_ExtremumValue: 2
+    m_AsymptoteSlip: 1
+    m_AsymptoteValue: 1.5
+    m_Stiffness: 1.3
   m_Enabled: 1
 --- !u!1 &4432223849653831556
 GameObject:
@@ -483,7 +480,7 @@ GameObject:
   - component: {fileID: 971325683890886977}
   m_Layer: 0
   m_Name: Center Of Mass
-  m_TagString: Untagged
+  m_TagString: AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -510,9 +507,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4007219030624891640}
     m_Modifications:
+    - target: {fileID: 1029792822200048, guid: 7b367dccc659de64b8c4d882ca0505fc, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 1060552462438238, guid: 7b367dccc659de64b8c4d882ca0505fc, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 1281774316168214, guid: 7b367dccc659de64b8c4d882ca0505fc, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 1293627688067934, guid: 7b367dccc659de64b8c4d882ca0505fc, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 1409956050257762, guid: 7b367dccc659de64b8c4d882ca0505fc, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 1601709056102416, guid: 7b367dccc659de64b8c4d882ca0505fc, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
     - target: {fileID: 1948821525999562, guid: 7b367dccc659de64b8c4d882ca0505fc, type: 3}
       propertyPath: m_Name
       value: Chev666
+      objectReference: {fileID: 0}
+    - target: {fileID: 1948821525999562, guid: 7b367dccc659de64b8c4d882ca0505fc, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 1967885208801384, guid: 7b367dccc659de64b8c4d882ca0505fc, type: 3}
+      propertyPath: m_TagString
+      value: AI
       objectReference: {fileID: 0}
     - target: {fileID: 4019951310819650, guid: 7b367dccc659de64b8c4d882ca0505fc, type: 3}
       propertyPath: m_RootOrder

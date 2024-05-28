@@ -33,13 +33,22 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Shifting",
-                    "type": "Button",
+                    "name": "Shifting up",
+                    "type": "Value",
                     "id": "6c7de881-f1a8-481e-8e4f-f088578a3dc9",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Axis",
                     "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
+                    "interactions": "Press(behavior=1)",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Shifting Down",
+                    "type": "Value",
+                    "id": "b4179924-ca8b-42ec-9c80-0a250be60dd8",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -200,11 +209,44 @@
                 {
                     "name": "",
                     "id": "9f06b613-a074-4a92-bdd5-caa454d1b94e",
-                    "path": "<Keyboard>/tab",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Shifting",
+                    "action": "Shifting up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b8ac3996-a93c-4065-9f42-5d0d1496d24f",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shifting up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "795259f5-288a-4a35-8b23-229052c57748",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shifting Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f6eab3db-1d41-47a1-a094-651d12ea0994",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shifting Down",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
