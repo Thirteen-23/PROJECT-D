@@ -5,9 +5,15 @@ using UnityEngine;
 
 public class AI : MonoBehaviour
 {
+   public enum aI_Difficulty
+    {
+        easy,
+        normal,
+        hard
+    }
+    public aI_Difficulty difficultness;
     [SerializeField] Rigidbody rb;
-    [SerializeField] float editingRotation;
-
+    [Header("Adjust the sensor for AI distance")]
     Ray frontRay;
     Ray leftRay;
     Ray rightRay;
@@ -17,34 +23,24 @@ public class AI : MonoBehaviour
     [SerializeField] GameObject m_AICarBody;
     [SerializeField] GameObject m_AICarBodyDetection;
     [SerializeField] float steer_Value;
-    [SerializeField] float steering_Angle;
-    [SerializeField] float steering_valueLeft, steering_valueRight;
-    [SerializeField] float returningToOriginalTurnValue = 0;
     [SerializeField] float adjustRayLeft;
     [SerializeField] float adjustRayRight;
-    public float acceration_Value;
+    [HideInInspector] public float acceration_Value;
     public float speed_Reader;
 
     //checking waypoints
+    [Header("Waypoints system")]
     public TrackWayPoints waypoints;
     public List<Transform> nodes = new List<Transform>();
     [Range(0, 10)] public int distanceOffset;
     [Range(0, 5)] public float steeringForce;
     public Transform currentWaypoint;
-
-
     [SerializeField] int currentWaypointIndex;
     [SerializeField] float waypointApproachThreshold;
-    public bool loopIsTrue = true; 
-
-    // using nodes instead for the waypoints
-
-
     // Start is called before the first frame update
     void Start()
     {
         carAI = m_AICarBody.GetComponent<AI_Controls>();
-        //rb = m_AICarBody.GetComponent<Rigidbody>();
         rb = m_AICarBody.GetComponentInChildren<Rigidbody>();
     }
 
@@ -59,7 +55,7 @@ public class AI : MonoBehaviour
     void Update()
     {
         carAI.acceration_Value = acceration_Value;
-        speed_Reader = carAI.currentSpeed; 
+        speed_Reader = carAI.currentSpeed;
         Sensor();
         //CalculateDistanceOfWaypoints();
         changingDistanceOffset();
@@ -69,7 +65,7 @@ public class AI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+
     }
     private void definingRays()
     {
@@ -133,13 +129,13 @@ public class AI : MonoBehaviour
             {
 
                 //Debug.Log("Hit the enivroment in front");
-                carAI.acceration_Value = -2f; 
+                carAI.acceration_Value = -2f;
 
             }
             else
             {
 
-              //  Debug.Log("left the enivroment front");
+                //  Debug.Log("left the enivroment front");
                 carAI.acceration_Value = 1.2f;
 
             }
@@ -159,9 +155,9 @@ public class AI : MonoBehaviour
             {
                 currentWaypoint = nodes[i + distanceOffset];
                 distance = currentDistance;
-               
+
             }
-           
+
 
         }
     }
@@ -169,7 +165,7 @@ public class AI : MonoBehaviour
     private void CheckForUpdatedWaypoints() //call this every update
     {
         //These should be defined in the class not as local variables
-       // int currentWaypointIndex;
+        // int currentWaypointIndex;
         //float waypointApproachThreshold;
 
         Vector3 difference = nodes[currentWaypointIndex].transform.position - rb.transform.position;
@@ -177,10 +173,12 @@ public class AI : MonoBehaviour
         {
             currentWaypointIndex++;
             currentWaypointIndex %= nodes.Count;
-            //if(currentWaypointIndex >= nodes.Count)
-            //{
-            //
-            //}
+            if (nodes[currentWaypointIndex].gameObject.CompareTag("tester"))
+            {
+                Debug.Log("it checks outs");
+            }
+            else
+                return;
         }
 
     }
@@ -191,56 +189,134 @@ public class AI : MonoBehaviour
 
     //private void AIAccerate()
     //{
-        
-       
+
+
     //}
     private void AISteer()
     {
         Vector3 targetPosition = nodes[(currentWaypointIndex + distanceOffset) % nodes.Count].transform.position;
         Vector3 relative = rb.transform.InverseTransformPoint(/*currentWaypoint.transform.position*/targetPosition);
         relative /= relative.magnitude;
-        carAI.steering_Value = steer_Value; 
-        steer_Value = (relative.x / relative.magnitude) * steeringForce; 
+        carAI.steering_Value = steer_Value;
+        steer_Value = (relative.x / relative.magnitude) * steeringForce;
     }
+
 
     private void changingDistanceOffset()
     {
-        if (speed_Reader > 170)
+        switch (difficultness)
         {
-            distanceOffset = 3;
+            case aI_Difficulty.easy:
+
+                acceration_Value = 1f;
+
+
+                break;
+            case aI_Difficulty.normal:
+
+                acceration_Value = 1.2f;
+
+                break;
+            case aI_Difficulty.hard:
+
+                acceration_Value = 1.5f;
+
+
+                break;
+
+
+
         }
 
-        if (speed_Reader < 160)
+
+        if (speed_Reader > 150 && speed_Reader < 190)
         {
-            distanceOffset = 2;
-            acceration_Value = 1;
+            if (difficultness == aI_Difficulty.easy)
+            {
+                distanceOffset = 2;
+                acceration_Value = 1f;
+                waypointApproachThreshold = 17f;
+            }
+            if (difficultness == aI_Difficulty.normal)
+            {
+                distanceOffset = 2;
+                acceration_Value = 1.2f;
+                waypointApproachThreshold = 17f;
+            }
+            if (difficultness == aI_Difficulty.hard)
+            {
+                distanceOffset = 3;
+                acceration_Value = 1.5f;
+                
+            }
         }
 
+        if (speed_Reader > 50 && speed_Reader <150)
+        {
+
+            if (difficultness == aI_Difficulty.easy)
+            {
+                distanceOffset = 2;
+                acceration_Value = 1f;
+                waypointApproachThreshold = 17f;
+            }
+            if (difficultness == aI_Difficulty.normal)
+            {
+                distanceOffset = 2;
+                acceration_Value = 1.2f;
+                waypointApproachThreshold = 17f;
+            }
+
+            if (difficultness == aI_Difficulty.hard)
+            {
+                distanceOffset = 2;
+                acceration_Value = 1.5f;
+                waypointApproachThreshold = 17f; 
+            }
+            /*distanceOffset = 2;
+            acceration_Value = 1;*/
+        }
+        if (speed_Reader < 200 && speed_Reader > 190)
+        {
+            if (difficultness == aI_Difficulty.normal)
+            {
+                distanceOffset = 2;
+                waypointApproachThreshold = 17f;
+            }
+            if (difficultness == aI_Difficulty.hard)
+            {
+                distanceOffset = 3;
+                steeringForce = 0.9f;
+                waypointApproachThreshold = 20f;
+            }
+           
+        }
 
         if (speed_Reader < 50)
         {
             distanceOffset = 1;
-            acceration_Value = 1.5f;
+            steeringForce = 1f;
+            waypointApproachThreshold = 20f;
             if (Physics.Raycast(frontRay, out RaycastHit hit, range))
             {
                 waypointApproachThreshold = 50f;
                 if (hit.collider.CompareTag("walls"))
                 {
-                    steeringForce = 5;
+                    steeringForce = 3;
                     Debug.Log("Hitting wall");
                     carAI.acceration_Value = -2f;
-                   // carAI.steering_Value = -carAI.steering_Value;
+                    // carAI.steering_Value = -carAI.steering_Value;
                 }
-                else
+                else if (!hit.collider.CompareTag("walls"))
                 {
 
                     //  Debug.Log("left the enivroment front");
                     carAI.acceration_Value = 1.0f;
                     waypointApproachThreshold = 20f;
-                    steeringForce = 0.9f;
+                    steeringForce = 1f;
                 }
             }
         }
-      
+
     }
 }

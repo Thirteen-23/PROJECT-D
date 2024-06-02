@@ -5,41 +5,37 @@ using UnityEngine;
 
 public class Tracking_Manager_Script : MonoBehaviour
 {
+    public List<Transform> checkpointNodes = new List<Transform>();
+    [SerializeField] float checkpointIndex;
+    [SerializeField] GameObject[] carsInGame;
+    public int carPosition; 
 
-    public Tracking_Acceleration_Braking[] inputManage;
-    // public List<Transform> checkpoints = new List<Transform>();
-    public GameObject[] children;
-
-    private int i;
-    [SerializeField] float speeder;
-    [SerializeField] int m_AccelChange;
-    [SerializeField] int m_SlowDownChange;
-    float geto { get; set; }
-    [SerializeField] int m_SpeedUpDistanceOffsetChange;
-    [SerializeField] int m_SpeedDownDistanceOffsetChange;
-
-    // Start is called before the first frame update
     void Start()
     {
-        children = new GameObject[transform.childCount];
-        foreach (Transform child in transform)
+        //children = new Transform[transform.childCount];
+        //foreach (Transform child in transform)
+        //{
+        //    children[i++] = child.transform;
+
+        //}
+        Transform[] paths = GetComponentsInChildren<Transform>();
+        checkpointNodes = new List<Transform>(); 
+        for(int i = 0; i < paths.Length; i++)
         {
-            children[i++] = child.gameObject;
-            
+            checkpointNodes.Add(paths[i]); 
         }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        for(int i = 0; i < children.Length + 1; i++)
-        {
-            children[i].GetComponent<Tracking_Acceleration_Braking>();
-            
-
-        }
-        //m_SlowDownChange = inputManage.distanceOffset_AccerationChange;
+       
     }
 
+    private void CheckpointPass()
+    {
+        
+    }
 
 }

@@ -11,6 +11,7 @@ TagManager:
   - Trigger
   - AI
   - walls
+  - tester
   layers:
   - Default
   - TransparentFX

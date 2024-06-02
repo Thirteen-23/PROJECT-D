@@ -46,25 +46,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c15261bb194bac64ea7331f4f72b492f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  difficultness: 2
   rb: {fileID: 1278929773074508417}
-  editingRotation: 0
   range: 5
   m_AICarBody: {fileID: 3316706709415594725}
   m_AICarBodyDetection: {fileID: 1152766082348221417}
   steer_Value: 0
-  steering_Angle: 0
-  steering_valueLeft: -0.5
-  steering_valueRight: 0.5
-  returningToOriginalTurnValue: 0
-  adjustRayLeft: 0.5
-  adjustRayRight: -0.5
+  adjustRayLeft: 0.25
+  adjustRayRight: -0.25
   acceration_Value: 1.5
   speed_Reader: 0
   waypoints: {fileID: 0}
   nodes: []
-  distanceOffset: 4
-  steeringForce: 1.2
+  distanceOffset: 0
+  steeringForce: 0.9
   currentWaypoint: {fileID: 0}
+  currentWaypointIndex: 0
+  waypointApproachThreshold: 20
 --- !u!114 &407126466948351844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,6 +88,7 @@ MonoBehaviour:
   - {fileID: 4986440825074986895}
   - {fileID: 8335902150449128495}
   - {fileID: 8923997133591379741}
+  centerMass: {fileID: 5422709966325761098}
   enginePower:
     serializedVersion: 2
     m_Curve: []
@@ -161,6 +160,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 4123533204729032469}
     m_Modifications:
     - target: {fileID: 507736041, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
+      propertyPath: m_Name
+      value: BrakeLight
+      objectReference: {fileID: 0}
+    - target: {fileID: 507736041, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
       propertyPath: m_TagString
       value: AI
       objectReference: {fileID: 0}
@@ -179,6 +182,10 @@ PrefabInstance:
     - target: {fileID: 1176413396, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
       propertyPath: m_TagString
       value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 2106403137, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
+      propertyPath: m_Name
+      value: BrakeLight
       objectReference: {fileID: 0}
     - target: {fileID: 2106403137, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
       propertyPath: m_TagString
@@ -422,6 +429,11 @@ GameObject:
 --- !u!1 &4986440825074986895 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1040947760749431445, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
+  m_PrefabInstance: {fileID: 5422709967103517978}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5422709966325761098 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 872259920, guid: 2f5c45a0ca805eb4086a534aa81c2c8b, type: 3}
   m_PrefabInstance: {fileID: 5422709967103517978}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6327311341844034876 stripped

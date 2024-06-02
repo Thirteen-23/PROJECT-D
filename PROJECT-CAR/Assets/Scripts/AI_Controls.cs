@@ -21,7 +21,7 @@ public class AI_Controls : MonoBehaviour
     [SerializeField] Rigidbody bodyOfCar;
     [SerializeField] WheelCollider[] wheels4 = new WheelCollider[4];
     [SerializeField] GameObject[] wheelmeshes = new GameObject[4];
-
+    [SerializeField] Transform centerMass;
     //[SerializeField] AnimationCurve gearRatio;
 
     float currentBreakForce, handbraking;
@@ -77,7 +77,7 @@ public class AI_Controls : MonoBehaviour
 
     void Start()
     {
-        
+        bodyOfCar.centerOfMass = centerMass.localPosition;
         originalPos = gameObject.transform.position;
         rotations = gameObject.transform.rotation;
         //carNewInputSystem = GetComponent<PlayerInput>();
