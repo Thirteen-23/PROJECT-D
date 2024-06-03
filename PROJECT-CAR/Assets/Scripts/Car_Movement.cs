@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Car_Movement : MonoBehaviour
 {
+    //keeping track of how many laps in the race. 
+    public int numberOfLaps; 
     CarNewInputSystem input;
 
     enum DifferentialTypes

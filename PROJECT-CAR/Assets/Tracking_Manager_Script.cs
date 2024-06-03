@@ -29,6 +29,7 @@ public class Tracking_Manager_Script : MonoBehaviour
             checkpointNodes.Add(paths[i]);
             
         }
+
         foreach(Transform child in gameObject.GetComponentsInChildren<Transform>())
         {
             tester.Add(child.gameObject);

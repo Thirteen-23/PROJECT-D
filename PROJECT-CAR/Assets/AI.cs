@@ -38,6 +38,7 @@ public class AI : MonoBehaviour
     public Transform currentWaypoint;
     [SerializeField] int currentWaypointIndex;
     [SerializeField] float waypointApproachThreshold;
+    public int numberOfLaps; 
     // Start is called before the first frame update
     void Start()
     {
