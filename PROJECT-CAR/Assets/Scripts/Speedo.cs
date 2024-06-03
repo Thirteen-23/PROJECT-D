@@ -22,8 +22,13 @@ public class Speedo : MonoBehaviour
 
     [Header("Speedo UI")]
     public TextMeshProUGUI speedLabel;
+    public TextMeshProUGUI speedoFinalSpeed;
+    public TextMeshProUGUI speedoMiddleSpeed;
+    [SerializeField] Image speedoNeedle;
+    [SerializeField] float minSpeedoAngle;
+    [SerializeField] float maxSpeedoAngle;
     public float maxSpeed = 0.0f;
-    [SerializeField] float speed;
+    private float speed;
     private float finalSpeed;
     const float speedoSnap = 2f;
 
@@ -55,13 +60,16 @@ public class Speedo : MonoBehaviour
     private void speedo()
     {
         // 3.6f conversion to KM/H
-
+        speedoFinalSpeed.text = maxSpeed + "";
+        speedoMiddleSpeed.text = maxSpeed / 2 + ""; 
         speed = rb.velocity.magnitude * 3.6f;
         finalSpeed = Mathf.Lerp(finalSpeed, speed, speedoSnap * Time.deltaTime);
         if (speedLabel != null)
         {
             speedLabel.text = ((int)finalSpeed) + "km/h";
+            speedoNeedle.transform.localEulerAngles = new Vector3(0, 0, Mathf.Lerp(minSpeedoAngle, maxSpeedoAngle, speed / maxSpeed)); 
             //speedoNeedle.transform.localEulerAngles = new Vector3(0, 0, Mathf.Lerp(minSpeedAngle, maxSpeedAngle, speed / maxSpeed));
+
         }
     }
 

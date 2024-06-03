@@ -352,18 +352,18 @@ public class Car_Movement : MonoBehaviour
     {
         if(context.started)
         {
-            Debug.Log("started");
+            //Debug.Log("started");
             shiftUp = true;
             shift_Value++;
         }
       else if(context.performed)
         {
-            Debug.Log("performed");
+           // Debug.Log("performed");
             shiftUp = false; 
         }
         else if( context.canceled)
         {
-            Debug.Log("cancelled");
+           // Debug.Log("cancelled");
         }
     }
   
@@ -376,12 +376,12 @@ public class Car_Movement : MonoBehaviour
         }
         else if (context.performed)
         {
-            Debug.Log("performed");
+           // Debug.Log("performed");
             shiftDown = false;
         }
         else if (context.canceled)
         {
-            Debug.Log("cancelled");
+           // Debug.Log("cancelled");
         }
     }
 

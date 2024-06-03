@@ -25,6 +25,7 @@ public class AI : MonoBehaviour
     [SerializeField] float steer_Value;
     [SerializeField] float adjustRayLeft;
     [SerializeField] float adjustRayRight;
+    private float forceTurn = 25000f;
     [HideInInspector] public float acceration_Value;
     public float speed_Reader;
 
@@ -97,9 +98,13 @@ public class AI : MonoBehaviour
             if (hit.collider.CompareTag("AI"))
             {
                 // Debug.Log("Hit the enivroment in left");
-                carAI.acceration_Value = -2f;
+                //carAI.acceration_Value = -2f;
+                rb.AddForce(-rb.transform.right * forceTurn);
             }
-
+            else if (hit.collider.CompareTag("walls"))
+            {
+                rb.AddForce(-rb.transform.right * forceTurn);
+            }
         }
         else
         {
@@ -114,10 +119,13 @@ public class AI : MonoBehaviour
             if (hit.collider.CompareTag("AI"))
             {
                 //   Debug.Log("Hit the enivroment in Right");
-                carAI.acceration_Value = -2f;
-
+                // carAI.acceration_Value = -2f;
+                rb.AddForce(rb.transform.right * forceTurn);
             }
-
+            else if (hit.collider.CompareTag("walls"))
+            {
+                rb.AddForce(rb.transform.right * forceTurn);
+            }
         }
     }
     private void FrontRaySensor()
@@ -129,15 +137,12 @@ public class AI : MonoBehaviour
             {
 
                 //Debug.Log("Hit the enivroment in front");
-                carAI.acceration_Value = -2f;
-
+                //carAI.acceration_Value = -2f;
+                rb.AddForce(-rb.transform.forward * forceTurn);
             }
-            else
+            else if (hit.collider.CompareTag("walls"))
             {
-
-                //  Debug.Log("left the enivroment front");
-                carAI.acceration_Value = 1.2f;
-
+                rb.AddForce(-rb.transform.forward * forceTurn);
             }
         }
     }
@@ -302,7 +307,7 @@ public class AI : MonoBehaviour
                 waypointApproachThreshold = 50f;
                 if (hit.collider.CompareTag("walls"))
                 {
-                    steeringForce = 3;
+                    steeringForce = 1.5f;
                     Debug.Log("Hitting wall");
                     carAI.acceration_Value = -2f;
                     // carAI.steering_Value = -carAI.steering_Value;
@@ -317,6 +322,13 @@ public class AI : MonoBehaviour
                 }
             }
         }
+
+    }
+
+    private void OnCollisionEnter(UnityEngine.Collision collision)
+    {
+        Debug.Log(collision.gameObject); 
+
 
     }
 }
