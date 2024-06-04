@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 public class Speedo : MonoBehaviour
 {
@@ -10,7 +11,8 @@ public class Speedo : MonoBehaviour
 
     [SerializeField] Rigidbody rb;
     [SerializeField] Car_Movement car;
-   
+    [SerializeField] Tracking_Manager_Script checkingPosition; 
+
     [Header("RPM UI")]
     [SerializeField] Image RPMNeedle;
     [SerializeField] float minRPMAngle;
@@ -38,25 +40,40 @@ public class Speedo : MonoBehaviour
     [SerializeField] int gear;
 
 
+    public TextMeshProUGUI positionBoard;
+    [SerializeField] GameObject[] list;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = rb.GetComponent<Rigidbody>();
-        car = car.GetComponent<Car_Movement>();
+       // rb = rb.GetComponent<Rigidbody>();
+       // car = car.GetComponent<Car_Movement>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         speedo();
         GearChangeFunction();
         RPMBar();
         ExactNumOfRPM();
+        ScoreBoard();
 
-        
     }
+    private void ScoreBoard()
+    {
+        for (int i = 0; i < checkingPosition.m_listOfCars.Length; i++)
+        {
+            list[i] = checkingPosition.m_listOfCars[i];
+        }
 
+        for (int i = 0; i < list.Length; i++)
+        {
+            positionBoard.text = list[i] + "";
+        }
+    }
     private void speedo()
     {
         // 3.6f conversion to KM/H

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,11 +10,13 @@ public class Tracking_Manager_Script : MonoBehaviour
     CheckFlagPoint m_Sensors; 
     public List<Transform> checkpointNodes = new List<Transform>();
     public List<GameObject> listOfCars = new List<GameObject>();
-    public List<GameObject> tester = new List<GameObject>();
-    [SerializeField] int[] checkpointIndex = new int[0];
+    public GameObject[] m_listOfCars = new GameObject[0];
+    public List<GameObject> assigningNodes = new List<GameObject>();
     [SerializeField] GameObject[] carsInGame;
-    public int carPosition;
-   
+    AI anotherBridge;
+    public float changingSpeedToAccerate;
+    public float changingSpeedToSlowDown;
+    public int score;
     void Start()
     {
         //children = new Transform[transform.childCount];
@@ -22,6 +25,18 @@ public class Tracking_Manager_Script : MonoBehaviour
         //    children[i++] = child.transform;
 
         //}
+        
+
+        for(int i = 0; i < listOfCars.Count; i++)
+        {
+            if(listOfCars[i].CompareTag("AI"))
+            {
+                anotherBridge = listOfCars[i].GetComponent<AI>();
+                 
+            }
+        }
+        
+        
         Transform[] paths = GetComponentsInChildren<Transform>();
         checkpointNodes = new List<Transform>(); 
         for(int i = 1; i < paths.Length; i++)
@@ -32,16 +47,20 @@ public class Tracking_Manager_Script : MonoBehaviour
 
         foreach(Transform child in gameObject.GetComponentsInChildren<Transform>())
         {
-            tester.Add(child.gameObject);
+            assigningNodes.Add(child.gameObject);
         }
-        CheckpointPass();
+       // CheckpointPass();
         m_Sensors = GetComponentInChildren<CheckFlagPoint>(); 
     }
 
     // Update is called once per frame
     void Update()
     {
-        listOfCars = m_Sensors.listOfCars; 
+        m_listOfCars = m_listOfCars.OrderBy(gameObject => gameObject.GetComponent<AI>().currentWaypointIndex).ToArray();
+       
+
+        // listOfCars = m_Sensors.listOfCars;
+
     }
 
     private void CheckpointPass()

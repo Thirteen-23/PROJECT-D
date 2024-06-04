@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -84,10 +85,21 @@ public class Car_Movement : MonoBehaviour
 
     private float turnSpeed;
     [SerializeField] AnimationCurve steeringCurve;
+
+    //handling Waypoints
+    [Header("WayPoints Setup for Position")]
+    public TrackWayPoints waypoints;
+    public List<Transform> nodes = new List<Transform>();
+    public Transform currentWaypoint;
+    public int currentWaypointIndex;
+    [SerializeField] float waypointApproachThreshold;
+
     // Start is called before the first frame update 
     private void Awake()
     {
+        
         input = new CarNewInputSystem();
+       
     }
 
     private void OnEnable()
@@ -108,6 +120,7 @@ public class Car_Movement : MonoBehaviour
     }
     void Start()
     {
+        nodes = waypoints.trackNodes;
         originalPos = gameObject.transform.position;
         rotations = gameObject.transform.rotation;
         bodyOfCar.centerOfMass = centerMass.localPosition;
@@ -128,7 +141,7 @@ public class Car_Movement : MonoBehaviour
         ResettingCar();
         Shifting();
         SetEngineRPMAndTorque();
-
+        CheckingDistanceOfWaypoints();
     }
 
     private void GettingInput()
@@ -394,8 +407,8 @@ public class Car_Movement : MonoBehaviour
         {
             if ((shiftUp == true && shift_Value > currentShift_Value) && (gearNum < gearSpeedBox.Length - 1))
             {
-                Debug.Log(gearNum);
-                Debug.Log(gearSpeedBox[gearNum]);
+                //Debug.Log(gearNum);
+                //Debug.Log(gearSpeedBox[gearNum]);
                
                     gearNum++;
                     currentShift_Value = shift_Value; 
@@ -450,7 +463,15 @@ public class Car_Movement : MonoBehaviour
 
     }
 
-
+    private void CheckingDistanceOfWaypoints()
+    {
+        Vector3 difference = nodes[currentWaypointIndex].transform.position - bodyOfCar.transform.position;
+        if (difference.magnitude < waypointApproachThreshold)
+        {
+            currentWaypointIndex++;
+            currentWaypointIndex %= nodes.Count;
+        }
+    }
     #region Old Code not used
     /*public void ReadingHandlingInput()
     {

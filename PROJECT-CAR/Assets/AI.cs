@@ -28,6 +28,7 @@ public class AI : MonoBehaviour
     private float forceTurn = 25000f;
     [HideInInspector] public float acceration_Value;
     public float speed_Reader;
+    public float speed_Limiter = 200f; 
 
     //checking waypoints
     [Header("Waypoints system")]
@@ -36,20 +37,26 @@ public class AI : MonoBehaviour
     [Range(0, 10)] public int distanceOffset;
     [Range(0, 5)] public float steeringForce;
     public Transform currentWaypoint;
-    [SerializeField] int currentWaypointIndex;
+    public int currentWaypointIndex;
     [SerializeField] float waypointApproachThreshold;
-    public int numberOfLaps; 
+    public int numberOfLaps;
+
+    Tracking_Manager_Script valueBeingRead;
+    [SerializeField] GameObject bridge;
+
     // Start is called before the first frame update
     void Start()
     {
         carAI = m_AICarBody.GetComponent<AI_Controls>();
         rb = m_AICarBody.GetComponentInChildren<Rigidbody>();
+        bridge = GameObject.Find("Checkpoints");
+        valueBeingRead = bridge.GetComponent<Tracking_Manager_Script>();
     }
 
     void Awake()
     {
         //waypoints 
-        waypoints = GameObject.FindGameObjectWithTag("Waypoints").GetComponent<TrackWayPoints>();
+        //waypoints = GameObject.FindGameObjectWithTag("Waypoints").GetComponent<TrackWayPoints>();
         nodes = waypoints.trackNodes;
 
     }
@@ -63,6 +70,7 @@ public class AI : MonoBehaviour
         changingDistanceOffset();
         CheckForUpdatedWaypoints();
         AISteer();
+      
     }
 
     private void FixedUpdate()
@@ -173,18 +181,13 @@ public class AI : MonoBehaviour
         //These should be defined in the class not as local variables
         // int currentWaypointIndex;
         //float waypointApproachThreshold;
-
+        carAI.maxSpeed = speed_Limiter;
         Vector3 difference = nodes[currentWaypointIndex].transform.position - rb.transform.position;
         if (difference.magnitude < waypointApproachThreshold)
         {
             currentWaypointIndex++;
             currentWaypointIndex %= nodes.Count;
-            if (nodes[currentWaypointIndex].gameObject.CompareTag("tester"))
-            {
-                Debug.Log("it checks outs");
-            }
-            else
-                return;
+            ChangeMaxSpeed();
         }
 
     }
@@ -326,10 +329,19 @@ public class AI : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter(UnityEngine.Collision collision)
+    private void ChangeMaxSpeed()
     {
-        Debug.Log(collision.gameObject); 
-
-
+        carAI.maxSpeed = speed_Limiter;
+        if (nodes[currentWaypointIndex].gameObject.CompareTag("AccerateNode"))
+        {
+            speed_Limiter = valueBeingRead.changingSpeedToAccerate; 
+        }
+        else if(nodes[currentWaypointIndex].gameObject.CompareTag("SlowNode"))
+        {
+            speed_Limiter = valueBeingRead.changingSpeedToSlowDown;
+        }
+        else
+            return;
+       
     }
 }

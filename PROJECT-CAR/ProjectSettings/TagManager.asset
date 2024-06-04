@@ -12,6 +12,8 @@ TagManager:
   - AI
   - walls
   - tester
+  - AccerateNode
+  - SlowNode
   layers:
   - Default
   - TransparentFX

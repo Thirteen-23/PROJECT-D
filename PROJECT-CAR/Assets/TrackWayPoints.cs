@@ -1,16 +1,17 @@
 
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TrackWayPoints : MonoBehaviour
 {
     public Color wayPointColour;
     [Range(0, 1)] public float sphereRadius; 
-    public List<Transform> trackNodes = new List<Transform>();
+    public List<Transform> trackNodes = new List<Transform>(); 
 
     private void Start()
     {
-        
+        ChangingNodes();
     }
     private void Update()
     {
@@ -45,8 +46,20 @@ public class TrackWayPoints : MonoBehaviour
             }
             Debug.DrawLine(previousPoint, currentPoint);
             Gizmos.DrawLine(previousPoint, currentPoint);
-            Gizmos.DrawSphere(currentPoint, sphereRadius);
+           
 
+        }
+    }
+
+    private void ChangingNodes()
+    {
+        int childCount = gameObject.transform.childCount;
+        for(int i = 0; i < childCount; i++)
+        {
+            if(gameObject.transform.GetChild(i).tag == "AccerateNode")
+            {
+                gameObject.transform.GetChild(i).AddComponent<CheckFlagPoint>();
+            }
         }
     }
    
