@@ -108,11 +108,11 @@ public class AI : MonoBehaviour
             {
                 // Debug.Log("Hit the enivroment in left");
                 //carAI.acceration_Value = -2f;
-                rb.AddForce(-rb.transform.right * forceTurn);
+                rb.AddForce(rb.transform.right * forceTurn);
             }
             else if (hit.collider.CompareTag("walls"))
             {
-                rb.AddForce(-rb.transform.right * forceTurn);
+                rb.AddForce(rb.transform.right * forceTurn);
             }
         }
         else
@@ -129,11 +129,11 @@ public class AI : MonoBehaviour
             {
                 //   Debug.Log("Hit the enivroment in Right");
                 // carAI.acceration_Value = -2f;
-                rb.AddForce(rb.transform.right * forceTurn);
+                rb.AddForce(-rb.transform.right * forceTurn);
             }
             else if (hit.collider.CompareTag("walls"))
             {
-                rb.AddForce(rb.transform.right * forceTurn);
+                rb.AddForce(-rb.transform.right * forceTurn);
             }
         }
     }

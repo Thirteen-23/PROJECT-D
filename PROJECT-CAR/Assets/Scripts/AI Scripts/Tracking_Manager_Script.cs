@@ -9,14 +9,12 @@ public class Tracking_Manager_Script : MonoBehaviour
 {
     CheckFlagPoint m_Sensors; 
     public List<Transform> checkpointNodes = new List<Transform>();
-    public List<GameObject> listOfCars = new List<GameObject>();
+    
     public GameObject[] m_listOfCars = new GameObject[0];
     public List<GameObject> assigningNodes = new List<GameObject>();
-    [SerializeField] GameObject[] carsInGame;
-    AI anotherBridge;
     public float changingSpeedToAccerate;
     public float changingSpeedToSlowDown;
-    public int score;
+    
     void Start()
     {
         //children = new Transform[transform.childCount];
@@ -27,14 +25,6 @@ public class Tracking_Manager_Script : MonoBehaviour
         //}
         
 
-        for(int i = 0; i < listOfCars.Count; i++)
-        {
-            if(listOfCars[i].CompareTag("AI"))
-            {
-                anotherBridge = listOfCars[i].GetComponent<AI>();
-                 
-            }
-        }
         
         
         Transform[] paths = GetComponentsInChildren<Transform>();

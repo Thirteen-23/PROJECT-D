@@ -46,16 +46,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c15261bb194bac64ea7331f4f72b492f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficultness: 1
+  difficultness: 0
   rb: {fileID: 7707342901541789780}
-  range: 6
+  range: 4
   m_AICarBody: {fileID: 5612357800943352368}
   m_AICarBodyDetection: {fileID: 2563162987460995278}
   steer_Value: 0
-  adjustRayLeft: 0.25
-  adjustRayRight: -0.25
+  adjustRayLeft: -0.25
+  adjustRayRight: 0.25
   acceration_Value: 0
   speed_Reader: 0
+  speed_Limiter: 100
   waypoints: {fileID: 0}
   nodes: []
   distanceOffset: 1
@@ -63,6 +64,8 @@ MonoBehaviour:
   currentWaypoint: {fileID: 0}
   currentWaypointIndex: 0
   waypointApproachThreshold: 0
+  numberOfLaps: 0
+  bridge: {fileID: 0}
 --- !u!114 &7158236610966282544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,7 +98,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  maxSpeed: 200
+  maxSpeed: 100
   totalPowerInCar: 0
   currentSpeed: 0
   acceration_Value: 0
@@ -193,7 +196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1397374074, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_SidewaysFriction.m_Stiffness
-      value: 2
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 1632450679, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_TagString
@@ -233,7 +236,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2065349430, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_SidewaysFriction.m_Stiffness
-      value: 2
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 2076938277, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_Name
@@ -257,9 +260,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2076938279, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_SidewaysFriction.m_Stiffness
-      value: 2
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 256172842583362973, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 265392307060824475, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 433879451569682293, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 786686445950166783, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_TagString
       value: AI
       objectReference: {fileID: 0}
@@ -268,6 +283,14 @@ PrefabInstance:
       value: AI
       objectReference: {fileID: 0}
     - target: {fileID: 1378458828525459068, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 1475924186571885694, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 1486362449383168259, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_TagString
       value: AI
       objectReference: {fileID: 0}
@@ -285,15 +308,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1563017394218635370, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_SidewaysFriction.m_Stiffness
-      value: 2
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987036940401222018, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
       objectReference: {fileID: 0}
     - target: {fileID: 2069109301594369166, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 2244692733207098126, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 2450597803014055278, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_TagString
       value: AI
       objectReference: {fileID: 0}
     - target: {fileID: 2452371970450487958, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.022
+      objectReference: {fileID: 0}
+    - target: {fileID: 2547692667777545006, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
       objectReference: {fileID: 0}
     - target: {fileID: 2677595000165701917, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_Name
@@ -307,11 +346,31 @@ PrefabInstance:
       propertyPath: m_TagString
       value: AI
       objectReference: {fileID: 0}
+    - target: {fileID: 2877167155101742112, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
     - target: {fileID: 2917711679008336538, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_Name
       value: Front Wheel R
       objectReference: {fileID: 0}
     - target: {fileID: 2917711679008336538, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 3348188859876469522, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 3359117564078278312, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 4251519750673871600, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436567681753091846, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_TagString
       value: AI
       objectReference: {fileID: 0}
@@ -359,11 +418,79 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5252242763212994364, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 5289430074934784237, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_Drag
+      value: 0.02
+      objectReference: {fileID: 0}
     - target: {fileID: 5750081646409122795, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_TagString
       value: AI
       objectReference: {fileID: 0}
+    - target: {fileID: 5949354622691407071, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6037308529165268383, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6154955499909415440, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6760255258592382489, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6810537650258207337, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 42bcd8bf1b43e0d4681a3112649140fe, type: 2}
+    - target: {fileID: 6960096469544621763, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6985496408962922500, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7007530635237470082, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7169368485865810755, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 54804b1f69a4f5148898049f6e6e4892, type: 2}
+    - target: {fileID: 7519849594094684634, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 8273349983579760327, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
     - target: {fileID: 8301778864620003316, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 8454150050072175977, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 8490214484630674205, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 8981255921327793493, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
+      propertyPath: m_TagString
+      value: AI
+      objectReference: {fileID: 0}
+    - target: {fileID: 9134451591934988344, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_TagString
       value: AI
       objectReference: {fileID: 0}
