@@ -71,6 +71,15 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=1)"",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Handbrake"",
+                    ""type"": ""Value"",
+                    ""id"": ""4e149a13-7ba9-432a-a63e-fea2898df491"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -271,6 +280,17 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                     ""action"": ""Shifting Down"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fe6efbeb-5296-48a0-8ba0-b5b1e4bd63c4"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Handbrake"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -284,6 +304,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
         m_Movement_braking = m_Movement.FindAction("braking", throwIfNotFound: true);
         m_Movement_Shiftingup = m_Movement.FindAction("Shifting up", throwIfNotFound: true);
         m_Movement_ShiftingDown = m_Movement.FindAction("Shifting Down", throwIfNotFound: true);
+        m_Movement_Handbrake = m_Movement.FindAction("Handbrake", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -350,6 +371,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
     private readonly InputAction m_Movement_braking;
     private readonly InputAction m_Movement_Shiftingup;
     private readonly InputAction m_Movement_ShiftingDown;
+    private readonly InputAction m_Movement_Handbrake;
     public struct MovementActions
     {
         private @CarNewInputSystem m_Wrapper;
@@ -359,6 +381,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
         public InputAction @braking => m_Wrapper.m_Movement_braking;
         public InputAction @Shiftingup => m_Wrapper.m_Movement_Shiftingup;
         public InputAction @ShiftingDown => m_Wrapper.m_Movement_ShiftingDown;
+        public InputAction @Handbrake => m_Wrapper.m_Movement_Handbrake;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -383,6 +406,9 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
             @ShiftingDown.started += instance.OnShiftingDown;
             @ShiftingDown.performed += instance.OnShiftingDown;
             @ShiftingDown.canceled += instance.OnShiftingDown;
+            @Handbrake.started += instance.OnHandbrake;
+            @Handbrake.performed += instance.OnHandbrake;
+            @Handbrake.canceled += instance.OnHandbrake;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -402,6 +428,9 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
             @ShiftingDown.started -= instance.OnShiftingDown;
             @ShiftingDown.performed -= instance.OnShiftingDown;
             @ShiftingDown.canceled -= instance.OnShiftingDown;
+            @Handbrake.started -= instance.OnHandbrake;
+            @Handbrake.performed -= instance.OnHandbrake;
+            @Handbrake.canceled -= instance.OnHandbrake;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -426,5 +455,6 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
         void OnBraking(InputAction.CallbackContext context);
         void OnShiftingup(InputAction.CallbackContext context);
         void OnShiftingDown(InputAction.CallbackContext context);
+        void OnHandbrake(InputAction.CallbackContext context);
     }
 }
