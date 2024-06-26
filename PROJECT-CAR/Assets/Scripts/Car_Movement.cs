@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class Car_Movement : MonoBehaviour
 {
     //keeping track of how many laps in the race. 
-    public int numberOfLaps; 
+    public int numberOfLaps;
     CarNewInputSystem input;
 
     enum DifferentialTypes
@@ -27,7 +27,7 @@ public class Car_Movement : MonoBehaviour
     [SerializeField] Rigidbody bodyOfCar;
     [SerializeField] WheelCollider[] wheels4 = new WheelCollider[4];
     [SerializeField] GameObject[] wheelmeshes = new GameObject[4];
-    [SerializeField] Transform centerMass; 
+    [SerializeField] Transform centerMass;
 
     //[SerializeField] AnimationCurve gearRatio;
 
@@ -56,10 +56,11 @@ public class Car_Movement : MonoBehaviour
     private float m_RPMOfWheels;
     [SerializeField] float smoothTime;
     [SerializeField] Vector2[] keyRPMSet = new Vector2[0];
+    [SerializeField] ParticleSystem exhaust_Shift;
 
     [Header("Manual Shift")]
     [SerializeField] bool shiftUp = false;
-    [SerializeField] bool shiftDown = false; 
+    [SerializeField] bool shiftDown = false;
     [SerializeField] float shift_Value;
     [SerializeField] float currentShift_Value;
 
@@ -97,9 +98,9 @@ public class Car_Movement : MonoBehaviour
     // Start is called before the first frame update 
     private void Awake()
     {
-        
+
         input = new CarNewInputSystem();
-       
+
     }
 
     private void OnEnable()
@@ -120,10 +121,11 @@ public class Car_Movement : MonoBehaviour
     }
     void Start()
     {
-        nodes = waypoints.trackNodes;
+       // nodes = waypoints.trackNodes;
         originalPos = gameObject.transform.position;
         rotations = gameObject.transform.rotation;
         bodyOfCar.centerOfMass = centerMass.localPosition;
+        exhaust_Shift = GetComponentInChildren<ParticleSystem>();
         //carNewInputSystem = GetComponent<PlayerInput>();
     }
 
@@ -137,11 +139,11 @@ public class Car_Movement : MonoBehaviour
         AnimatedWheels();
         DampeningSystem();
         calculatingEnginePower();
-        
+
         ResettingCar();
         Shifting();
         SetEngineRPMAndTorque();
-        CheckingDistanceOfWaypoints();
+        //CheckingDistanceOfWaypoints();
     }
 
     private void GettingInput()
@@ -235,6 +237,15 @@ public class Car_Movement : MonoBehaviour
                 for (int i = 2; i < wheels4.Length; i++)
                 {
                     wheels4[i].motorTorque = acceration_Value * 0;
+                    WheelHit hit = new WheelHit();
+                    if (wheels4[i].GetGroundHit(out hit))
+                    {
+                        if(hit.sidewaysSlip > .15)
+                        {
+                            Debug.Log("drifting");
+                            Debug.Log(hit.sidewaysSlip);
+                        }
+                    }
                 }
             }
             else if (drive == DifferentialTypes.FrontWheelDrive)
@@ -243,11 +254,12 @@ public class Car_Movement : MonoBehaviour
                 for (int i = 0; i < wheels4.Length - 2; i++)
                 {
                     wheels4[i].motorTorque = acceration_Value * 0;
+
                 }
             }
 
         }
-        if (brakes_value >0.7f)
+        if (brakes_value > 0.7f)
         {
             isBreaking = true;
         }
@@ -365,38 +377,51 @@ public class Car_Movement : MonoBehaviour
     }
     public void ShiftingUp(InputAction.CallbackContext context)
     {
-        if(context.started)
+        if (context.started)
         {
-            //Debug.Log("started");
-            shiftUp = true;
-            shift_Value++;
-        }
-      else if(context.performed)
-        {
-           // Debug.Log("performed");
-            shiftUp = false; 
-        }
-        else if( context.canceled)
-        {
-           // Debug.Log("cancelled");
-        }
-    }
-  
-    public void ShiftingDown(InputAction.CallbackContext context)
-    {
-        if(context.started)
-        {
-            shiftDown = true;
-            shift_Value--; 
+            if (shift_Value <= gearSpeedBox.Length - 1 && shift_Value < gearSpeedBox.Length-1)
+            {    //Debug.Log("started");
+                shiftUp = true;
+                shift_Value++;
+            }
+            else if(shift_Value == gearSpeedBox.Length -1)
+            {
+                return;
+            }
         }
         else if (context.performed)
         {
-           // Debug.Log("performed");
+            // Debug.Log("performed");
+            shiftUp = false;
+        }
+        else if (context.canceled)
+        {
+            // Debug.Log("cancelled");
+        }
+    }
+
+    public void ShiftingDown(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (shift_Value <= gearSpeedBox.Length - 1 && shift_Value > 0)
+            {
+                shiftDown = true;
+                shift_Value--;
+            }
+            else if (shift_Value == 0 )
+            {
+                shift_Value = 0;
+            }
+        }
+        else if (context.performed)
+        {
+            // Debug.Log("performed");
             shiftDown = false;
         }
         else if (context.canceled)
         {
-           // Debug.Log("cancelled");
+            // Debug.Log("cancelled");
         }
     }
 
@@ -404,22 +429,28 @@ public class Car_Movement : MonoBehaviour
     private void Shifting()
     {
         if (transmission == TransmissionTypes.Manual)
-        {
+        {   
+            Mathf.Clamp(shift_Value, 0, gearSpeedBox.Length-1);
             if ((shiftUp == true && shift_Value > currentShift_Value) && (gearNum < gearSpeedBox.Length - 1))
             {
                 //Debug.Log(gearNum);
                 //Debug.Log(gearSpeedBox[gearNum]);
-               
-                    gearNum++;
-                    currentShift_Value = shift_Value; 
 
+                gearNum++;
+                currentShift_Value = shift_Value;
+                exhaust_Shift.Play();
+               if(shift_Value ==  gearSpeedBox.Length-1)
+                {
+                    shift_Value = gearSpeedBox.Length - 1; 
+                }
             }
             else if ((shiftDown == true && shift_Value < currentShift_Value) && (gearNum > 0))
             {
-               
-                    gearNum--;
-                    shift_Value = currentShift_Value; 
 
+                gearNum--;
+
+                currentShift_Value = shift_Value;
+              
             }
         }
         if (transmission == TransmissionTypes.Automatic)
@@ -463,15 +494,15 @@ public class Car_Movement : MonoBehaviour
 
     }
 
-    private void CheckingDistanceOfWaypoints()
-    {
-        Vector3 difference = nodes[currentWaypointIndex].transform.position - bodyOfCar.transform.position;
-        if (difference.magnitude < waypointApproachThreshold)
-        {
-            currentWaypointIndex++;
-            currentWaypointIndex %= nodes.Count;
-        }
-    }
+    //private void CheckingDistanceOfWaypoints()
+    //{
+    //    Vector3 difference = nodes[currentWaypointIndex].transform.position - bodyOfCar.transform.position;
+    //    if (difference.magnitude < waypointApproachThreshold)
+    //    {
+    //        currentWaypointIndex++;
+    //        currentWaypointIndex %= nodes.Count;
+    //    }
+    //}
     #region Old Code not used
     /*public void ReadingHandlingInput()
     {
