@@ -3016,6 +3016,34 @@ PrefabInstance:
       propertyPath: transmission
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: keyRPMSet.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: keyRPMSet.Array.data[1].x
+      value: 7500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: keyRPMSet.Array.data[1].y
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: keyRPMSet.Array.data[2].x
+      value: 8000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: keyRPMSet.Array.data[2].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: keyRPMSet.Array.data[3].x
+      value: 8000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: keyRPMSet.Array.data[3].y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8435574104746627693, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
       propertyPath: m_Name
       value: Hybrid
@@ -3567,7 +3595,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.073333874, y: -0.7085234, z: 0.07444943, w: 0.697907}
+  m_LocalRotation: {x: 0.07333389, y: -0.7085234, z: 0.074449435, w: 0.697907}
   m_LocalPosition: {x: -12.146128, y: 3.172501, z: 23.951805}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4455,12 +4483,12 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Drive - Arrow Keys
 
-    Handbrake - Space
+    Accelerate - Shift
 
-    Full Brakes - B
+    slowDown / Reverse - Ctrl
 
-    Reset
-    Position - R
+    Full
+    Brakes - X
 
     Quit - Esc'
   m_isRightToLeft: 0
@@ -4525,7 +4553,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -70.92456, y: 0, z: -61.537506, w: -104.300934}
+  m_margin: {x: -70.92456, y: 0, z: -169.73727, w: -104.300934}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

@@ -137,7 +137,7 @@ public class Car_Movement : MonoBehaviour
         AnimatedWheels();
         DampeningSystem();
         calculatingEnginePower();
-        quitApplication();
+        
         ResettingCar();
         Shifting();
         SetEngineRPMAndTorque();
