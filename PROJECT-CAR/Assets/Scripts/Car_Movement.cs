@@ -237,15 +237,7 @@ public class Car_Movement : MonoBehaviour
                 for (int i = 2; i < wheels4.Length; i++)
                 {
                     wheels4[i].motorTorque = acceration_Value * 0;
-                    WheelHit hit = new WheelHit();
-                    if (wheels4[i].GetGroundHit(out hit))
-                    {
-                        if(hit.sidewaysSlip > .15)
-                        {
-                            Debug.Log("drifting");
-                            Debug.Log(hit.sidewaysSlip);
-                        }
-                    }
+                   
                 }
             }
             else if (drive == DifferentialTypes.FrontWheelDrive)
@@ -268,7 +260,16 @@ public class Car_Movement : MonoBehaviour
         handbraking = ifHandBraking ? rearBrakeForce : 0f;
         ApplyBreaking();
         ApplyHandBraking();
-    }
+        //WheelHit hit = new WheelHit();
+        //if (wheels4[i].GetGroundHit(out hit))
+        //{
+        //    Debug.Log("drifting");
+        //    if (hit.sidewaysSlip > 0)
+        //    {
+        //        Debug.Log("drifting");
+        //        Debug.Log(hit.sidewaysSlip);
+        //    }
+        }
 
     private void ApplyBreaking()
     {
@@ -424,7 +425,14 @@ public class Car_Movement : MonoBehaviour
             // Debug.Log("cancelled");
         }
     }
-
+    public void Handbraking(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            handbraking = context.ReadValue<float>();
+        }
+       
+    }
 
     private void Shifting()
     {

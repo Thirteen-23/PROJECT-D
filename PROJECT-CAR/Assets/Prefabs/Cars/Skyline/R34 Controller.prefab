@@ -5397,7 +5397,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  maxSpeed: 200
+  maxSpeed: 350
   totalPowerInCar: 0
   currentSpeed: 0
   acceration_Value: 0
@@ -5419,8 +5419,8 @@ MonoBehaviour:
   smoothTime: 0.01
   keyRPMSet:
   - {x: 0, y: 0}
-  - {x: 4400, y: 392}
-  - {x: 6800, y: 600}
+  - {x: 4400, y: 600}
+  - {x: 6800, y: 200}
   - {x: 7000, y: 0}
   exhaust_Shift: {fileID: 0}
   shiftUp: 0
