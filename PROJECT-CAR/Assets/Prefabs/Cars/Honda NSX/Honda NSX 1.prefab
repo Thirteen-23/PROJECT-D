@@ -1718,7 +1718,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberOfLaps: 0
   transmission: 1
-  drive: 2
+  drive: 1
   bodyOfCar: {fileID: 3644423903500492570}
   wheels4:
   - {fileID: 3644423904117202608}
@@ -1759,7 +1759,7 @@ MonoBehaviour:
   smoothTime: 0.01
   keyRPMSet:
   - {x: 0, y: 0}
-  - {x: 5500, y: 1000}
+  - {x: 5500, y: 600}
   - {x: 8000, y: 0}
   exhaust_Shift: {fileID: 0}
   shiftUp: 0

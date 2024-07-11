@@ -121,7 +121,7 @@ public class Car_Movement : MonoBehaviour
     }
     void Start()
     {
-       // nodes = waypoints.trackNodes;
+        // nodes = waypoints.trackNodes;
         originalPos = gameObject.transform.position;
         rotations = gameObject.transform.rotation;
         bodyOfCar.centerOfMass = centerMass.localPosition;
@@ -237,7 +237,7 @@ public class Car_Movement : MonoBehaviour
                 for (int i = 2; i < wheels4.Length; i++)
                 {
                     wheels4[i].motorTorque = acceration_Value * 0;
-                   
+
                 }
             }
             else if (drive == DifferentialTypes.FrontWheelDrive)
@@ -269,7 +269,7 @@ public class Car_Movement : MonoBehaviour
         //        Debug.Log("drifting");
         //        Debug.Log(hit.sidewaysSlip);
         //    }
-        }
+    }
 
     private void ApplyBreaking()
     {
@@ -285,9 +285,20 @@ public class Car_Movement : MonoBehaviour
 
     private void ApplyHandBraking()
     {
+        WheelHit hit = new WheelHit();
         for (int i = 2; i < wheels4.Length; i++)
         {
             wheels4[i].brakeTorque = handbraking;
+            ;
+            if (wheels4[i].GetGroundHit(out hit))
+            {
+                Debug.Log("drifting");
+                if (hit.sidewaysSlip > 0)
+                {
+                    Debug.Log("drifting");
+                    Debug.Log(hit.sidewaysSlip);
+                }
+            }
         }
     }
 
@@ -380,12 +391,12 @@ public class Car_Movement : MonoBehaviour
     {
         if (context.started)
         {
-            if (shift_Value <= gearSpeedBox.Length - 1 && shift_Value < gearSpeedBox.Length-1)
+            if (shift_Value <= gearSpeedBox.Length - 1 && shift_Value < gearSpeedBox.Length - 1)
             {    //Debug.Log("started");
                 shiftUp = true;
                 shift_Value++;
             }
-            else if(shift_Value == gearSpeedBox.Length -1)
+            else if (shift_Value == gearSpeedBox.Length - 1)
             {
                 return;
             }
@@ -410,7 +421,7 @@ public class Car_Movement : MonoBehaviour
                 shiftDown = true;
                 shift_Value--;
             }
-            else if (shift_Value == 0 )
+            else if (shift_Value == 0)
             {
                 shift_Value = 0;
             }
@@ -431,14 +442,14 @@ public class Car_Movement : MonoBehaviour
         {
             handbraking = context.ReadValue<float>();
         }
-       
+
     }
 
     private void Shifting()
     {
         if (transmission == TransmissionTypes.Manual)
-        {   
-            Mathf.Clamp(shift_Value, 0, gearSpeedBox.Length-1);
+        {
+            Mathf.Clamp(shift_Value, 0, gearSpeedBox.Length - 1);
             if ((shiftUp == true && shift_Value > currentShift_Value) && (gearNum < gearSpeedBox.Length - 1))
             {
                 //Debug.Log(gearNum);
@@ -447,9 +458,9 @@ public class Car_Movement : MonoBehaviour
                 gearNum++;
                 currentShift_Value = shift_Value;
                 exhaust_Shift.Play();
-               if(shift_Value ==  gearSpeedBox.Length-1)
+                if (shift_Value == gearSpeedBox.Length - 1)
                 {
-                    shift_Value = gearSpeedBox.Length - 1; 
+                    shift_Value = gearSpeedBox.Length - 1;
                 }
             }
             else if ((shiftDown == true && shift_Value < currentShift_Value) && (gearNum > 0))
@@ -458,7 +469,7 @@ public class Car_Movement : MonoBehaviour
                 gearNum--;
 
                 currentShift_Value = shift_Value;
-              
+
             }
         }
         if (transmission == TransmissionTypes.Automatic)
