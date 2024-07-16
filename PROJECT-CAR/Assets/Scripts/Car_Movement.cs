@@ -30,7 +30,7 @@ public class Car_Movement : MonoBehaviour
     [SerializeField] Transform centerMass;
 
     //[SerializeField] AnimationCurve gearRatio;
-
+    [SerializeField] float downForceValue; 
     float currentBreakForce, handbraking;
     bool resetPosition = false;
 
@@ -139,7 +139,7 @@ public class Car_Movement : MonoBehaviour
         AnimatedWheels();
         DampeningSystem();
         calculatingEnginePower();
-
+        ApplyingDownForce();
         ResettingCar();
         Shifting();
         SetEngineRPMAndTorque();
@@ -256,21 +256,11 @@ public class Car_Movement : MonoBehaviour
             isBreaking = true;
         }
         currentBreakForce = isBreaking ? (allBrakeForce * brakeDampening) : 0f;
-        //currentBreakForce =  allBrakeForce * brakeDampening;
         handbraking = ifHandBraking ? rearBrakeForce : 0f;
         ApplyBreaking();
         ApplyHandBraking();
-        //WheelHit hit = new WheelHit();
-        //if (wheels4[i].GetGroundHit(out hit))
-        //{
-        //    Debug.Log("drifting");
-        //    if (hit.sidewaysSlip > 0)
-        //    {
-        //        Debug.Log("drifting");
-        //        Debug.Log(hit.sidewaysSlip);
-        //    }
-    }
 
+    }
     private void ApplyBreaking()
     {
         for (int i = 0; i < wheels4.Length; i++)
@@ -285,20 +275,10 @@ public class Car_Movement : MonoBehaviour
 
     private void ApplyHandBraking()
     {
-        WheelHit hit = new WheelHit();
         for (int i = 2; i < wheels4.Length; i++)
         {
             wheels4[i].brakeTorque = handbraking;
-            ;
-            if (wheels4[i].GetGroundHit(out hit))
-            {
-                Debug.Log("drifting");
-                if (hit.sidewaysSlip > 0)
-                {
-                    Debug.Log("drifting");
-                    Debug.Log(hit.sidewaysSlip);
-                }
-            }
+            
         }
     }
 
@@ -512,31 +492,10 @@ public class Car_Movement : MonoBehaviour
         }
 
     }
-
-    //private void CheckingDistanceOfWaypoints()
-    //{
-    //    Vector3 difference = nodes[currentWaypointIndex].transform.position - bodyOfCar.transform.position;
-    //    if (difference.magnitude < waypointApproachThreshold)
-    //    {
-    //        currentWaypointIndex++;
-    //        currentWaypointIndex %= nodes.Count;
-    //    }
-    //}
-    #region Old Code not used
-    /*public void ReadingHandlingInput()
+    private void ApplyingDownForce()
     {
-        steering_Value = m_Movement.ReadValue<float>();
-        print(steering_Value);
+        bodyOfCar.AddForce(-transform.up * downForceValue *bodyOfCar.velocity.magnitude);
     }
-
-    private void ReadingAccerationInput()
-    {
-        acceration_Value += m_Acceration.ReadValue<float>() * 0.10f;
-        acceration_Value = Mathf.Clamp(acceration_Value, -1, 1);
-        print(acceration_Value);
-    }
-    */
-    #endregion
 }
 
 
