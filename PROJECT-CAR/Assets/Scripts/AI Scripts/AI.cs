@@ -340,6 +340,10 @@ public class AI : MonoBehaviour
         {
             speed_Limiter = valueBeingRead.changingSpeedToSlowDown;
         }
+        else if (nodes[currentWaypointIndex].gameObject.CompareTag("SlowNoder"))
+        {
+            speed_Limiter = valueBeingRead.changingSpeedToSlowDownMore;
+        }
         else
             return;
        

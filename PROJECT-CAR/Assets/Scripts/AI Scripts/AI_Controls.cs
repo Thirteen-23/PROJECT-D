@@ -23,7 +23,7 @@ public class AI_Controls : MonoBehaviour
     [SerializeField] GameObject[] wheelmeshes = new GameObject[4];
     [SerializeField] Transform centerMass;
     //[SerializeField] AnimationCurve gearRatio;
-
+    [SerializeField] float downForceValue;
     float currentBreakForce, handbraking;
 
     [Header("Speed and Power of the Car")]
@@ -94,7 +94,7 @@ public class AI_Controls : MonoBehaviour
         calculatingEnginePower();
         Shifting();
         SetEngineRPMAndTorque();
-
+        ApplyingDownForce();
     }
 
     private float SmoothTransition(float input, float output)
@@ -295,6 +295,9 @@ public class AI_Controls : MonoBehaviour
         }
 
     }
-
+    private void ApplyingDownForce()
+    {
+        bodyOfCar.AddForce(-transform.up * downForceValue * bodyOfCar.velocity.magnitude);
+    }
 
 }

@@ -52,8 +52,8 @@ MonoBehaviour:
   m_AICarBody: {fileID: 1703674958295886201}
   m_AICarBodyDetection: {fileID: 3917171596075688053}
   steer_Value: 0
-  adjustRayLeft: 0.25
-  adjustRayRight: -0.25
+  adjustRayLeft: -0.25
+  adjustRayRight: 0.25
   acceration_Value: 1
   speed_Reader: 0
   speed_Limiter: 200
@@ -92,6 +92,7 @@ MonoBehaviour:
   - {fileID: 5335910842573785011}
   - {fileID: 4790577009081851009}
   centerMass: {fileID: 8278374293435983830}
+  downForceValue: 0
   enginePower:
     serializedVersion: 2
     m_Curve: []

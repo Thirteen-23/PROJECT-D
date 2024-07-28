@@ -81,7 +81,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -5099,7 +5099,7 @@ WheelCollider:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_Enabled: 1
 --- !u!1 &594080814780057066
@@ -5326,6 +5326,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   centerMass: {fileID: 0}
+  downForceValue: 0
   enginePower:
     serializedVersion: 2
     m_Curve: []
@@ -5390,6 +5391,7 @@ MonoBehaviour:
   - {fileID: 2371238651774581122}
   - {fileID: 8256806644213574480}
   centerMass: {fileID: 1470910753}
+  downForceValue: 0
   horsePower: 0
   enginePower:
     serializedVersion: 2
@@ -5420,7 +5422,7 @@ MonoBehaviour:
   keyRPMSet:
   - {x: 0, y: 0}
   - {x: 4400, y: 600}
-  - {x: 6800, y: 200}
+  - {x: 6800, y: 400}
   - {x: 7000, y: 0}
   exhaust_Shift: {fileID: 0}
   shiftUp: 0
@@ -5429,6 +5431,7 @@ MonoBehaviour:
   currentShift_Value: 0
   isBreaking: 0
   ifHandBraking: 0
+  handBrakefrictionMulitplier: 2
   allBrakeForce: 100
   frontBrakeForce: 0
   rearBrakeForce: 0
@@ -5466,6 +5469,7 @@ MonoBehaviour:
   currentWaypoint: {fileID: 0}
   currentWaypointIndex: 0
   waypointApproachThreshold: 0
+  slip: []
 --- !u!114 &231682712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5505,12 +5509,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 757095194464903153}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c1ea2ca05019bf4aa392d08fd31487a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ControllerModes: 2
+  m_ControllerModes: 0
 --- !u!1 &937103998701593286
 GameObject:
   m_ObjectHideFlags: 0
@@ -6626,7 +6630,7 @@ WheelCollider:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_Enabled: 1
 --- !u!1 &5187183191594141306
@@ -6688,7 +6692,7 @@ WheelCollider:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_Enabled: 1
 --- !u!1 &5215901563233851309
@@ -6750,7 +6754,7 @@ WheelCollider:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
-    m_AsymptoteValue: 0.75
+    m_AsymptoteValue: 1
     m_Stiffness: 1
   m_Enabled: 1
 --- !u!1 &6242731671571178510

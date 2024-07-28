@@ -14,7 +14,7 @@ public class Tracking_Manager_Script : MonoBehaviour
     public List<GameObject> assigningNodes = new List<GameObject>();
     public float changingSpeedToAccerate;
     public float changingSpeedToSlowDown;
-    
+    public float changingSpeedToSlowDownMore;
     void Start()
     {
         //children = new Transform[transform.childCount];

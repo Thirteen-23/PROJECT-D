@@ -1311,7 +1311,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3644423903367087148}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.772, z: -0.707}
+  m_LocalPosition: {x: 0, y: 0.655, z: -0.549}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1594,7 +1594,7 @@ Transform:
   m_GameObject: {fileID: 3644423904262560496}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3644423903500492571}
@@ -1731,6 +1731,7 @@ MonoBehaviour:
   - {fileID: 3644423904314800204}
   - {fileID: 3644423904748609533}
   centerMass: {fileID: 3644423903367087151}
+  downForceValue: 50
   horsePower: 0
   enginePower:
     serializedVersion: 2
@@ -1760,6 +1761,7 @@ MonoBehaviour:
   keyRPMSet:
   - {x: 0, y: 0}
   - {x: 5500, y: 600}
+  - {x: 6500, y: 800}
   - {x: 8000, y: 0}
   exhaust_Shift: {fileID: 0}
   shiftUp: 0
@@ -1768,6 +1770,7 @@ MonoBehaviour:
   currentShift_Value: 0
   isBreaking: 0
   ifHandBraking: 0
+  handBrakefrictionMulitplier: 2
   allBrakeForce: 10000
   frontBrakeForce: 0
   rearBrakeForce: 10000
@@ -1850,19 +1853,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transmission: 0
-  drive: 0
-  bodyOfCar: {fileID: 0}
+  drive: 1
+  bodyOfCar: {fileID: 3644423903500492570}
   wheels4:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 3644423904117202608}
+  - {fileID: 3644423903558177469}
+  - {fileID: 3644423904724866544}
+  - {fileID: 3644423903054246419}
   wheelmeshes:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  centerMass: {fileID: 0}
+  - {fileID: 3644423902956315432}
+  - {fileID: 3644423904529928594}
+  - {fileID: 3644423904314800204}
+  - {fileID: 3644423904748609533}
+  centerMass: {fileID: 3644423903367087151}
+  downForceValue: 0
   enginePower:
     serializedVersion: 2
     m_Curve: []
@@ -1880,10 +1884,18 @@ MonoBehaviour:
   maxRPMForCar: 0
   engineRPM: 0
   finalDriveRatio: 0
-  gearSpeedBox: []
+  gearSpeedBox:
+  - 3.5
+  - 2.5
+  - 1.5
+  - 1
+  - 0.75
   gearNum: 0
   smoothTime: 0
-  keyRPMSet: []
+  keyRPMSet:
+  - {x: 0, y: 0}
+  - {x: 5500, y: 600}
+  - {x: 8000, y: 0}
   isBreaking: 0
   ifHandBraking: 0
   allBrakeForce: 0
@@ -1896,7 +1908,25 @@ MonoBehaviour:
   brakeDampening: 0
   steeringCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 30
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 300
+      value: 15
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4

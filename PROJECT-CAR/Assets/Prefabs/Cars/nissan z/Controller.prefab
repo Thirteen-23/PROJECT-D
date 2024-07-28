@@ -92,6 +92,7 @@ MonoBehaviour:
   - {fileID: 3565561653827682359}
   - {fileID: 2313782580984356132}
   centerMass: {fileID: 2563162988581352890}
+  downForceValue: 50
   enginePower:
     serializedVersion: 2
     m_Curve: []
@@ -119,7 +120,7 @@ MonoBehaviour:
   smoothTime: 0.01
   keyRPMSet:
   - {x: 0, y: 0}
-  - {x: 5500, y: 1600}
+  - {x: 5500, y: 800}
   - {x: 6500, y: 0}
   isBreaking: 0
   ifHandBraking: 0
@@ -168,7 +169,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 597058819, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.38
+      value: -0.483
       objectReference: {fileID: 0}
     - target: {fileID: 597058819, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -449,7 +450,7 @@ PrefabInstance:
     - target: {fileID: 6810537650258207337, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 42bcd8bf1b43e0d4681a3112649140fe, type: 2}
+      objectReference: {fileID: 2100000, guid: ea2da08153cc6534a95042e766438e80, type: 2}
     - target: {fileID: 6960096469544621763, guid: 80957048f5165674fb72a475b6ecbabb, type: 3}
       propertyPath: m_TagString
       value: AI
