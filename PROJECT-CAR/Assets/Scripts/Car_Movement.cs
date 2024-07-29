@@ -605,7 +605,8 @@ public class Car_Movement : MonoBehaviour
         float driftSmoothFactor = 0.7f * Time.deltaTime;
         if (ifHandBraking || handbraking == 1)
         {
-            bodyOfCar.angularDrag = whenDrifting; 
+            bodyOfCar.angularDrag = whenDrifting;
+           
             sidewaysFriction = wheels4[0].sidewaysFriction;
             forwardFriction = wheels4[0].forwardFriction;
 
@@ -631,7 +632,7 @@ public class Car_Movement : MonoBehaviour
 
             }
 
-            bodyOfCar.AddForce(transform.forward * (currentSpeed / 400) * 10000);
+            bodyOfCar.AddForce(bodyOfCar.transform.forward * (currentSpeed / 400) * 10000);
         }
         // executed when handbrake is held
         else
