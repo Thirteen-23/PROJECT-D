@@ -74,6 +74,8 @@ public class Car_Movement : MonoBehaviour
     float handbrakefriction;
     float tempo;
     [SerializeField] float[] slip = new float[4];
+    [SerializeField] float whenNotDrifting;
+    [SerializeField] float whenDrifting;
 
     [Header("Handling & Brakes")]
     [SerializeField] float allBrakeForce;
@@ -603,6 +605,7 @@ public class Car_Movement : MonoBehaviour
         float driftSmoothFactor = 0.7f * Time.deltaTime;
         if (ifHandBraking || handbraking == 1)
         {
+            bodyOfCar.angularDrag = whenDrifting; 
             sidewaysFriction = wheels4[0].sidewaysFriction;
             forwardFriction = wheels4[0].forwardFriction;
 
@@ -618,7 +621,7 @@ public class Car_Movement : MonoBehaviour
                 wheels4[i].sidewaysFriction = sidewaysFriction;
                 wheels4[i].forwardFriction = forwardFriction;
             }
-            sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = forwardFriction.extremumValue = forwardFriction.asymptoteValue = 1.1f;
+            sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = forwardFriction.extremumValue = forwardFriction.asymptoteValue = 0.8f;
 
             // extra grip for front wheels
             for (int i = 0; i < 2; i++)
@@ -633,6 +636,7 @@ public class Car_Movement : MonoBehaviour
         // executed when handbrake is held
         else
         {
+            bodyOfCar.angularDrag =whenNotDrifting;
             forwardFriction = wheels4[0].forwardFriction;
             sidewaysFriction = wheels4[0].sidewaysFriction;
 
