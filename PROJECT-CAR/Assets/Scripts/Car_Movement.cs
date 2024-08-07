@@ -622,7 +622,7 @@ public class Car_Movement : MonoBehaviour
                 wheels4[i].sidewaysFriction = sidewaysFriction;
                 wheels4[i].forwardFriction = forwardFriction;
             }
-            sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = forwardFriction.extremumValue = forwardFriction.asymptoteValue = 0.8f;
+            sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = forwardFriction.extremumValue = forwardFriction.asymptoteValue = 1f;
 
             // extra grip for front wheels
             for (int i = 0; i < 2; i++)
@@ -641,7 +641,7 @@ public class Car_Movement : MonoBehaviour
             forwardFriction = wheels4[0].forwardFriction;
             sidewaysFriction = wheels4[0].sidewaysFriction;
 
-            forwardFriction.extremumValue = forwardFriction.asymptoteValue = sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = ((currentSpeed * handBrakefrictionMulitplier / 300) + 1);
+            forwardFriction.extremumValue = forwardFriction.asymptoteValue = sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = Mathf.Lerp((forwardFriction.extremumValue = forwardFriction.asymptoteValue = sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue), (currentSpeed * handBrakefrictionMulitplier / 300) + 1, Time.deltaTime /2 );
 
             for (int i = 0; i < 4; i++)
             {

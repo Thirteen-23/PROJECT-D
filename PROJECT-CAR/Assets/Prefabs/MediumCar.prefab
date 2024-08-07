@@ -1630,7 +1630,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7068922213792788636}
-  m_LocalRotation: {x: -0, y: -0.7418961, z: -0, w: 0.6705149}
+  m_LocalRotation: {x: 0, y: -0.7418939, z: 0, w: 0.6705173}
   m_LocalPosition: {x: 94.55, y: 16.28, z: -243.93}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1829,7 +1829,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberOfLaps: 0
   transmission: 0
-  drive: 2
+  drive: 1
   bodyOfCar: {fileID: 8081262989529237365}
   wheels4:
   - {fileID: 6603173348232608217}
@@ -1887,6 +1887,8 @@ MonoBehaviour:
   - 0
   - 0
   - 0
+  whenNotDrifting: 10
+  whenDrifting: 5
   allBrakeForce: 1000000
   frontBrakeForce: 0
   rearBrakeForce: 1000000
