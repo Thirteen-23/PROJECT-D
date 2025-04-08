@@ -28,7 +28,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
             ""id"": ""8fac8abd-f718-4b9e-95ad-40bbd4dbca53"",
             ""actions"": [
                 {
-                    ""name"": ""Acceration"",
+                    ""name"": ""Acceleration"",
                     ""type"": ""Value"",
                     ""id"": ""1076a2c9-1f6a-4953-9358-676dde72db6c"",
                     ""expectedControlType"": ""Button"",
@@ -40,7 +40,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                     ""name"": ""Steering"",
                     ""type"": ""Value"",
                     ""id"": ""7f7af0e4-e3b6-4be7-9cf1-431a74dd75f3"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -90,7 +90,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Acceration"",
+                    ""action"": ""Acceleration"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -101,7 +101,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Acceration"",
+                    ""action"": ""Acceleration"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -112,7 +112,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Acceration"",
+                    ""action"": ""Acceleration"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -123,7 +123,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Acceration"",
+                    ""action"": ""Acceleration"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -134,7 +134,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Acceration"",
+                    ""action"": ""Acceleration"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -145,25 +145,14 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Acceration"",
+                    ""action"": ""Acceleration"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Steering/Keyboard"",
-                    ""id"": ""31a6d4b0-69f7-492b-9805-7507c2c14e38"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Steering"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
                     ""name"": ""Gamepad"",
                     ""id"": ""2ab2bad3-bf19-44b8-8d74-437ea9eaa581"",
-                    ""path"": ""1DAxis"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -172,7 +161,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""negative"",
+                    ""name"": ""Up"",
                     ""id"": ""a5cb45e9-c2de-4324-93ed-1b67b3879438"",
                     ""path"": ""<Gamepad>/leftStick/left"",
                     ""interactions"": """",
@@ -183,7 +172,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""positive"",
+                    ""name"": ""Down"",
                     ""id"": ""59a69bc5-13c3-4dea-a7e4-c803e4d31a00"",
                     ""path"": ""<Gamepad>/leftStick/right"",
                     ""interactions"": """",
@@ -194,9 +183,9 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Negative"",
-                    ""id"": ""7da83726-870d-49e2-b834-74b7ed997df4"",
-                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""name"": ""right"",
+                    ""id"": ""5603ae35-2dfe-4435-91bc-a378bc5c7d9a"",
+                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -205,9 +194,9 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Positive"",
-                    ""id"": ""eaa6b72a-ec9e-47b0-9f56-01dd21f3275e"",
-                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""name"": ""left"",
+                    ""id"": ""a214e6fb-c323-4085-8854-b11f74a2ded2"",
+                    ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -310,7 +299,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
 }");
         // Movement
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
-        m_Movement_Acceration = m_Movement.FindAction("Acceration", throwIfNotFound: true);
+        m_Movement_Acceleration = m_Movement.FindAction("Acceleration", throwIfNotFound: true);
         m_Movement_Steering = m_Movement.FindAction("Steering", throwIfNotFound: true);
         m_Movement_braking = m_Movement.FindAction("braking", throwIfNotFound: true);
         m_Movement_Shiftingup = m_Movement.FindAction("Shifting up", throwIfNotFound: true);
@@ -377,7 +366,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
     // Movement
     private readonly InputActionMap m_Movement;
     private List<IMovementActions> m_MovementActionsCallbackInterfaces = new List<IMovementActions>();
-    private readonly InputAction m_Movement_Acceration;
+    private readonly InputAction m_Movement_Acceleration;
     private readonly InputAction m_Movement_Steering;
     private readonly InputAction m_Movement_braking;
     private readonly InputAction m_Movement_Shiftingup;
@@ -387,7 +376,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
     {
         private @CarNewInputSystem m_Wrapper;
         public MovementActions(@CarNewInputSystem wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Acceration => m_Wrapper.m_Movement_Acceration;
+        public InputAction @Acceleration => m_Wrapper.m_Movement_Acceleration;
         public InputAction @Steering => m_Wrapper.m_Movement_Steering;
         public InputAction @braking => m_Wrapper.m_Movement_braking;
         public InputAction @Shiftingup => m_Wrapper.m_Movement_Shiftingup;
@@ -402,9 +391,9 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_MovementActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_MovementActionsCallbackInterfaces.Add(instance);
-            @Acceration.started += instance.OnAcceration;
-            @Acceration.performed += instance.OnAcceration;
-            @Acceration.canceled += instance.OnAcceration;
+            @Acceleration.started += instance.OnAcceleration;
+            @Acceleration.performed += instance.OnAcceleration;
+            @Acceleration.canceled += instance.OnAcceleration;
             @Steering.started += instance.OnSteering;
             @Steering.performed += instance.OnSteering;
             @Steering.canceled += instance.OnSteering;
@@ -424,9 +413,9 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IMovementActions instance)
         {
-            @Acceration.started -= instance.OnAcceration;
-            @Acceration.performed -= instance.OnAcceration;
-            @Acceration.canceled -= instance.OnAcceration;
+            @Acceleration.started -= instance.OnAcceleration;
+            @Acceleration.performed -= instance.OnAcceleration;
+            @Acceleration.canceled -= instance.OnAcceleration;
             @Steering.started -= instance.OnSteering;
             @Steering.performed -= instance.OnSteering;
             @Steering.canceled -= instance.OnSteering;
@@ -461,7 +450,7 @@ public partial class @CarNewInputSystem: IInputActionCollection2, IDisposable
     public MovementActions @Movement => new MovementActions(this);
     public interface IMovementActions
     {
-        void OnAcceration(InputAction.CallbackContext context);
+        void OnAcceleration(InputAction.CallbackContext context);
         void OnSteering(InputAction.CallbackContext context);
         void OnBraking(InputAction.CallbackContext context);
         void OnShiftingup(InputAction.CallbackContext context);

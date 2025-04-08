@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1470910752}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.394, z: 0.23}
+  m_LocalPosition: {x: 0, y: -1.63, z: 0.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5086,7 +5086,7 @@ WheelCollider:
     damper: 5000
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
-  m_ForceAppPointDistance: 0
+  m_ForceAppPointDistance: -0.35
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
@@ -5256,7 +5256,19 @@ MonoBehaviour:
     m_ActionId: 7f7af0e4-e3b6-4be7-9cf1-431a74dd75f3
     m_ActionName: Movement/Steering[/Keyboard/leftArrow,/Keyboard/rightArrow]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 231682711}
+        m_TargetAssemblyTypeName: Car_Movement, Assembly-CSharp
+        m_MethodName: BrakingInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: b9f0fff6-a1ec-4f26-9476-c665d7522c43
     m_ActionName: Movement/braking[/Keyboard/x]
   - m_PersistentCalls:
@@ -5326,7 +5338,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   centerMass: {fileID: 0}
-  downForceValue: 0
   enginePower:
     serializedVersion: 2
     m_Curve: []
@@ -5338,6 +5349,7 @@ MonoBehaviour:
   currentSpeed: 0
   acceration_Value: 0
   AccerationDamping: 0
+  downForceValue: 0
   idleRPM: 0
   maxRPM: 0
   minRPM: 0
@@ -5350,6 +5362,9 @@ MonoBehaviour:
   keyRPMSet: []
   isBreaking: 0
   ifHandBraking: 0
+  handBrakefrictionMulitplier: 2
+  whenNotDrifting: 0
+  whenDrifting: 0
   allBrakeForce: 0
   frontBrakeForce: 0
   rearBrakeForce: 0
@@ -5364,6 +5379,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  m_RayRange: 0
+  draftingMultiplierValue: 0
 --- !u!114 &231682711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5377,6 +5394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfLaps: 0
+  terrain: 0
   transmission: 1
   drive: 2
   bodyOfCar: {fileID: 1782876259091884056}
@@ -5391,7 +5409,7 @@ MonoBehaviour:
   - {fileID: 2371238651774581122}
   - {fileID: 8256806644213574480}
   centerMass: {fileID: 1470910753}
-  downForceValue: 0
+  downForceValue: 100
   horsePower: 0
   enginePower:
     serializedVersion: 2
@@ -5400,7 +5418,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxSpeed: 350
-  totalPowerInCar: 0
   currentSpeed: 0
   acceration_Value: 0
   AccerationDamping: 0
@@ -5420,26 +5437,23 @@ MonoBehaviour:
   gearNum: 0
   smoothTime: 0.01
   keyRPMSet:
-  - {x: 0, y: 0}
-  - {x: 4400, y: 600}
-  - {x: 6800, y: 400}
+  - {x: 0, y: 50}
+  - {x: 6800, y: 250}
   - {x: 7000, y: 0}
   exhaust_Shift: {fileID: 0}
-  shiftUp: 0
-  shiftDown: 0
-  shift_Value: 0
-  currentShift_Value: 0
-  isBreaking: 0
+  slip: []
+  amountOfSlipToShift: 0.7
+  isBraking: 0
   ifHandBraking: 0
   handBrakefrictionMulitplier: 2
-  allBrakeForce: 100
+  whenNotDrifting: 4
+  whenDrifting: 2
+  turnOnAllTerrain: 0
+  frictionPlusValueForAbility: 0
+  allBrakeForce: 10000
   frontBrakeForce: 0
   rearBrakeForce: 0
-  steering_Value: 0
-  steeringDamping: 0
   smoothTransitionSpeed: 7
-  brakes_value: 0
-  brakeDampening: 0
   steeringCurve:
     serializedVersion: 2
     m_Curve:
@@ -5464,12 +5478,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  waypoints: {fileID: 0}
-  nodes: []
-  currentWaypoint: {fileID: 0}
-  currentWaypointIndex: 0
-  waypointApproachThreshold: 0
-  slip: []
+  m_RayRange: 0
+  draftingMultiplierValue: 0
+  spawnpointer: {fileID: 0}
 --- !u!114 &231682712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5514,7 +5525,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c1ea2ca05019bf4aa392d08fd31487a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ControllerModes: 0
+  m_ControllerModes: 2
 --- !u!1 &937103998701593286
 GameObject:
   m_ObjectHideFlags: 0
@@ -6617,7 +6628,7 @@ WheelCollider:
     damper: 5000
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
-  m_ForceAppPointDistance: 0
+  m_ForceAppPointDistance: -0.35
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
@@ -6679,7 +6690,7 @@ WheelCollider:
     damper: 5000
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
-  m_ForceAppPointDistance: 0
+  m_ForceAppPointDistance: -0.35
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
@@ -6741,7 +6752,7 @@ WheelCollider:
     damper: 5000
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
-  m_ForceAppPointDistance: 0
+  m_ForceAppPointDistance: -0.35
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:

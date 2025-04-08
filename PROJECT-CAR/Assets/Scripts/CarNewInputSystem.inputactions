@@ -6,7 +6,7 @@
             "id": "8fac8abd-f718-4b9e-95ad-40bbd4dbca53",
             "actions": [
                 {
-                    "name": "Acceration",
+                    "name": "Acceleration",
                     "type": "Value",
                     "id": "1076a2c9-1f6a-4953-9358-676dde72db6c",
                     "expectedControlType": "Button",
@@ -18,7 +18,7 @@
                     "name": "Steering",
                     "type": "Value",
                     "id": "7f7af0e4-e3b6-4be7-9cf1-431a74dd75f3",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -68,7 +68,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Acceration",
+                    "action": "Acceleration",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -79,7 +79,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Acceration",
+                    "action": "Acceleration",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -90,7 +90,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Acceration",
+                    "action": "Acceleration",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -101,7 +101,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Acceration",
+                    "action": "Acceleration",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -112,7 +112,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Acceration",
+                    "action": "Acceleration",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -123,25 +123,14 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Acceration",
+                    "action": "Acceleration",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Steering/Keyboard",
-                    "id": "31a6d4b0-69f7-492b-9805-7507c2c14e38",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Steering",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
                     "name": "Gamepad",
                     "id": "2ab2bad3-bf19-44b8-8d74-437ea9eaa581",
-                    "path": "1DAxis",
+                    "path": "2DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -150,7 +139,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
+                    "name": "Up",
                     "id": "a5cb45e9-c2de-4324-93ed-1b67b3879438",
                     "path": "<Gamepad>/leftStick/left",
                     "interactions": "",
@@ -161,7 +150,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "positive",
+                    "name": "Down",
                     "id": "59a69bc5-13c3-4dea-a7e4-c803e4d31a00",
                     "path": "<Gamepad>/leftStick/right",
                     "interactions": "",
@@ -172,9 +161,9 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Negative",
-                    "id": "7da83726-870d-49e2-b834-74b7ed997df4",
-                    "path": "<Keyboard>/leftArrow",
+                    "name": "right",
+                    "id": "5603ae35-2dfe-4435-91bc-a378bc5c7d9a",
+                    "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -183,9 +172,9 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Positive",
-                    "id": "eaa6b72a-ec9e-47b0-9f56-01dd21f3275e",
-                    "path": "<Keyboard>/rightArrow",
+                    "name": "left",
+                    "id": "a214e6fb-c323-4085-8854-b11f74a2ded2",
+                    "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

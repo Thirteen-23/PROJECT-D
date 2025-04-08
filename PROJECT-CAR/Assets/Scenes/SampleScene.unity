@@ -2968,6 +2968,106 @@ PrefabInstance:
       propertyPath: m_ControllerModes
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1422766245, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422766245, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_ActionId
+      value: 4e149a13-7ba9-432a-a63e-fea2898df491
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422766245, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_ActionName
+      value: Movement/Handbrake[/Keyboard/space]
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422766245, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422766245, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422766245, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422766245, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422766245, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1435567620}
+    - target: {fileID: 1422766245, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1435567620}
+    - target: {fileID: 1422766245, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422766245, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422766245, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BrakingInput
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422766245, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Handbraking
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422766245, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Car_Movement, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422766245, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Car_Movement, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422766245, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422766245, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3499566312922475906, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ForwardFriction.m_Stiffness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3499566312922475906, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_SidewaysFriction.m_Stiffness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3499566312998800663, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ForwardFriction.m_Stiffness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3499566312998800663, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_SidewaysFriction.m_Stiffness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3499566313241033645, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ForwardFriction.m_Stiffness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3499566313241033645, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_SidewaysFriction.m_Stiffness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3499566314307261428, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_ForwardFriction.m_Stiffness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3499566314307261428, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: m_SidewaysFriction.m_Stiffness
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8435574104746627682, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -3017,8 +3117,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: whenDrifting
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: downForceValue
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: whenNotDrifting
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
       propertyPath: keyRPMSet.Array.size
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: keyRPMSet.Array.data[0].y
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
       propertyPath: keyRPMSet.Array.data[1].x
@@ -3043,6 +3159,30 @@ PrefabInstance:
     - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
       propertyPath: keyRPMSet.Array.data[3].y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: handBrakefrictionMulitplier
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: enginePower.m_Curve.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: enginePower.m_Curve.Array.data[2].time
+      value: 8000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: enginePower.m_Curve.Array.data[2].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: enginePower.m_Curve.Array.data[2].inSlope
+      value: -3.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+      propertyPath: enginePower.m_Curve.Array.data[2].outSlope
+      value: -3.2
       objectReference: {fileID: 0}
     - target: {fileID: 8435574104746627693, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
       propertyPath: m_Name
@@ -5602,6 +5742,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pushPower: 2000
+--- !u!114 &1435567620 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8435574104746627683, guid: 7d7d93be09d24884c90db3b3b252eab3, type: 3}
+  m_PrefabInstance: {fileID: 788010987}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc7b51cac9389ca498a429f0d063888a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1442341575
 GameObject:
   m_ObjectHideFlags: 0
@@ -5771,7 +5922,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerIsGrounded: 0
-  speed: 0
+  speed: 1
   gravity: 1
   run: {fileID: 0}
   idle: {fileID: 0}

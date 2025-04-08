@@ -193,7 +193,7 @@ public class AI : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(currentWaypoint.position, 3);
+      //  Gizmos.DrawWireSphere(currentWaypoint.position, 3);
     }
 
     //private void AIAccerate()

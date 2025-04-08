@@ -23,7 +23,7 @@ public class AI_Controls : MonoBehaviour
     [SerializeField] GameObject[] wheelmeshes = new GameObject[4];
     [SerializeField] Transform centerMass;
     //[SerializeField] AnimationCurve gearRatio;
-    [SerializeField] float downForceValue;
+
     float currentBreakForce, handbraking;
 
     [Header("Speed and Power of the Car")]
@@ -34,6 +34,7 @@ public class AI_Controls : MonoBehaviour
     // dampening for smoother acceration input for keyboard 
     public float acceration_Value;
     [SerializeField] float AccerationDamping;
+    public float downForceValue;
 
     [Header("GearBox System")]
     [SerializeField] public int idleRPM;
@@ -54,7 +55,12 @@ public class AI_Controls : MonoBehaviour
     [Header("Handbraking")]
     [SerializeField] bool isBreaking;
     public bool ifHandBraking;
-
+    WheelFrictionCurve sidewaysFriction, forwardFriction;
+    public float handBrakefrictionMulitplier = 2f;
+    float handbrakefriction;
+    float tempo;
+    [SerializeField] float whenNotDrifting;
+    [SerializeField] float whenDrifting;
 
 
     [Header("Handling & Brakes")]
@@ -69,6 +75,12 @@ public class AI_Controls : MonoBehaviour
     [SerializeField] float brakeDampening;
     private float turnSpeed;
     public AnimationCurve steeringCurve;
+
+    //drafting values
+    Ray draftingRay;
+    Vector3 direction = Vector3.forward;
+    [SerializeField] float m_RayRange;
+    [SerializeField] float draftingMultiplierValue;
     // Start is called before the first frame update 
     private void Awake()
     {
@@ -95,6 +107,8 @@ public class AI_Controls : MonoBehaviour
         Shifting();
         SetEngineRPMAndTorque();
         ApplyingDownForce();
+        Drafting();
+        AdjustTractionForDrifting();
     }
 
     private float SmoothTransition(float input, float output)
@@ -180,11 +194,11 @@ public class AI_Controls : MonoBehaviour
         currentBreakForce = isBreaking ? (allBrakeForce * brakeDampening) : 0f;
         //currentBreakForce =  allBrakeForce * brakeDampening;
         handbraking = ifHandBraking ? rearBrakeForce : 0f;
-        ApplyBreaking();
+        ApplyBraking();
         ApplyHandBraking();
     }
 
-    private void ApplyBreaking()
+    private void ApplyBraking()
     {
         for (int i = 0; i < wheels4.Length; i++)
         {
@@ -254,17 +268,17 @@ public class AI_Controls : MonoBehaviour
     }
     private void Shifting()
     {
-       
+
         if (transmission == TransmissionTypes.Automatic)
         {
-            if (engineRPM > maxRPM)
+            if (engineRPM >= maxRPM)
             {
                 if (gearNum < gearSpeedBox.Length - 1)
                 {
                     gearNum++;
                 }
             }
-            if (engineRPM < minRPM)
+            if (engineRPM <= minRPM)
             {
                 if (gearNum > 0)
                 {
@@ -274,14 +288,6 @@ public class AI_Controls : MonoBehaviour
                 {
                     gearNum = 0;
                 }
-            }
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                if (gearNum > 0)
-                {
-                    gearNum--;
-                }
-
             }
         }
     }
@@ -295,9 +301,81 @@ public class AI_Controls : MonoBehaviour
         }
 
     }
+
     private void ApplyingDownForce()
     {
         bodyOfCar.AddForce(-transform.up * downForceValue * bodyOfCar.velocity.magnitude);
+    }
+
+    private void Drafting()
+    {
+        draftingRay = new Ray(bodyOfCar.transform.position, bodyOfCar.transform.TransformDirection(direction * m_RayRange));
+        Debug.DrawRay(bodyOfCar.transform.position, bodyOfCar.transform.TransformDirection(direction * m_RayRange));
+
+        if (Physics.Raycast(draftingRay, out RaycastHit hit, m_RayRange))
+        {
+            if (hit.collider.CompareTag("AI") || hit.collider.CompareTag("Player"))
+            {
+                Debug.Log("Im behind");
+                bodyOfCar.AddForce(bodyOfCar.transform.forward * (1000f * draftingMultiplierValue));
+
+            }
+
+        }
+    }
+
+    private float driftFactor;
+
+    private void AdjustTractionForDrifting()
+    {
+        // time it takes to go from drive to drift
+
+        float driftSmoothFactor = 0.7f * Time.deltaTime;
+        if (ifHandBraking || handbraking > 0)
+        {
+            bodyOfCar.angularDrag = whenDrifting;
+            sidewaysFriction = wheels4[0].sidewaysFriction;
+            forwardFriction = wheels4[0].forwardFriction;
+
+            float velocity = 0;
+
+            sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = forwardFriction.extremumValue = forwardFriction.asymptoteValue =
+            Mathf.SmoothDamp(forwardFriction.asymptoteValue, driftFactor * handBrakefrictionMulitplier, ref velocity, driftSmoothFactor);
+
+
+            for (int i = 0; i < 4; i++)
+            {
+
+                wheels4[i].sidewaysFriction = sidewaysFriction;
+                wheels4[i].forwardFriction = forwardFriction;
+            }
+            sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = forwardFriction.extremumValue = forwardFriction.asymptoteValue = 1f;
+
+            // extra grip for front wheels
+            for (int i = 0; i < 2; i++)
+            {
+                wheels4[i].sidewaysFriction = sidewaysFriction;
+                wheels4[i].forwardFriction = forwardFriction;
+
+            }
+
+            bodyOfCar.AddForce(bodyOfCar.transform.forward * (currentSpeed / 400) * 10000);
+        }
+        // executed when handbrake is held
+        else
+        {
+            forwardFriction = wheels4[0].forwardFriction;
+            sidewaysFriction = wheels4[0].sidewaysFriction;
+
+            forwardFriction.extremumValue = forwardFriction.asymptoteValue = sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = ((currentSpeed * handBrakefrictionMulitplier / 300) + 1);
+
+            for (int i = 0; i < 4; i++)
+            {
+                wheels4[i].forwardFriction = forwardFriction;
+                wheels4[i].sidewaysFriction = sidewaysFriction;
+            }
+            bodyOfCar.angularDrag = whenNotDrifting;
+        }
     }
 
 }

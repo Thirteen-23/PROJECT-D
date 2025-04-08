@@ -78,8 +78,9 @@ public class Fastest_Man_Alive : MonoBehaviour
         Vector3 destination = nodes[currentWaypointIndex].transform.position;
         Vector3 newPos = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
         transform.position = newPos;
-
+        //Vector3.Lerp(transform.position, destination, Time.deltaTime);
         transform.forward = (destination - transform.position) * Time.deltaTime;
+        transform.rotation = Quaternion.Lerp(transform.rotation, nodes[currentWaypointIndex].transform.rotation, speed * Time.deltaTime);
 
 
         float distance = Vector3.Distance(transform.position, destination);

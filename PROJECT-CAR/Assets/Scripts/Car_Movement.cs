@@ -1,14 +1,19 @@
 
 using System.Collections.Generic;
-using System.Threading;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Car_Movement : MonoBehaviour
 {
+    //keeping track of how many laps in the race. 
+    public int numberOfLaps;
     CarNewInputSystem input;
-    public float numberOfLaps;
+    enum Terrain
+    {
+        Tarmac,
+        Gravel,
+        Dirt
+    }
     enum DifferentialTypes
     {
         FrontWheelDrive,
@@ -21,6 +26,7 @@ public class Car_Movement : MonoBehaviour
         Automatic,
         Manual
     }
+    [SerializeField] Terrain terrain;
     [SerializeField] TransmissionTypes transmission;
     [SerializeField] DifferentialTypes drive;
     [SerializeField] Rigidbody bodyOfCar;
@@ -28,16 +34,15 @@ public class Car_Movement : MonoBehaviour
     [SerializeField] GameObject[] wheelmeshes = new GameObject[4];
     [SerializeField] Transform centerMass;
 
-    //[SerializeField] AnimationCurve gearRatio;
     [SerializeField] float downForceValue;
-    float currentBreakForce;
+    float currentBreakForce, handbraking;
     bool resetPosition = false;
 
     [Header("Speed and Power of the Car")]
     [SerializeField] float horsePower;
-    [SerializeField] public AnimationCurve enginePower;
-    [SerializeField] float maxSpeed;
-    [SerializeField] float totalPowerInCar;
+    public AnimationCurve enginePower;
+    public float maxSpeed;
+    private float totalPowerInCar;
     [SerializeField] float currentSpeed;
     // dampening for smoother acceration input for keyboard 
     public float acceration_Value;
@@ -48,56 +53,65 @@ public class Car_Movement : MonoBehaviour
     [SerializeField] float maxRPM;
     [SerializeField] float minRPM;
     [SerializeField] int maxRPMForCar;
-    [SerializeField] public float engineRPM;
+    public float engineRPM;
     [SerializeField] float finalDriveRatio;
     [SerializeField] float[] gearSpeedBox = new float[0];
-    [SerializeField] public int gearNum;
+    public int gearNum;
     private float m_RPMOfWheels;
     [SerializeField] float smoothTime;
     [SerializeField] Vector2[] keyRPMSet = new Vector2[0];
     [SerializeField] ParticleSystem exhaust_Shift;
+    [SerializeField] float[] slip = new float[4];
+    public float amountOfSlipToShift;
 
     [Header("Manual Shift")]
-    [SerializeField] bool shiftUp = false;
-    [SerializeField] bool shiftDown = false;
-    [SerializeField] float shift_Value;
-    [SerializeField] float currentShift_Value;
+    private bool shiftUp = false;
+    private bool shiftDown = false;
+    private float shift_Value;
+    private float currentShift_Value;
 
     private Vector3 originalPos;
     private Quaternion rotations;
 
-    [Header("Handbraking / Drfting")]
+    [Header("Handbraking")]
     [SerializeField] bool isBraking;
     public bool ifHandBraking;
     WheelFrictionCurve sidewaysFriction, forwardFriction;
     public float handBrakefrictionMulitplier = 2f;
     float handbrakefriction;
     float tempo;
-    [SerializeField] float[] slip = new float[4];
     [SerializeField] float whenNotDrifting;
     [SerializeField] float whenDrifting;
+    private float driftFactor;
+
+    [Header("Abilities Value")]
+    public bool turnOnAllTerrain = false;
+    public float frictionPlusValueForAbility;
 
     [Header("Handling & Brakes")]
     [SerializeField] float allBrakeForce;
     [SerializeField] float frontBrakeForce;
     [SerializeField] float rearBrakeForce;
-    [SerializeField] float steering_Value;
+    private float steering_Value;
     // make the steering smoother when useing a  keyboard 
-    [SerializeField] float steeringDamping;
+    [SerializeField] private float steeringDamping;
     [SerializeField] float smoothTransitionSpeed;
-    [SerializeField] float brakes_value;
-    [SerializeField] float brakeDampening;
-    [SerializeField] float handbraking;
+    public float smoothTransitionReleasSpeed; 
+    private float brakes_value;
+    private float brakeDampening;
+    public float releaseSteeringDampening;
+
     private float turnSpeed;
     [SerializeField] AnimationCurve steeringCurve;
 
-    //handling Waypoints
-    [Header("WayPoints Setup for Position")]
-    public TrackWayPoints waypoints;
-    public List<Transform> nodes = new List<Transform>();
-    public Transform currentWaypoint;
-    public int currentWaypointIndex;
-    [SerializeField] float waypointApproachThreshold;
+    //drafting values
+    Ray draftingRay;
+    Vector3 direction = Vector3.forward;
+    [SerializeField] float m_RayRange;
+    [SerializeField] float draftingMultiplierValue;
+
+
+   
 
     // Start is called before the first frame update 
     private void Awake()
@@ -109,17 +123,9 @@ public class Car_Movement : MonoBehaviour
 
     private void OnEnable()
     {
-        input.Enable();
-        input.Movement.Acceration.performed += ApplyingThrottleInput;
-        input.Movement.Acceration.canceled += ReleaseThrottleInput;
-        input.Movement.Steering.performed += ApplySteeringInput;
-        input.Movement.Steering.canceled += ReleaseSteeringInput;
-
     }
     private void OnDisable()
     {
-        input.Disable();
-
     }
     void Start()
     {
@@ -142,9 +148,11 @@ public class Car_Movement : MonoBehaviour
         DampeningSystem();
         calculatingEnginePower();
         ApplyingDownForce();
-        ResettingCar();
+        CarBraking();
+            ResettingCar();
         Shifting();
         SetEngineRPMAndTorque();
+        Drafting();
         AdjustTractionForDrifting();
         CheckingforSlip();
         //CheckingDistanceOfWaypoints();
@@ -152,27 +160,37 @@ public class Car_Movement : MonoBehaviour
 
     private void GettingInput()
     {
-        //isBreaking = Input.GetKey(KeyCode.B);
-       // ifHandBraking = Input.GetKey(KeyCode.Space);
-        //resetPosition = Input.GetKey(KeyCode.R);
-
+        isBraking = Input.GetKey(KeyCode.B);
+        ifHandBraking = Input.GetKey(KeyCode.Space);
+        resetPosition = Input.GetKey(KeyCode.R);
+        if (resetPosition == true)
+        {
+            bodyOfCar.velocity = Vector3.zero;
+        }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             quitApplication();
         }
 
     }
-
+    // For Handling, acceration and brake
     private float SmoothTransition(float input, float output)
     {
         return Mathf.Lerp(output, input, Time.deltaTime * smoothTransitionSpeed);
     }
+
+    private float SmoothTransitionForRelease(float input, float output)
+    {
+        return Mathf.Lerp(output, input, Time.deltaTime * smoothTransitionReleasSpeed);
+    }
+
 
     private void DampeningSystem()
     {
         AccerationDamping = SmoothTransition(acceration_Value, AccerationDamping);
         steeringDamping = SmoothTransition(steering_Value, steeringDamping);
         brakeDampening = SmoothTransition(brakes_value, brakeDampening);
+        releaseSteeringDampening = SmoothTransitionForRelease(steering_Value, releaseSteeringDampening); 
     }
 
     private void quitApplication()
@@ -203,14 +221,15 @@ public class Car_Movement : MonoBehaviour
                 for (int i = 0; i < wheels4.Length; i++)
                 {
                     // wheels torque equal to engine Rpm * gearbox * final drive ratio and input from player
-                    wheels4[i].motorTorque = totalPowerInCar / 4;
+                    wheels4[i].motorTorque = totalPowerInCar * 4 / 4;
+                    //Debug.Log(wheels4[i].motorTorque);
                 }
             }
             else if (drive == DifferentialTypes.RearWheelDrive)
             {
                 for (int i = 2; i < wheels4.Length; i++)
                 {
-                    wheels4[i].motorTorque = totalPowerInCar / 2;
+                    wheels4[i].motorTorque = totalPowerInCar * 4 / 2;
                 }
             }
             else if (drive == DifferentialTypes.FrontWheelDrive)
@@ -255,35 +274,34 @@ public class Car_Movement : MonoBehaviour
             }
 
         }
+    }
+    private void CarBraking()
+    {
         if (brakes_value > 0.7f)
         {
             isBraking = true;
         }
-        currentBreakForce = isBraking ? (allBrakeForce * brakeDampening) : 0f;
+
+        currentBreakForce = isBraking ? (allBrakeForce * brakeDampening) : Mathf.Lerp(currentSpeed, 0f, 1);
         //handbraking = ifHandBraking ? rearBrakeForce : 0f;
-        ApplyBreaking();
-        ApplyHandBraking();
+
+        ApplyBraking();
+
 
     }
-    private void ApplyBreaking()
+    private void ApplyBraking()
     {
-        for (int i = 0; i < wheels4.Length; i++)
+        for (int i = 0; i < wheels4.Length - 2; i++)
         {
-            wheels4[i].brakeTorque = currentBreakForce;
+            wheels4[i].brakeTorque = currentBreakForce * brakeDampening;
+        }
+        for (int i = 2; i < wheels4.Length; i++)
+        {
+            wheels4[i].brakeTorque = currentBreakForce * brakeDampening / 2;
         }
 
 
 
-
-    }
-
-    private void ApplyHandBraking()
-    {
-        //for (int i = 2; i < wheels4.Length; i++)
-        //{
-        //    wheels4[i].brakeTorque = handbraking;
-
-        //}
     }
 
 
@@ -338,9 +356,18 @@ public class Car_Movement : MonoBehaviour
 
     public void ApplySteeringInput(InputAction.CallbackContext context)
     {
+        if (context.started)
+        {
 
-        steering_Value = context.ReadValue<float>();
-        //print(steering_Value);
+        }
+        else if (context.performed)
+        {
+            steering_Value = context.ReadValue<Vector2>().x;
+        }
+        else if (context.canceled)
+        {
+            steering_Value = 0;
+        }
     }
 
     public void ReleaseSteeringInput(InputAction.CallbackContext context)
@@ -352,11 +379,21 @@ public class Car_Movement : MonoBehaviour
 
     public void ApplyingThrottleInput(InputAction.CallbackContext context)
     {
-        acceration_Value = context.ReadValue<float>();
+        if (context.started)
+        {
 
-        //print(acceration_Value + "accerating");
+        }
+        else if (context.performed)
+        {
+
+            acceration_Value = context.ReadValue<float>();
+
+        }
+        else if (context.canceled)
+        {
+            acceration_Value = 0;
+        }
     }
-
     public void ReleaseThrottleInput(InputAction.CallbackContext context)
     {
         acceration_Value = 0;
@@ -365,17 +402,18 @@ public class Car_Movement : MonoBehaviour
 
     public void BrakingInput(InputAction.CallbackContext context)
     {
-        if(context.started)
-        {
+        if (context.started)
             brakes_value = context.ReadValue<float>();
-        }
 
-        if(context.canceled)
+        else if (context.canceled)
         {
             brakes_value = 0;
-            isBraking = false;
         }
-       
+    }
+    public void ReleaseBrakingInput(InputAction.CallbackContext context)
+    {
+        
+        brakes_value = 0;
     }
     public void ShiftingUp(InputAction.CallbackContext context)
     {
@@ -428,24 +466,32 @@ public class Car_Movement : MonoBehaviour
     }
     public void Handbraking(InputAction.CallbackContext context)
     {
+        handbraking = context.ReadValue<float>();
         if (context.started)
         {
-            handbraking = context.ReadValue<float>();
-            if(handbraking ==1)
+            if (handbraking == 1)
             {
-                ifHandBraking = true; 
+                ifHandBraking = true;
             }
         }
-       
-       else if (context.canceled)
+        if (context.performed)
         {
-            handbraking = 0;
+            ifHandBraking = true;
+        }
+        else if (context.canceled)
+        {
             ifHandBraking = false;
+            handbraking = 0;
         }
     }
-
+    [Header("Shifting Time Values")]
+    public float maxTimeToShiftGear;
+    public float timerToShift;
+    public float rpmLimiter = 5000;
     private void Shifting()
     {
+        float temp = acceration_Value;
+
         if (transmission == TransmissionTypes.Manual)
         {
             Mathf.Clamp(shift_Value, 0, gearSpeedBox.Length - 1);
@@ -461,6 +507,7 @@ public class Car_Movement : MonoBehaviour
                 {
                     shift_Value = gearSpeedBox.Length - 1;
                 }
+
             }
             else if ((shiftDown == true && shift_Value < currentShift_Value) && (gearNum > 0))
             {
@@ -471,31 +518,134 @@ public class Car_Movement : MonoBehaviour
 
             }
         }
+
         if (transmission == TransmissionTypes.Automatic)
         {
-            if (engineRPM >= maxRPM)
+            WheelHit wheelHit;
+            switch (drive)
             {
-                if (gearNum < gearSpeedBox.Length - 1)
-                {
-                    gearNum++;
-                }
+                case DifferentialTypes.AllWheelDrive:
+                    for (int i = 2; i < wheels4.Length; i++)
+                    {
+                        wheels4[i].GetGroundHit(out wheelHit);
+                        slip[i] = wheelHit.forwardSlip;
+                        if (engineRPM >= maxRPM)
+                        {
+                            if (slip[i] > amountOfSlipToShift)
+                            {
+                                /*if(engineRPM > rpmLimiter)
+                                {
+                                    engineRPM = Mathf.Clamp(engineRPM, 0, rpmLimiter); 
+                                }*/
+                                return;
+                            }
+                            else if (gearNum < gearSpeedBox.Length - 1 && slip[i] < amountOfSlipToShift)
+                            {
+                                // changes to shifting 
+                                if (timerToShift > 0)
+                                {
+                                    timerToShift -= Time.deltaTime;
+
+                                }
+                                else
+                                {
+
+                                    gearNum++;
+                                    exhaust_Shift.Play();
+                                    timerToShift = maxTimeToShiftGear;
+                                }
+                            }
+                        }
+                        if (engineRPM <= minRPM)
+                        {
+                            if (gearNum > 0)
+                            {
+                                gearNum--;
+                            }
+                            else
+                            {
+                                gearNum = 0;
+                            }
+                        }
+
+                    }
+                    break;
+                case DifferentialTypes.RearWheelDrive:
+                    for (int i = 2; i < wheels4.Length; i++)
+                    {
+                        wheels4[i].GetGroundHit(out wheelHit);
+                        slip[i] = wheelHit.forwardSlip;
+
+                        if (engineRPM >= maxRPM)
+                        {
+                            if (slip[i] > amountOfSlipToShift)
+                            {
+                                return;
+                            }
+                            else if (gearNum < gearSpeedBox.Length - 1 && slip[i] < amountOfSlipToShift)
+                            {
+                                if (timerToShift > 0)
+                                {
+                                    timerToShift -= Time.deltaTime;
+                                    engineRPM = Mathf.Clamp(engineRPM, 0, maxRPM - 500);
+                                }
+                                else
+                                {
+                                    gearNum++;
+                                    exhaust_Shift.Play();
+                                    timerToShift = maxTimeToShiftGear;
+                                }
+                            }
+
+                        }
+
+                        if (engineRPM <= minRPM)
+                        {
+                            if (gearNum > 0)
+                            {
+                                gearNum--;
+                            }
+                            else
+                            {
+                                gearNum = 0;
+                            }
+                        }
+                    }
+                    break;
+                case DifferentialTypes.FrontWheelDrive:
+                    for (int i = 0; i < wheels4.Length - 2; i++)
+                    {
+                        wheels4[i].GetGroundHit(out wheelHit);
+                        slip[i] = wheelHit.forwardSlip;
+
+                        if (engineRPM >= maxRPM && slip[i] < amountOfSlipToShift)
+                        {
+                            if (gearNum < gearSpeedBox.Length - 1)
+                            {
+                                gearNum++;
+                                // exhaust_Shift.Play();
+                            }
 
 
-            }
-            if (engineRPM <= minRPM)
-            {
-                if (gearNum > 0)
-                {
-                    gearNum--;
-                }
-                else
-                {
-                    gearNum = 0;
-                }
+                        }
+                        if (engineRPM <= minRPM)
+                        {
+                            if (gearNum > 0)
+                            {
+                                gearNum--;
+                            }
+                            else
+                            {
+                                gearNum = 0;
+                            }
+                        }
+                    }
+                    break;
             }
 
         }
     }
+
 
     private void SetEngineRPMAndTorque()
     {
@@ -511,108 +661,54 @@ public class Car_Movement : MonoBehaviour
         bodyOfCar.AddForce(-transform.up * downForceValue * bodyOfCar.velocity.magnitude);
     }
 
-    private void AdjustingTraction()
+    private void Drafting()
     {
-        if (!ifHandBraking)
+        draftingRay = new Ray(bodyOfCar.transform.position, bodyOfCar.transform.TransformDirection(direction * m_RayRange));
+        Debug.DrawRay(bodyOfCar.transform.position, bodyOfCar.transform.TransformDirection(direction * m_RayRange));
+
+        if (Physics.Raycast(draftingRay, out RaycastHit hit, m_RayRange))
         {
-            forwardFriction = wheels4[0].forwardFriction;
-            sidewaysFriction = wheels4[0].sidewaysFriction;
-
-            forwardFriction.extremumValue = forwardFriction.asymptoteValue = (currentSpeed * handBrakefrictionMulitplier / 300) + 1;
-            sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = (currentSpeed * handBrakefrictionMulitplier / 300) + 1;
-
-            for (int i = 0; i < 4; i++)
+            if (hit.collider.CompareTag("AI") || hit.collider.CompareTag("Player"))
             {
-                wheels4[i].forwardFriction = forwardFriction;
-                wheels4[i].sidewaysFriction = sidewaysFriction;
-            }
-
-        }
-
-        else if (ifHandBraking)
-        {
-            sidewaysFriction = wheels4[0].sidewaysFriction;
-            forwardFriction = wheels4[0].forwardFriction;
-
-            float velocity = 0;
-
-            sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = Mathf.SmoothDamp(sidewaysFriction.asymptoteValue, handbrakefriction, ref velocity, 0.05f * Time.deltaTime);
-            forwardFriction.extremumValue = forwardFriction.asymptoteValue = Mathf.SmoothDamp(forwardFriction.asymptoteValue, handbrakefriction, ref velocity, 0.05f * Time.deltaTime);
-
-            for (int i = 2; i < 4; i++)
-            {
-                wheels4[i].sidewaysFriction = sidewaysFriction;
-                wheels4[i].forwardFriction = forwardFriction;
-            }
-
-            sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = 1.5f;
-            forwardFriction.extremumValue = forwardFriction.asymptoteValue = 1.5f;
-
-            for (int i = 0; i < 2; i++)
-            {
-                wheels4[i].sidewaysFriction = sidewaysFriction;
-                wheels4[i].forwardFriction = forwardFriction;
+                Debug.Log("Im behind");
+                bodyOfCar.AddForce(bodyOfCar.transform.forward * (1000f * draftingMultiplierValue));
 
             }
 
-
-
-        }
-
-    }
-    private void checkWheelSpin()
-    {
-        for (int i = 2; i < 4; i++)
-        {
-            WheelHit wheelHit;
-            wheels4[i].GetGroundHit(out wheelHit);
-            if (wheelHit.sidewaysSlip < 0)
-            {
-
-                tempo = (1 + -steering_Value) * Mathf.Abs(wheelHit.sidewaysSlip * handBrakefrictionMulitplier);
-                if (tempo < 0.5)
-                {
-                    tempo = 0.5f;
-                }
-            }
-            else if (wheelHit.sidewaysSlip > 0)
-            {
-                tempo = (1 + steering_Value) * Mathf.Abs(wheelHit.sidewaysSlip * handBrakefrictionMulitplier);
-                if (tempo < 0.5f)
-                {
-                    tempo = 0.5f;
-                }
-            }
-
-            else if (wheelHit.sidewaysSlip > 0.99f || wheelHit.sidewaysSlip < -0.99f)
-            {
-                float velocity = 0;
-                handbrakefriction = Mathf.SmoothDamp(handbrakefriction, tempo * 3, ref velocity, 0.1f * Time.deltaTime);
-            }
-            else
-            {
-                handbrakefriction = tempo;
-            }
         }
     }
 
-    private float driftFactor;
-
+    [Header(" boost values when drifting ")]
+    [SerializeField] float boostWhenExitingDrift = 20000f;
+    public float findme;
+   
+    public float minDrag = 0;
+    public float maxDrag = 4;
+    public float boostWhileDrifting = 25000f;
+    [SerializeField] float tt = 1;
+    [SerializeField] float maxAmountOfGrip;
+    [SerializeField] float minAmountOfGripAtStart;
+    float driftEndingGrip;
+    public bool meBoosting = false;
+    public float boostValue = 3000f;
     private void AdjustTractionForDrifting()
     {
-        // time it takes to go from drive to drift
 
+
+
+        /// time it takes to go from drive to drift
         float driftSmoothFactor = 0.7f * Time.deltaTime;
-        if (ifHandBraking || handbraking == 1)
+        if (ifHandBraking && currentSpeed > 40 || currentSpeed > 40 && handbraking > 0)
         {
             bodyOfCar.angularDrag = whenDrifting;
-           
+            //bodyOfCar.angularDrag = Mathf.Lerp(minDrag, maxDrag, tt * 2f );
+            //bodyOfCar.angularDrag = Mathf.Clamp(bodyOfCar.angularDrag,minDrag ,maxDrag);
             sidewaysFriction = wheels4[0].sidewaysFriction;
             forwardFriction = wheels4[0].forwardFriction;
 
             float velocity = 0;
 
-            sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = forwardFriction.extremumValue = forwardFriction.asymptoteValue =
+            driftEndingGrip = sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = forwardFriction.extremumValue = forwardFriction.asymptoteValue =
             Mathf.SmoothDamp(forwardFriction.asymptoteValue, driftFactor * handBrakefrictionMulitplier, ref velocity, driftSmoothFactor);
 
 
@@ -622,7 +718,7 @@ public class Car_Movement : MonoBehaviour
                 wheels4[i].sidewaysFriction = sidewaysFriction;
                 wheels4[i].forwardFriction = forwardFriction;
             }
-            sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = forwardFriction.extremumValue = forwardFriction.asymptoteValue = 1f;
+            sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = forwardFriction.extremumValue = forwardFriction.asymptoteValue = 1.2f;
 
             // extra grip for front wheels
             for (int i = 0; i < 2; i++)
@@ -631,57 +727,119 @@ public class Car_Movement : MonoBehaviour
                 wheels4[i].forwardFriction = forwardFriction;
 
             }
+            // bodyOfCar.AddForce(bodyOfCar.transform.forward * (currentSpeed / 400) * boostInDrifting);
 
-            bodyOfCar.AddForce(bodyOfCar.transform.forward * (currentSpeed / 400) * 10000);
+            if (wheels4[0].steerAngle > 20 || wheels4[0].steerAngle < -20)
+            {
+                bodyOfCar.AddForce(bodyOfCar.transform.forward * boostWhileDrifting);
+            }
+            // bodyOfCar.AddRelativeForce(bodyOfCar.transform.forward * steeringCurve.Evaluate(180f));
+            WheelHit wheelHit;
+
+            for (int i = 2; i < wheels4.Length; i++)
+            {
+                wheels4[i].GetGroundHit(out wheelHit);
+                slip[i] = wheelHit.sidewaysSlip /*/ wheels4[i].sidewaysFriction.extremumSlip*/;
+                if (slip[i] > 0.4f || slip[i] < -0.4f)
+                {
+                   
+                }
+            }
+            tt = 0;
         }
-        // executed when handbrake is held
+        // executed when handbrake is not held
         else
         {
-            bodyOfCar.angularDrag =whenNotDrifting;
+            #region option for drifting
             forwardFriction = wheels4[0].forwardFriction;
             sidewaysFriction = wheels4[0].sidewaysFriction;
 
-            forwardFriction.extremumValue = forwardFriction.asymptoteValue = sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = Mathf.Lerp((forwardFriction.extremumValue = forwardFriction.asymptoteValue = sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue), (currentSpeed * handBrakefrictionMulitplier / 300) + 1, Time.deltaTime /2 );
 
+            if (tt > 1f)
+            {
+
+                Debug.Log("normal friction");
+                for (int i = 0; i < 4; i++)
+                {
+                    wheels4[i].forwardFriction = forwardFriction;
+                    wheels4[i].sidewaysFriction = sidewaysFriction;
+                }
+                forwardFriction.extremumValue = forwardFriction.asymptoteValue = sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 1f, minAmountOfGripAtStart, maxAmountOfGrip);
+            }
+            else
+            {
+                tt += Time.deltaTime;
+
+                forwardFriction.extremumValue = forwardFriction.asymptoteValue = sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue =
+                    Mathf.Lerp(driftEndingGrip, Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 1f, minAmountOfGripAtStart, maxAmountOfGrip), tt);
+                //Mathf.Lerp((forwardFriction.extremumValue = forwardFriction.asymptoteValue = sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue),// (currentSpeed * handBrakefrictionMulitplier / 300) + 2.5f, Time.deltaTime * 2f);
+                //Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 2f, 0, 3), tt);
+
+
+            }
             for (int i = 0; i < 4; i++)
             {
                 wheels4[i].forwardFriction = forwardFriction;
                 wheels4[i].sidewaysFriction = sidewaysFriction;
             }
 
+            WheelHit wheelHit;
+
+            for (int i = 2; i < wheels4.Length; i++)
+            {
+                wheels4[i].GetGroundHit(out wheelHit);
+                slip[i] = wheelHit.sidewaysSlip /*/ wheels4[i].sidewaysFriction.extremumSlip*/;
+                if (slip[i] > 0.4f || slip[i] < -0.4f)
+                {
+                    tt = 1f;
+                    forwardFriction.extremumValue = forwardFriction.asymptoteValue = sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue =
+               Mathf.Lerp(driftEndingGrip, Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 2f, 0, 4), tt * 1f);
+
+
+                    bodyOfCar.AddForce(bodyOfCar.transform.forward * (currentSpeed / 400) * boostWhenExitingDrift);
+                    //leftTrail.emitting = true;
+                    //rightTrail.emitting = true;
+
+
+                    for (int j = 0; j < 4; j++)
+                    {
+                        wheels4[j].forwardFriction = forwardFriction;
+                        wheels4[j].sidewaysFriction = sidewaysFriction;
+                    }
+                }
+                else
+                {
+                    // leftTrail.emitting = false;
+                    // rightTrail.emitting = false;
+
+                } 
+                    if (forwardFriction.extremumValue >= Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 1f, minAmountOfGripAtStart, maxAmountOfGrip))
+                    {
+                        // float bodyDrag = bodyOfCar.angularDrag;
+                        //bodyDrag = Mathf.Lerp(bodyDrag, whenNotDrifting,  tt);
+                        // bodyOfCar.angularDrag = bodyDrag;
+                        tt = 1.0f;
+                        return;
+                    }
+                }
+                bodyOfCar.angularDrag = whenNotDrifting;
+
+                #endregion
+
+
+            }
         }
 
-        // check the amount of slip to control the drift
-        for (int i = 2; i < 4; i++)
+        private void CheckingforSlip()
         {
             WheelHit wheelHit;
-            wheels4[i].GetGroundHit(out wheelHit);
 
-            if (wheelHit.sidewaysSlip < 0)
+            for (int i = 0; i < wheels4.Length; i++)
             {
-                driftFactor = (1 + -steering_Value) * Mathf.Abs(wheelHit.sidewaysSlip);
-
-            }
-            if (wheelHit.sidewaysSlip > 0)
-            {
-                driftFactor = (1 + steering_Value) * Mathf.Abs(wheelHit.sidewaysSlip);
-
+                wheels4[i].GetGroundHit(out wheelHit);
+                slip[i] = wheelHit.forwardSlip;
             }
         }
     }
-
-
-    private void CheckingforSlip()
-    {
-        WheelHit wheelHit;
-
-        for (int i = 0; i < wheels4.Length; i++)
-        {
-            wheels4[i].GetGroundHit(out wheelHit);
-            slip[i] = wheelHit.sidewaysSlip;
-        }
-    }
-
-}
 
 
