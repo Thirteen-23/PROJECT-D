@@ -79,7 +79,7 @@ public class Speedo : MonoBehaviour
         // 3.6f conversion to KM/H
         speedoFinalSpeed.text = maxSpeed + "";
         speedoMiddleSpeed.text = maxSpeed / 2 + ""; 
-        speed = rb.velocity.magnitude * 3.6f;
+        speed = rb.linearVelocity.magnitude * 3.6f;
         finalSpeed = Mathf.Lerp(finalSpeed, speed, speedoSnap * Time.deltaTime);
         if (speedLabel != null)
         {

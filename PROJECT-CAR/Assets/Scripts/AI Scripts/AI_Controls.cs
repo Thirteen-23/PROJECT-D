@@ -126,7 +126,7 @@ public class AI_Controls : MonoBehaviour
     private void HandlingMotor()
     {
         // calculation of kilometers / hour
-        currentSpeed = bodyOfCar.velocity.magnitude * 3.6f;
+        currentSpeed = bodyOfCar.linearVelocity.magnitude * 3.6f;
         EngineRPMSystem();
         // code for restricting the car to max speed set. 
         if (currentSpeed < maxSpeed)
@@ -304,7 +304,7 @@ public class AI_Controls : MonoBehaviour
 
     private void ApplyingDownForce()
     {
-        bodyOfCar.AddForce(-transform.up * downForceValue * bodyOfCar.velocity.magnitude);
+        bodyOfCar.AddForce(-transform.up * downForceValue * bodyOfCar.linearVelocity.magnitude);
     }
 
     private void Drafting()
@@ -333,7 +333,7 @@ public class AI_Controls : MonoBehaviour
         float driftSmoothFactor = 0.7f * Time.deltaTime;
         if (ifHandBraking || handbraking > 0)
         {
-            bodyOfCar.angularDrag = whenDrifting;
+            bodyOfCar.angularDamping = whenDrifting;
             sidewaysFriction = wheels4[0].sidewaysFriction;
             forwardFriction = wheels4[0].forwardFriction;
 
@@ -374,7 +374,7 @@ public class AI_Controls : MonoBehaviour
                 wheels4[i].forwardFriction = forwardFriction;
                 wheels4[i].sidewaysFriction = sidewaysFriction;
             }
-            bodyOfCar.angularDrag = whenNotDrifting;
+            bodyOfCar.angularDamping = whenNotDrifting;
         }
     }
 

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 67b5881acac98604da7525825c5f5bcf
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312766
+  packageName: AK Road Editor
+  packageVersion: 1.01
+  assetPath: Assets/MapEditor/Scripts/Editor/MapEditor/PointManagementHelper.cs
+  uploadId: 742677

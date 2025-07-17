@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: a5ad0302c88748443971e73f9f513f07
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312766
+  packageName: AK Road Editor
+  packageVersion: 1.01
+  assetPath: Assets/MapEditor/Scripts/Editor/MapEditor/MapEditorUtility.cs
+  uploadId: 742677

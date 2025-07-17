@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e0a30c05202d2e143a7a3642f3d36984
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312766
+  packageName: AK Road Editor
+  packageVersion: 1.01
+  assetPath: Assets/MapEditor/Materials/Rock.mat
+  uploadId: 742677

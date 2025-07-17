@@ -167,7 +167,7 @@ public class Car_Movement1 : MonoBehaviour
     private void HandlingMotor()
     {
         // calculation of kilometers / hour
-        currentSpeed = bodyOfCar.velocity.magnitude * 3.6f;
+        currentSpeed = bodyOfCar.linearVelocity.magnitude * 3.6f;
         EngineRPMSystem();
         // code for restricting the car to max speed set. 
         if (currentSpeed < maxSpeed)

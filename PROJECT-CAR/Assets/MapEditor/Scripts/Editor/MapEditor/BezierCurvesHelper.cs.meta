@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: b2e8e985648ad454398fe1b8307050cc
+AssetOrigin:
+  serializedVersion: 1
+  productId: 312766
+  packageName: AK Road Editor
+  packageVersion: 1.01
+  assetPath: Assets/MapEditor/Scripts/Editor/MapEditor/BezierCurvesHelper.cs
+  uploadId: 742677

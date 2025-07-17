@@ -9,16 +9,16 @@
                     "name": "Acceleration",
                     "type": "Value",
                     "id": "1076a2c9-1f6a-4953-9358-676dde72db6c",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
                 {
                     "name": "Steering",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "7f7af0e4-e3b6-4be7-9cf1-431a74dd75f3",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -27,7 +27,7 @@
                     "name": "braking",
                     "type": "Value",
                     "id": "b9f0fff6-a1ec-4f26-9476-c665d7522c43",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -181,6 +181,17 @@
                     "action": "Steering",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "99e8ff1d-5850-4d98-969a-e946f887d4be",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Steering",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",

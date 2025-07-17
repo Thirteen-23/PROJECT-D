@@ -1,5 +1,4 @@
 
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -165,7 +164,7 @@ public class Car_Movement : MonoBehaviour
         resetPosition = Input.GetKey(KeyCode.R);
         if (resetPosition == true)
         {
-            bodyOfCar.velocity = Vector3.zero;
+            bodyOfCar.linearVelocity = Vector3.zero;
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -210,7 +209,7 @@ public class Car_Movement : MonoBehaviour
     private void HandlingMotor()
     {
         // calculation of kilometers / hour
-        currentSpeed = bodyOfCar.velocity.magnitude * 3.6f;
+        currentSpeed = bodyOfCar.linearVelocity.magnitude * 3.6f;
         EngineRPMSystem();
         // code for restricting the car to max speed set. 
         if (currentSpeed < maxSpeed)
@@ -220,8 +219,9 @@ public class Car_Movement : MonoBehaviour
             {
                 for (int i = 0; i < wheels4.Length; i++)
                 {
-                    // wheels torque equal to engine Rpm * gearbox * final drive ratio and input from player
-                    wheels4[i].motorTorque = totalPowerInCar * 4 / 4;
+                        // wheels torque equal to engine Rpm * gearbox * final drive ratio and input from player
+                        wheels4[i].motorTorque = totalPowerInCar / 4;
+                   
                     //Debug.Log(wheels4[i].motorTorque);
                 }
             }
@@ -229,7 +229,7 @@ public class Car_Movement : MonoBehaviour
             {
                 for (int i = 2; i < wheels4.Length; i++)
                 {
-                    wheels4[i].motorTorque = totalPowerInCar * 4 / 2;
+                    wheels4[i].motorTorque = totalPowerInCar / 2;
                 }
             }
             else if (drive == DifferentialTypes.FrontWheelDrive)
@@ -658,7 +658,7 @@ public class Car_Movement : MonoBehaviour
     }
     private void ApplyingDownForce()
     {
-        bodyOfCar.AddForce(-transform.up * downForceValue * bodyOfCar.velocity.magnitude);
+        bodyOfCar.AddForce(-transform.up * downForceValue * bodyOfCar.linearVelocity.magnitude);
     }
 
     private void Drafting()
@@ -691,65 +691,82 @@ public class Car_Movement : MonoBehaviour
     float driftEndingGrip;
     public bool meBoosting = false;
     public float boostValue = 3000f;
+    [Header("drift release values ")]
+    public float m_returnToNormalValues;
+    public WheelFrictionCurve testSidefriction;
+
     private void AdjustTractionForDrifting()
     {
-
-
-
-        /// time it takes to go from drive to drift
-        float driftSmoothFactor = 0.7f * Time.deltaTime;
-        if (ifHandBraking && currentSpeed > 40 || currentSpeed > 40 && handbraking > 0)
+        if (ifHandBraking)
         {
-            bodyOfCar.angularDrag = whenDrifting;
-            //bodyOfCar.angularDrag = Mathf.Lerp(minDrag, maxDrag, tt * 2f );
-            //bodyOfCar.angularDrag = Mathf.Clamp(bodyOfCar.angularDrag,minDrag ,maxDrag);
-            sidewaysFriction = wheels4[0].sidewaysFriction;
-            forwardFriction = wheels4[0].forwardFriction;
-
-            float velocity = 0;
-
-            driftEndingGrip = sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = forwardFriction.extremumValue = forwardFriction.asymptoteValue =
-            Mathf.SmoothDamp(forwardFriction.asymptoteValue, driftFactor * handBrakefrictionMulitplier, ref velocity, driftSmoothFactor);
-
-
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < wheels4.Length; i++)
             {
-
-                wheels4[i].sidewaysFriction = sidewaysFriction;
+                wheels4[i].sidewaysFriction = testSidefriction;
                 wheels4[i].forwardFriction = forwardFriction;
             }
-            sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = forwardFriction.extremumValue = forwardFriction.asymptoteValue = 1.2f;
-
-            // extra grip for front wheels
-            for (int i = 0; i < 2; i++)
-            {
-                wheels4[i].sidewaysFriction = sidewaysFriction;
-                wheels4[i].forwardFriction = forwardFriction;
-
-            }
-            // bodyOfCar.AddForce(bodyOfCar.transform.forward * (currentSpeed / 400) * boostInDrifting);
-
-            if (wheels4[0].steerAngle > 20 || wheels4[0].steerAngle < -20)
-            {
-                bodyOfCar.AddForce(bodyOfCar.transform.forward * boostWhileDrifting);
-            }
-            // bodyOfCar.AddRelativeForce(bodyOfCar.transform.forward * steeringCurve.Evaluate(180f));
-            WheelHit wheelHit;
-
-            for (int i = 2; i < wheels4.Length; i++)
-            {
-                wheels4[i].GetGroundHit(out wheelHit);
-                slip[i] = wheelHit.sidewaysSlip /*/ wheels4[i].sidewaysFriction.extremumSlip*/;
-                if (slip[i] > 0.4f || slip[i] < -0.4f)
-                {
-                   
-                }
-            }
-            tt = 0;
+            testSidefriction.extremumSlip = 5f;
+            testSidefriction.asymptoteSlip = 10f;
+            testSidefriction.extremumValue = testSidefriction.asymptoteValue = testSidefriction.stiffness = 1;
+            tt = 0f;
         }
-        // executed when handbrake is not held
+
+        #region taking out drifting
+        ///// time it takes to go from drive to drift
+        //float driftSmoothFactor = 0.7f * Time.deltaTime;
+        //if (ifHandBraking && currentSpeed > 40 || currentSpeed > 40 && handbraking > 0)
+        //{
+        //    bodyOfCar.angularDamping = whenDrifting;
+        //    //bodyOfCar.angularDrag = Mathf.Lerp(minDrag, maxDrag, tt * 2f );
+        //    //bodyOfCar.angularDrag = Mathf.Clamp(bodyOfCar.angularDrag,minDrag ,maxDrag);
+        //    sidewaysFriction = wheels4[0].sidewaysFriction;
+        //    forwardFriction = wheels4[0].forwardFriction;
+
+        //    float velocity = 0;
+
+        //    driftEndingGrip = sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = forwardFriction.extremumValue = forwardFriction.asymptoteValue =
+        //    Mathf.SmoothDamp(forwardFriction.asymptoteValue, driftFactor * handBrakefrictionMulitplier, ref velocity, driftSmoothFactor);
+
+
+        //    for (int i = 0; i < 4; i++)
+        //    {
+
+        //        wheels4[i].sidewaysFriction = sidewaysFriction;
+        //        wheels4[i].forwardFriction = forwardFriction;
+        //    }
+        //    sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = forwardFriction.extremumValue = forwardFriction.asymptoteValue = 1.2f;
+
+        //    // extra grip for front wheels
+        //    for (int i = 0; i < 2; i++)
+        //    {
+        //        wheels4[i].sidewaysFriction = sidewaysFriction;
+        //        wheels4[i].forwardFriction = forwardFriction;
+
+        //    }
+        //    // bodyOfCar.AddForce(bodyOfCar.transform.forward * (currentSpeed / 400) * boostInDrifting);
+
+        //    if (wheels4[0].steerAngle > 20 || wheels4[0].steerAngle < -20)
+        //    {
+        //        bodyOfCar.AddForce(bodyOfCar.transform.forward * boostWhileDrifting);
+        //    }
+        //    // bodyOfCar.AddRelativeForce(bodyOfCar.transform.forward * steeringCurve.Evaluate(180f));
+        //    WheelHit wheelHit;
+
+        //    for (int i = 2; i < wheels4.Length; i++)
+        //    {
+        //        wheels4[i].GetGroundHit(out wheelHit);
+        //        slip[i] = wheelHit.sidewaysSlip /*/ wheels4[i].sidewaysFriction.extremumSlip*/;
+        //        if (slip[i] > 0.4f || slip[i] < -0.4f)
+        //        {
+
+        //        }
+        //    }
+        //    tt = 0;
+        //}
+        //// executed when handbrake is not held
         else
         {
+            #endregion
+
             #region option for drifting
             forwardFriction = wheels4[0].forwardFriction;
             sidewaysFriction = wheels4[0].sidewaysFriction;
@@ -812,24 +829,22 @@ public class Car_Movement : MonoBehaviour
                     // leftTrail.emitting = false;
                     // rightTrail.emitting = false;
 
-                } 
-                    if (forwardFriction.extremumValue >= Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 1f, minAmountOfGripAtStart, maxAmountOfGrip))
-                    {
-                        // float bodyDrag = bodyOfCar.angularDrag;
-                        //bodyDrag = Mathf.Lerp(bodyDrag, whenNotDrifting,  tt);
-                        // bodyOfCar.angularDrag = bodyDrag;
-                        tt = 1.0f;
-                        return;
-                    }
                 }
-                bodyOfCar.angularDrag = whenNotDrifting;
-
-                #endregion
-
-
+                if (forwardFriction.extremumValue >= Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 1f, minAmountOfGripAtStart, maxAmountOfGrip))
+                {
+                    // float bodyDrag = bodyOfCar.angularDrag;
+                    //bodyDrag = Mathf.Lerp(bodyDrag, whenNotDrifting,  tt);
+                    // bodyOfCar.angularDrag = bodyDrag;
+                    tt = 1.0f;
+                    return;
+                }
             }
-        }
+            bodyOfCar.angularDamping = whenNotDrifting;
 
+            #endregion
+
+        }
+    }
         private void CheckingforSlip()
         {
             WheelHit wheelHit;
