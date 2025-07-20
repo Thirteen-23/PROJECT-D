@@ -360,7 +360,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 30ab19edabbfdea499f3db426001e120, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 30ab19edabbfdea499f3db426001e120, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -11013,7 +11013,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 132c1515ea005404fb6144c976c99ed6, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 132c1515ea005404fb6144c976c99ed6, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -13069,7 +13069,7 @@ MonoBehaviour:
   numberOfLaps: 0
   terrain: 0
   transmission: 1
-  drive: 2
+  drive: 1
   bodyOfCar: {fileID: 1782876258212539916}
   wheels4:
   - {fileID: 3691626170662621344}
@@ -13089,7 +13089,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 250
+      value: 50
       inSlope: 0
       outSlope: 0
       tangentMode: 136
@@ -13098,7 +13098,7 @@ MonoBehaviour:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 7000
-      value: 500
+      value: 250
       inSlope: 0
       outSlope: 0
       tangentMode: 136
@@ -13147,7 +13147,7 @@ MonoBehaviour:
   isBraking: 0
   ifHandBraking: 0
   handBrakefrictionMulitplier: 2
-  whenNotDrifting: 7
+  whenNotDrifting: 4
   whenDrifting: 3
   turnOnAllTerrain: 0
   frictionPlusValueForAbility: 0
@@ -13189,12 +13189,14 @@ MonoBehaviour:
   rpmLimiter: 5000
   boostWhenExitingDrift: 20000
   findme: 0
-  minDrag: 0
-  maxDrag: 4
+  minDrag: 2
+  maxDrag: 6
   boostWhileDrifting: 25000
   tt: 1
-  maxAmountOfGrip: 1.2
-  minAmountOfGripAtStart: 1
+  f_MaxAmountOfGrip: 1.2
+  f_MinAmountOfGripAtStart: 1
+  s_MaxAmountOfGrip: 1
+  s_MinAmountOfGripAtStart: 0.8
   meBoosting: 0
   boostValue: 3000
   m_returnToNormalValues: 0
@@ -13999,7 +14001,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 75fa27e467267c74f91f1f6f4e74ff88, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 75fa27e467267c74f91f1f6f4e74ff88, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -26400,7 +26402,7 @@ Transform:
   m_GameObject: {fileID: 1664489268}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.63, z: 0.343}
+  m_LocalPosition: {x: 0, y: -0.977, z: 0.343}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26448,7 +26450,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: bb683044c23cd50438d45fe475089c84, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: bb683044c23cd50438d45fe475089c84, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -27390,7 +27392,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e9643d8581d235f45a62997cba851988, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: e9643d8581d235f45a62997cba851988, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -29716,7 +29718,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 22cd46996da3b624bb08935264560d8c, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 22cd46996da3b624bb08935264560d8c, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -33268,7 +33270,7 @@ Transform:
   m_GameObject: {fileID: 757095194136287717}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: 26.4, z: -277.7}
+  m_LocalPosition: {x: -2, y: 8.7, z: -6.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -34748,8 +34750,10 @@ MonoBehaviour:
   maxDrag: 4
   boostWhileDrifting: 25000
   tt: 1
-  maxAmountOfGrip: 0
-  minAmountOfGripAtStart: 0
+  f_MaxAmountOfGrip: 0
+  f_MinAmountOfGripAtStart: 0
+  s_MaxAmountOfGrip: 0
+  s_MinAmountOfGripAtStart: 0
   meBoosting: 0
   boostValue: 3000
   m_returnToNormalValues: 0
@@ -36350,11 +36354,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9080554340304939511, guid: a63a9b641bfa9d447b52a427e57d1591, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 28.025
+      value: 10.325
       objectReference: {fileID: 0}
     - target: {fileID: 9080554340304939511, guid: a63a9b641bfa9d447b52a427e57d1591, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -282.045
+      value: -11.145
       objectReference: {fileID: 0}
     - target: {fileID: 9080554340304939511, guid: a63a9b641bfa9d447b52a427e57d1591, type: 3}
       propertyPath: m_LocalRotation.w
@@ -36529,9 +36533,9 @@ WheelCollider:
     m_AsymptoteValue: 0.5
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 1
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 5
+    m_AsymptoteSlip: 2
     m_AsymptoteValue: 1
     m_Stiffness: 1
   m_IncludeLayers:
@@ -38308,9 +38312,9 @@ WheelCollider:
     m_AsymptoteValue: 0.5
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 1
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 5
+    m_AsymptoteSlip: 2
     m_AsymptoteValue: 1
     m_Stiffness: 1
   m_IncludeLayers:
@@ -39002,9 +39006,9 @@ WheelCollider:
     m_AsymptoteValue: 0.5
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 1
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 5
+    m_AsymptoteSlip: 2
     m_AsymptoteValue: 1
     m_Stiffness: 1
   m_IncludeLayers:
@@ -39466,11 +39470,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1737734958259793603, guid: 360892cd10788a74b9011425a8abdf64, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 28.025
+      value: 10.325
       objectReference: {fileID: 0}
     - target: {fileID: 1737734958259793603, guid: 360892cd10788a74b9011425a8abdf64, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -282.045
+      value: -11.145
       objectReference: {fileID: 0}
     - target: {fileID: 1737734958259793603, guid: 360892cd10788a74b9011425a8abdf64, type: 3}
       propertyPath: m_LocalRotation.w
@@ -39542,9 +39546,9 @@ WheelCollider:
     m_AsymptoteValue: 0.5
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 1
     m_ExtremumValue: 1
-    m_AsymptoteSlip: 5
+    m_AsymptoteSlip: 2
     m_AsymptoteValue: 1
     m_Stiffness: 1
   m_IncludeLayers:
@@ -40819,8 +40823,10 @@ MonoBehaviour:
   maxDrag: 4
   boostWhileDrifting: 25000
   tt: 1
-  maxAmountOfGrip: 1.2
-  minAmountOfGripAtStart: 1
+  f_MaxAmountOfGrip: 0
+  f_MinAmountOfGripAtStart: 0
+  s_MaxAmountOfGrip: 0
+  s_MinAmountOfGripAtStart: 0
   meBoosting: 0
   boostValue: 3000
   m_returnToNormalValues: 0

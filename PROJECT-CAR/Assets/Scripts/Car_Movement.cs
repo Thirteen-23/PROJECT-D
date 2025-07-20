@@ -220,7 +220,7 @@ public class Car_Movement : MonoBehaviour
                 for (int i = 0; i < wheels4.Length; i++)
                 {
                         // wheels torque equal to engine Rpm * gearbox * final drive ratio and input from player
-                        wheels4[i].motorTorque = totalPowerInCar / 4;
+                        wheels4[i].motorTorque = totalPowerInCar;
                    
                     //Debug.Log(wheels4[i].motorTorque);
                 }
@@ -229,7 +229,7 @@ public class Car_Movement : MonoBehaviour
             {
                 for (int i = 2; i < wheels4.Length; i++)
                 {
-                    wheels4[i].motorTorque = totalPowerInCar / 2;
+                    wheels4[i].motorTorque = totalPowerInCar * 2F;
                 }
             }
             else if (drive == DifferentialTypes.FrontWheelDrive)
@@ -237,7 +237,7 @@ public class Car_Movement : MonoBehaviour
             {
                 for (int i = 0; i < wheels4.Length - 2; i++)
                 {
-                    wheels4[i].motorTorque = totalPowerInCar / 2;
+                    wheels4[i].motorTorque = totalPowerInCar * 2F;
                 }
             }
 
@@ -686,8 +686,10 @@ public class Car_Movement : MonoBehaviour
     public float maxDrag = 4;
     public float boostWhileDrifting = 25000f;
     [SerializeField] float tt = 1;
-    [SerializeField] float maxAmountOfGrip;
-    [SerializeField] float minAmountOfGripAtStart;
+    [SerializeField] float f_MaxAmountOfGrip;
+    [SerializeField] float f_MinAmountOfGripAtStart;
+    [SerializeField] float s_MaxAmountOfGrip;
+    [SerializeField] float s_MinAmountOfGripAtStart;
     float driftEndingGrip;
     public bool meBoosting = false;
     public float boostValue = 3000f;
@@ -781,16 +783,16 @@ public class Car_Movement : MonoBehaviour
                     wheels4[i].forwardFriction = forwardFriction;
                     wheels4[i].sidewaysFriction = sidewaysFriction;
                 }
-                forwardFriction.extremumValue = forwardFriction.asymptoteValue = sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 1f, minAmountOfGripAtStart, maxAmountOfGrip);
+                forwardFriction.extremumValue = forwardFriction.asymptoteValue = Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 1f, f_MinAmountOfGripAtStart, f_MaxAmountOfGrip);
+                sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 1f, s_MinAmountOfGripAtStart, s_MaxAmountOfGrip);
             }
             else
             {
                 tt += Time.deltaTime;
 
-                forwardFriction.extremumValue = forwardFriction.asymptoteValue = sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue =
-                    Mathf.Lerp(driftEndingGrip, Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 1f, minAmountOfGripAtStart, maxAmountOfGrip), tt);
-                //Mathf.Lerp((forwardFriction.extremumValue = forwardFriction.asymptoteValue = sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue),// (currentSpeed * handBrakefrictionMulitplier / 300) + 2.5f, Time.deltaTime * 2f);
-                //Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 2f, 0, 3), tt);
+                forwardFriction.extremumValue = forwardFriction.asymptoteValue = Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 1f, f_MinAmountOfGripAtStart, f_MaxAmountOfGrip);
+                sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 1f, s_MinAmountOfGripAtStart, s_MaxAmountOfGrip);
+
 
 
             }
@@ -801,11 +803,13 @@ public class Car_Movement : MonoBehaviour
             }
 
             WheelHit wheelHit;
-
+            
+            #region SEE IF I CAN THIS OUT
+            /*
             for (int i = 2; i < wheels4.Length; i++)
             {
                 wheels4[i].GetGroundHit(out wheelHit);
-                slip[i] = wheelHit.sidewaysSlip /*/ wheels4[i].sidewaysFriction.extremumSlip*/;
+                slip[i] = wheelHit.sidewaysSlip;
                 if (slip[i] > 0.4f || slip[i] < -0.4f)
                 {
                     tt = 1f;
@@ -838,7 +842,10 @@ public class Car_Movement : MonoBehaviour
                     tt = 1.0f;
                     return;
                 }
+                
             }
+            */
+            #endregion
             bodyOfCar.angularDamping = whenNotDrifting;
 
             #endregion
@@ -852,7 +859,7 @@ public class Car_Movement : MonoBehaviour
             for (int i = 0; i < wheels4.Length; i++)
             {
                 wheels4[i].GetGroundHit(out wheelHit);
-                slip[i] = wheelHit.forwardSlip;
+                slip[i] = wheelHit.sidewaysSlip;
             }
         }
     }
