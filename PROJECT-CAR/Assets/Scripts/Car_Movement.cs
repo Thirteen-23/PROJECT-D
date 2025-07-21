@@ -783,8 +783,8 @@ public class Car_Movement : MonoBehaviour
                     wheels4[i].forwardFriction = forwardFriction;
                     wheels4[i].sidewaysFriction = sidewaysFriction;
                 }
-                forwardFriction.extremumValue = forwardFriction.asymptoteValue = Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 1f, f_MinAmountOfGripAtStart, f_MaxAmountOfGrip);
-                sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 1f, s_MinAmountOfGripAtStart, s_MaxAmountOfGrip);
+               // forwardFriction.extremumValue = forwardFriction.asymptoteValue = Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 1f, f_MinAmountOfGripAtStart, f_MaxAmountOfGrip);
+               // sidewaysFriction.extremumValue = sidewaysFriction.asymptoteValue = Mathf.Clamp((currentSpeed * handBrakefrictionMulitplier / 300) + 1f, s_MinAmountOfGripAtStart, s_MaxAmountOfGrip);
             }
             else
             {

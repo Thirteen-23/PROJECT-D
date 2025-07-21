@@ -33270,7 +33270,7 @@ Transform:
   m_GameObject: {fileID: 757095194136287717}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: 8.7, z: -6.8}
+  m_LocalPosition: {x: -2, y: 0.67, z: -6.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -36348,13 +36348,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'VCam '
       objectReference: {fileID: 0}
+    - target: {fileID: 7004922568978968124, guid: a63a9b641bfa9d447b52a427e57d1591, type: 3}
+      propertyPath: m_YDamping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9080554340304939511, guid: a63a9b641bfa9d447b52a427e57d1591, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 9080554340304939511, guid: a63a9b641bfa9d447b52a427e57d1591, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.325
+      value: 2.295
       objectReference: {fileID: 0}
     - target: {fileID: 9080554340304939511, guid: a63a9b641bfa9d447b52a427e57d1591, type: 3}
       propertyPath: m_LocalPosition.z
@@ -36533,7 +36537,7 @@ WheelCollider:
     m_AsymptoteValue: 0.5
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 1
+    m_ExtremumSlip: 0.5
     m_ExtremumValue: 1
     m_AsymptoteSlip: 2
     m_AsymptoteValue: 1
@@ -38312,7 +38316,7 @@ WheelCollider:
     m_AsymptoteValue: 0.5
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 1
+    m_ExtremumSlip: 0.5
     m_ExtremumValue: 1
     m_AsymptoteSlip: 2
     m_AsymptoteValue: 1
@@ -39006,7 +39010,7 @@ WheelCollider:
     m_AsymptoteValue: 0.5
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 1
+    m_ExtremumSlip: 0.5
     m_ExtremumValue: 1
     m_AsymptoteSlip: 2
     m_AsymptoteValue: 1
@@ -39470,7 +39474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1737734958259793603, guid: 360892cd10788a74b9011425a8abdf64, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.325
+      value: 2.295
       objectReference: {fileID: 0}
     - target: {fileID: 1737734958259793603, guid: 360892cd10788a74b9011425a8abdf64, type: 3}
       propertyPath: m_LocalPosition.z
@@ -39546,7 +39550,7 @@ WheelCollider:
     m_AsymptoteValue: 0.5
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 1
+    m_ExtremumSlip: 0.5
     m_ExtremumValue: 1
     m_AsymptoteSlip: 2
     m_AsymptoteValue: 1
